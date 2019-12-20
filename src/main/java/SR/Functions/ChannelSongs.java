@@ -1,7 +1,6 @@
 package SR.Functions;
 
 import SR.Beans.Songs2Keys;
-import SR.Beans.Songs3Keys;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.mashape.unirest.http.HttpResponse;
@@ -29,8 +28,6 @@ public class ChannelSongs {
      */
     public String getFormat(String URI, String format, String channelID) {
 
-        //These channels only return information about the previous and next song.
-        if(channelID.equals("132") || channelID.equals("163")) {
             Songs2Keys songs = new Songs2Keys(); //Object representation of the resource.
 
             try {
@@ -80,63 +77,5 @@ public class ChannelSongs {
                 e.printStackTrace();
             }
             return null;
-
-            //These channels return information about the previous, current and next song.
-        } else if (channelID.equals("164") || channelID.equals("207")) {
-            Songs3Keys songs = new Songs3Keys();
-
-            try {
-                response = Unirest.get(URI)
-                        .queryString("format", "json")
-                        .asJson();
-
-                System.out.println("Response from SR:");
-                System.out.println(response.getBody());
-                System.out.println();
-
-                JsonNode json = response.getBody();
-                JSONObject envelope = json.getObject();
-                JSONObject playlist = envelope.getJSONObject("playlist");
-                JSONObject channel = playlist.getJSONObject("channel");
-                JSONObject previoussong = playlist.getJSONObject("previoussong");
-                JSONObject currentsong = playlist.getJSONObject("song");
-                JSONObject nextsong = playlist.getJSONObject("nextsong");
-
-                songs.setChannelid(channel.getInt("id"));
-                songs.setChannelname(channel.getString("name"));
-
-                songs.setPrevioustitle(previoussong.getString("title"));
-                songs.setPreviousdescription(previoussong.getString("description"));
-                songs.setPreviousartist(previoussong.getString("artist"));
-                songs.setPreviousalbum(previoussong.getString("albumname"));
-
-                songs.setCurrenttitle(currentsong.getString("title"));
-                songs.setCurrentdescription(previoussong.getString("description"));
-                songs.setCurrentartist(previoussong.getString("artist"));
-                songs.setCurrentalbum(previoussong.getString("albumname"));
-
-                songs.setNexttitle(nextsong.getString("title"));
-                songs.setNextdescription(nextsong.getString("description"));
-                songs.setNextartist(nextsong.getString("artist"));
-                songs.setNextalbum(nextsong.getString("albumname"));
-
-                if (format.equalsIgnoreCase("json")) {
-                    ObjectMapper mapper = new ObjectMapper();
-                    String jsonFormat = mapper.writeValueAsString(songs);
-
-                    return jsonFormat;
-
-                } else if (format.equalsIgnoreCase("xml")) {
-                    ObjectMapper mapper = new XmlMapper();
-                    String xmlFormat = mapper.writeValueAsString(songs);
-
-                    return xmlFormat;
-                }
-            } catch (UnirestException | IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-        return null;
     }
 }
