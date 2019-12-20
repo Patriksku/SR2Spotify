@@ -1,0 +1,11 @@
+Glöm inte att skriva kommentarer när ni skriver kod :)
+
+Projektet är huvudsakligen uppdelat i tre paket som ansvarar för varsitt API.
+
+--> "API"-paket innehåller klasser med metoder och endpoints (URI).
+--> "Beans"-paket innehåller objekt som representerar den information vi vill skapa XML eller JSON filer från,
+utifrån information som vi får från olika APIs.
+--> "Functions"-paket innehåller metoder som bearbetar data eller utför någon speciell funktionalitet som händer
+då en klient kopplar upp sig till en av våra endpoints.
+
+Om det är några frågor är det bara att höra av sig på Discord.

@@ -1,0 +1,20 @@
+Sveriges Radio API
+Lista över alla kanaler (med liveradio)
+http://api.sr.se/api/v2/channels/
+
+GET på alla – på slutet av URL kan även format specificeras: XML eller JSON enligt:
+&format=xml || &format=json
+
+P1 - 132
+http://api.sr.se/api/v2/playlists/rightnow?channelid=132
+
+P2 - 163
+http://api.sr.se/api/v2/playlists/rightnow?channelid=163
+
+P3 - 164
+http://api.sr.se/api/v2/playlists/rightnow?channelid=164
+Här finns prevsong, song och nextsong!
+
+P4  - 207 (Malmöhus – det finns inte en allmän kanal av P4, bra olika variationer)
+http://api.sr.se/api/v2/playlists/rightnow?channelid=207
+Här finns prevsong, song och nextsong!

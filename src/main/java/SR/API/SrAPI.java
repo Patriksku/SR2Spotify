@@ -1,26 +1,73 @@
 package SR.API;
 
+import SR.Functions.ChannelSongs;
 import org.w3c.dom.Document;
 
-//CHECKA STATIC INNAN AVSLUTNING!
 import static spark.Spark.get;
 
+/**
+ * This class is responsible for displaying or returning a representation of a resource,
+ * based on what type of URI a client is connecting to. This class handles all functionalities
+ * from Sveriges Radio API.
+ * @author Patriksku
+ */
 public class SrAPI {
 
-    private static final String path = "/api/sveriges-radio";
-    private static final String domain = "http://api.sr.se/api/v2/playlists/rightnow?channelid=";
+    private final String path = "/api/sveriges-radio";
+    private final String domain = "http://api.sr.se/api/v2/playlists/rightnow?channelid=";
 
-    public static String getSongs() {
-        Object obj = new Object();
-        get(path + "/getsongs/:channelid/:format", (request, response) -> {
-            String format = request.params(":format").toLowerCase();
-            System.out.println("FORMAT IS: " + format);
-            return "Tjena";
+    // http://localhost:4567/api/sveriges-radio/getsongs/207 <-- inga parametrar ger .json
+    /**
+     * Returns a JSON-file with various information about recent and upcoming songs
+     * of a given radio-station at Sveriges Radio.
+     * @return JSON-file.
+     */
+    public Document getSongsJson() {
+        get(path + "/getsongs/:channelid", (request, response) -> {
+            String channelID = request.params(":channelid");
+            String URI = domain + request.params(":channelid");
+
+            ChannelSongs channelSongs = new ChannelSongs();
+            response.type("application/json");
+            return channelSongs.getFormat(URI, "json", channelID);
         });
-        return "Tjena";
+        return null;
     }
 
+    // http://localhost:4567/api/sveriges-radio/getsongs/207/xml    ||
+    // http://localhost:4567/api/sveriges-radio/getsongs/207/json   ||
+
+    /**
+     * Returns a JSON or XML-file with various information about recent and upcoming songs
+     * of a given radio-station at Sveriges Radio.
+     * @return JSON or XML-file.
+     */
+    public Document getSongsFormat() {
+        get(path + "/getsongs/:channelid/:format", (request, response) -> {
+            String channelID = request.params(":channelid");
+            String URI = domain + request.params(":channelid");
+
+            if (request.params(":format").equalsIgnoreCase("json")) {
+                ChannelSongs channelSongs = new ChannelSongs();
+                response.type("application/json"); //The response type will be JSON.
+                return channelSongs.getFormat(URI, "json", channelID);
+
+            } else if (request.params(":format").equalsIgnoreCase("xml")) {
+                ChannelSongs channelSongs = new ChannelSongs();
+                response.type("application/xml"); //The response type will be XML.
+                return channelSongs.getFormat(URI, "xml", channelID);
+            }
+            return "Something went wrong. Check your parameters.";
+        });
+        return null;
+    }
+
+    /**
+     * Initializes/deploys all methods within this class to act upon various URI-inputs based on
+     * paths specified in the methods.
+     */
     public void init(){
-        getSongs();
+        getSongsJson();
+        getSongsFormat();
     }
 }
