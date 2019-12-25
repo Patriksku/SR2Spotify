@@ -1,6 +1,7 @@
 package StartServer;
 
 import SR.API.SrAPI;
+import Spotify.API.SpotifyAPI;
 import com.mashape.unirest.http.Unirest;
 
 import java.io.IOException;
@@ -35,7 +36,10 @@ public class StartServer {
 
     public static void main(String[]args){
         SrAPI srAPI = new SrAPI();
+        SpotifyAPI spAPI = new SpotifyAPI();
+
         srAPI.init();
+        spAPI.init();
 
         shutdownOnExit();
     }

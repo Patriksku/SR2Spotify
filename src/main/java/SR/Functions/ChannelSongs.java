@@ -72,7 +72,6 @@ public class ChannelSongs {
 
                     return xmlFormat;
                 }
-
             } catch (UnirestException | IOException e) {
                 e.printStackTrace();
             }
