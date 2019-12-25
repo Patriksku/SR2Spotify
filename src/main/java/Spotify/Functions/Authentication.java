@@ -22,7 +22,7 @@ public class Authentication {
 
     private final String AUTH_DOMAIN = "https://accounts.spotify.com/";
     private final String CLIENT_ID = "a73c33b920fc498d831d79de4542ccc1";
-    private final String CLIENT_SECRET = "e7b9aa324e3d41e3b89969ec45816e71";
+    private final String CLIENT_SECRET = "finns i Spotify API-dokumentet i drive (Patriks konto)";
     private final String RESPONSE_TYPE = "code";
     private final String REDIRECT_URI = "http://localhost:4567/api/spotify/login";
     private final String TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
