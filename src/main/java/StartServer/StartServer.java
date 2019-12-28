@@ -35,6 +35,7 @@ public class StartServer {
     }
 
     public static void main(String[]args){
+
         SrAPI srAPI = new SrAPI();
         SpotifyAPI spAPI = new SpotifyAPI();
 
