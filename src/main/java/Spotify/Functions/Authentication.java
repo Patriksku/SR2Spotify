@@ -19,11 +19,11 @@ public class Authentication {
 
     private final String AUTH_DOMAIN = "https://accounts.spotify.com/";
     private final String CLIENT_ID = "a73c33b920fc498d831d79de4542ccc1";
-    private final String CLIENT_SECRET = "finns i Spotify API-dokumentet i drive (Patriks konto)";
+    private final String CLIENT_SECRET = "e7b9aa324e3d41e3b89969ec45816e71";
     private final String RESPONSE_TYPE = "code";
     private final String REDIRECT_URI = "http://localhost:4567/api/spotify/login";
     private final String TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
-    private final String SCOPES = "playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private";
+    private final String SCOPES = "playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private user-follow-modify";
 
     private String encoded_auth_key = null;
 
@@ -74,6 +74,7 @@ public class Authentication {
         User user = new User(); //Creates a User-object which will hold the created token.
         Token tokenObject = new Token();
         JSONObject envelope = json.getObject();
+        System.out.println(envelope.toString());
 
         tokenObject.setAccess_token(envelope.getString("access_token"));
         tokenObject.setToken_type(envelope.getString("token_type"));

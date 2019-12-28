@@ -21,7 +21,7 @@ public class AutoRefreshToken extends TimerTask {
     public AutoRefreshToken(UserSessions userSessions, Authentication auth) {
         this.userSessions = userSessions;
         this.auth = auth;
-        timer.scheduleAtFixedRate(this, 0, 3 * 6000); // 30 minutes
+        timer.scheduleAtFixedRate(this, 0, 1800000); // 30 minutes
     }
 
     /**
