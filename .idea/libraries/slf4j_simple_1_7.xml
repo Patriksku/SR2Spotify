@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="slf4j-simple-1.7.25">
+  <library name="slf4j-simple-1.7">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/LABB4/slf4j-simple-1.7.25.jar!/" />
+      <root url="file://$USER_HOME$/Downloads/slf4j-simple-1.7.25" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
