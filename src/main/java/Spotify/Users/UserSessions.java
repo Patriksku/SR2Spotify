@@ -48,9 +48,26 @@ public class UserSessions {
     }
 
     /**
-     * @return the userSessionsMap (HashMap).
+     * @return the userSessionsMap.
      */
     public HashMap<String, User> getHashMap() {
         return this.userSessionsMap;
+    }
+
+    /**
+     * A method for finding a user with the specified userID.
+     * Null is returned if no such user exists.
+     * @param userID from the user's Spotify profile.
+     * @return session_id for the user.
+     */
+    public String getUserID(String userID) {
+        for (HashMap.Entry<String, User> entry : userSessionsMap.entrySet()) {
+            String session_id = entry.getKey();
+            User user = entry.getValue();
+            if (user.getProfile().getUser_id().equals(userID)) {
+                return session_id;
+            }
+        }
+        return null;
     }
 }

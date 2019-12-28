@@ -1,10 +1,8 @@
 package Spotify.Functions;
 
 import Spotify.Beans.Profile;
+import Spotify.Handlers.FormatHandler;
 import Spotify.Users.UserSessions;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -23,7 +21,7 @@ public class UserProfile {
     private final String USER_PROFILE_ENDPOINT = "https://api.spotify.com/v1/me";
 
     private HttpResponse<JsonNode> response;
-    private String session_id;
+    //tog bort session id private!
 
     public UserProfile(UserSessions userSessions) {
         this.userSessions = userSessions;
@@ -38,10 +36,9 @@ public class UserProfile {
      * @return XML or JSON based on user input.
      */
     public String requestMyProfile(String session_id, String format) {
-        this.session_id = session_id;
         if (!userSessions.contains(session_id)) {
-            System.out.println("This user's session_id does not exist. Please connect your account to Spotify first, then try again.");
-        }
+            return "This user's session_id does not exist. Please connect your account to Spotify first, then try again.";
+        } else
         try {
             System.out.println("Sending GET request to Spotify [USER_PROFILE_ENDPOINT]...");
             response = Unirest.get(USER_PROFILE_ENDPOINT)
@@ -52,7 +49,24 @@ public class UserProfile {
         }
 
         JSONObject envelope = response.getBody().getObject();
-        return getMyProfile(envelope, format);
+        return getMyProfile(envelope, format, session_id);
+    }
+
+    public void createProfile(String session_id) {
+        if (!userSessions.contains(session_id)) {
+            System.out.println("This user's session_id does not exist. Please connect your account to Spotify first, then try again.");
+        } else
+        try {
+            System.out.println("Sending GET request to Spotify [USER_PROFILE_ENDPOINT]...");
+            response = Unirest.get(USER_PROFILE_ENDPOINT)
+                    .header("Authorization", (userSessions.get(session_id).getToken().getToken_type() + " " + userSessions.get(session_id).getToken().getAccess_token()))
+                    .asJson();
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject envelope = response.getBody().getObject();
+        getProfile(envelope, session_id);
     }
 
     /**
@@ -61,7 +75,7 @@ public class UserProfile {
      * @param format to be returned.
      * @return XML or JSON, based on user input.
      */
-    private String getMyProfile(JSONObject envelope, String format) {
+    private String getMyProfile(JSONObject envelope, String format, String session_id) {
         Profile profile = new Profile();
 
         JSONObject externalUrls = envelope.getJSONObject("external_urls");
@@ -76,24 +90,26 @@ public class UserProfile {
 
         setProfile(session_id, profile); //Sets the profile for user.
 
-        try {
-            if (format.equalsIgnoreCase("json")) {
-                ObjectMapper mapper = new ObjectMapper();
-                String jsonFormat = mapper.writeValueAsString(profile);
+        FormatHandler formatHandler = new FormatHandler();
+        return formatHandler.getFormat(format, profile);
+    }
 
-                return jsonFormat;
+    private void getProfile(JSONObject envelope, String session_id) {
+        Profile profile = new Profile();
 
-            } else if (format.equalsIgnoreCase("xml")) {
-                ObjectMapper mapper = new XmlMapper();
-                String xmlFormat = mapper.writeValueAsString(profile);
+        JSONObject externalUrls = envelope.getJSONObject("external_urls");
+        JSONArray images = envelope.getJSONArray("images");
+        JSONObject imageUrl = images.getJSONObject(0);
 
-                return xmlFormat;
-            }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        System.out.println(profile.toString());
-        return "Something went wrong while returning profile information. Please try again.";
+        profile.setDisplay_name(envelope.getString("display_name"));
+        profile.setUser_id(envelope.getString("id"));
+        profile.setProfile_url(externalUrls.getString("spotify"));
+        profile.setImage_url(imageUrl.getString("url"));
+        profile.setSession_id(session_id);
+
+        System.out.println("MITT ID ÄR: " + envelope.getString("id"));
+
+        setProfile(session_id, profile);
     }
 
     /**
@@ -110,6 +126,4 @@ public class UserProfile {
         System.out.println("-PROFILE-");
         System.out.println(userSessions.get(session_id).getProfile().toString());
     }
-
-    //public void createUserProfile() {}
 }

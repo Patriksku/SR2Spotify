@@ -13,6 +13,7 @@ import static spark.Spark.get;
  */
 public class SrAPI {
 
+    //http://localhost:4567/
     private final String path = "/api/sveriges-radio";
     private final String domain = "http://api.sr.se/api/v2/playlists/rightnow?channelid=";
 
@@ -58,8 +59,8 @@ public class SrAPI {
             String channelID = request.params(":channelid");
             String URI = domain + request.params(":channelid");
 
-            if (request.params(":format").equalsIgnoreCase("json")) {
-                ChannelSongs channelSongs = new ChannelSongs();
+                if (request.params(":format").equalsIgnoreCase("json")) {
+                    ChannelSongs channelSongs = new ChannelSongs();
                 response.type("application/json"); //The response type will be JSON.
                 return channelSongs.getFormat(URI, "json", channelID);
 

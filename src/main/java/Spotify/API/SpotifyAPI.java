@@ -2,7 +2,7 @@ package Spotify.API;
 
 import Spotify.Functions.Authentication;
 import Spotify.Functions.AutoRefreshToken;
-import Spotify.Functions.Playlist;
+import Spotify.Functions.UserPlaylists;
 import Spotify.Functions.UserProfile;
 import Spotify.Users.UserSessions;
 import org.w3c.dom.Document;
@@ -19,7 +19,7 @@ public class SpotifyAPI {
     private final String path = "/api/spotify";
     private UserSessions userSessions = new UserSessions();
     private Authentication auth = new Authentication(userSessions);
-    private Playlist playlist = new Playlist();
+    private UserPlaylists userPlaylists = new UserPlaylists();
     private AutoRefreshToken autoRefreshToken = null;
     private UserProfile userProfile = new UserProfile(userSessions);
 
@@ -39,19 +39,22 @@ public class SpotifyAPI {
      * The Callback or redirect URI where a user lands after a successful authentication.
      * If everything goes well, the user is matched with his token for later usage,
      * and a Thread is created which automatically refreshes access tokens every 30 minutes.
+     * A profile-object is also created for the user with information from Spotify profile.
      */
     public void spotify() {
         get(path + "/login", (request, response) -> {
-            String authCode = null;
+            String authCode;
             authCode = request.queryParams("code");
 
             if(authCode == null) {
-                return "Something went wrong while authorizing access to user information.";
+                return "Something went wrong while authorizing access to user information. Perhaps the user " +
+                        "is already verified, or did not use the correct endpoint for verification.";
             } else {
                 if(autoRefreshToken == null) {
                     autoRefreshToken = new AutoRefreshToken(userSessions, auth);
                 }
                 auth.requestToken(authCode, request.session().id());
+                userProfile.createProfile(request.session().id());
             }
             return authCode;
         });
@@ -60,18 +63,19 @@ public class SpotifyAPI {
     /**
      * Returns information from the specified user's Spotify profile.
      * Note: The user needs to grant the application access first -
-     * if no access has been granted, the user is redirected to the authorization page.
+     * The client will get an information message if no access has been granted.
      * @return JSON-file which contains various fields from the user's Spotify profile.
      */
     public Document getProfile() {
         get(path + "/getProfile/:userid", (request, response) -> {
-            if (userSessions.contains(request.session().id())) {
+            String sessionOfUserID = userSessions.getUserID(request.params(":userid"));
+            if (sessionOfUserID != null) {
                 response.type("application/json");
-                return userProfile.requestMyProfile(request.session().id(), "json");
+                return userProfile.requestMyProfile(sessionOfUserID, "json");
             } else {
-                response.redirect(path + "/authUser");
+                return "User with ID: " + request.params(":userid") + " has not authorized " +
+                        "access to Spotify.";
             }
-            return response.status();
         });
         return null;
     }
@@ -104,7 +108,6 @@ public class SpotifyAPI {
     public Document getMyProfileFormat() {
         get(path + "/getMyProfile/:format", (request, response) -> {
             if (userSessions.contains(request.session().id())) {
-
                 if (request.params(":format").equalsIgnoreCase("json")) {
                     response.type("application/json");
                     return userProfile.requestMyProfile(request.session().id(), "json");
@@ -125,17 +128,37 @@ public class SpotifyAPI {
     }
 
     /**
-     * Inte klar än.
-     * @return
+     * Returns playlists of the current user, based on the "limit" parameter.
+     * Limit has to be a numerical digit between 0 and 50.
+     * @return JSON containing playlists of the current user.
      */
     public Document getMyPlaylists() {
-        get(path + "/getMyPlaylists", (request, response) -> {
+        get(path + "/getMyPlaylists/:limit", (request, response) -> {
+            String limit = request.params(":limit");
+            if (Integer.parseInt(limit) > 50 || Integer.parseInt(limit) < 0) {
+                return "The 'limit' parameter has to be a numerical digit between 0 and 50.";
+            }
             if (userSessions.contains(request.session().id())) {
-                playlist.getUserPlaylist(userSessions.get(request.session().id()).getToken());
+                response.type("application/json");
+                return userPlaylists.requestMyPlaylist(userSessions.get(request.session().id()), limit, "json");
             } else {
                 response.redirect(path + "/authUser");
             }
-            return null;
+            return "An error has occurred. Please check your parameters, path, or if the user is authorized to Spotify.";
+        });
+        return null;
+    }
+
+    public Document getPlaylists() {
+        get(path + "/getPlaylists/:userid", (request, response) -> {
+            String sessionOfUserID = userSessions.getUserID(request.params(":userid"));
+            if (sessionOfUserID != null) {
+                response.type("application/json");
+                return userPlaylists.requestMyPlaylist(userSessions.get(sessionOfUserID), "50", "json");
+            } else {
+                return "User with ID: " + request.params(":userid") + " has not authorized " +
+                        "access to Spotify.";
+            }
         });
         return null;
     }
@@ -144,9 +167,10 @@ public class SpotifyAPI {
     public void init(){
         authUser();
         spotify();
-        getMyPlaylists();
+        getProfile();
         getMyProfile();
         getMyProfileFormat();
-        getProfile();
+        getMyPlaylists();
+        getPlaylists();
     }
 }
