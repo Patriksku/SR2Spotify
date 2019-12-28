@@ -1,5 +1,11 @@
 package Spotify.Beans;
 
+/**
+ * Thi class represents a User-object, which contains a Token-object
+ * and a Profile-object. These are created when a user grants access to
+ * the user's Spotify account.
+ * @author Patriksku
+ */
 public class User {
     private Token token;
     private Profile profile;

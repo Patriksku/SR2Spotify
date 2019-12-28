@@ -1,6 +1,5 @@
 package Spotify.Functions;
 
-import Spotify.Beans.Token;
 import Spotify.Beans.User;
 import Spotify.Users.UserSessions;
 

@@ -1,5 +1,11 @@
 package Spotify.Beans;
 
+/**
+ * This class represents a PlaylistArray-object which contains
+ * several playlists in an array, As a user usually has more than one
+ * playlist.
+ * @author Patriksku
+ */
 public class PlaylistArray {
     private int amountOfPlaylists;
     private Playlist[] arrayOfPlaylists;

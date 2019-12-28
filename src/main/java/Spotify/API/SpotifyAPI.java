@@ -19,7 +19,7 @@ public class SpotifyAPI {
     private final String path = "/api/spotify";
     private UserSessions userSessions = new UserSessions();
     private Authentication auth = new Authentication(userSessions);
-    private UserPlaylists userPlaylists = new UserPlaylists();
+    private UserPlaylists userPlaylists = new UserPlaylists(userSessions);
     private AutoRefreshToken autoRefreshToken = null;
     private UserProfile userProfile = new UserProfile(userSessions);
 
@@ -81,7 +81,7 @@ public class SpotifyAPI {
     }
 
     /**
-     * Returns the current user's information from Spotify, if the user's unique
+     * Returns the current user's information from Spotify if the user's unique
      * session-id exists in the server. If not, the user is redirected to the login-page
      * where the user may grant the application access to the user's information from Spotify.
      * @return JSON-file with the current user's information from Spotify.
@@ -128,6 +128,25 @@ public class SpotifyAPI {
     }
 
     /**
+     * Returns JSON containing playlists from the specified user.
+     * The user needs to have granted access to the user's Spotify information first.
+     * @return JSON with all playlists.
+     */
+    public Document getPlaylists() {
+        get(path + "/getPlaylists/:userid", (request, response) -> {
+            String sessionOfUserID = userSessions.getUserID(request.params(":userid"));
+            if (sessionOfUserID != null) {
+                response.type("application/json");
+                return userPlaylists.requestMyPlaylist(request.session().id(), "50", "json");
+            } else {
+                return "User with ID: " + request.params(":userid") + " has not authorized " +
+                        "access to Spotify.";
+            }
+        });
+        return null;
+    }
+
+    /**
      * Returns playlists of the current user, based on the "limit" parameter.
      * Limit has to be a numerical digit between 0 and 50.
      * @return JSON containing playlists of the current user.
@@ -140,7 +159,7 @@ public class SpotifyAPI {
             }
             if (userSessions.contains(request.session().id())) {
                 response.type("application/json");
-                return userPlaylists.requestMyPlaylist(userSessions.get(request.session().id()), limit, "json");
+                return userPlaylists.requestMyPlaylist(request.session().id(), limit, "json");
             } else {
                 response.redirect(path + "/authUser");
             }
@@ -149,28 +168,51 @@ public class SpotifyAPI {
         return null;
     }
 
-    public Document getPlaylists() {
-        get(path + "/getPlaylists/:userid", (request, response) -> {
-            String sessionOfUserID = userSessions.getUserID(request.params(":userid"));
-            if (sessionOfUserID != null) {
-                response.type("application/json");
-                return userPlaylists.requestMyPlaylist(userSessions.get(sessionOfUserID), "50", "json");
-            } else {
-                return "User with ID: " + request.params(":userid") + " has not authorized " +
-                        "access to Spotify.";
+    /**
+     * Returns playlists of the current user from Spotify.
+     * The user will be redirected to a login page where access can be granted,
+     * if this has not been made before.
+     * @return XML or JSON with all playlists.
+     */
+    public Document getMyPlaylistsFormat() {
+        get(path + "/getMyPlaylists/:limit/:format", (request, response) -> {
+            String limit = request.params(":limit");
+            if (Integer.parseInt(limit) > 50 || Integer.parseInt(limit) < 0) {
+                return "The 'limit' parameter has to be a numerical digit between 0 and 50.";
             }
+            if (userSessions.contains(request.session().id())) {
+                if (request.params(":format").equalsIgnoreCase("json")) {
+                    response.type("application/json");
+                    return userPlaylists.requestMyPlaylist(request.session().id(), limit, "json");
+
+                } else if (request.params(":format").equalsIgnoreCase("xml")) {
+                    response.type("application/xml");
+                    return userPlaylists.requestMyPlaylist(request.session().id(), limit, "xml");
+
+                } else {
+                    return "Something went wrong. Please check ur parameters. Only XML and JSON is valid.";
+                }
+
+            } else {
+                response.redirect(path + "/authUser");
+            }
+
+            return "An error occurred while trying to load your Playlists from Spotify.";
         });
         return null;
     }
 
-
+    /**
+     * Method initializes all methods in this class, so that the endpoints are active.
+     */
     public void init(){
         authUser();
         spotify();
         getProfile();
         getMyProfile();
         getMyProfileFormat();
-        getMyPlaylists();
         getPlaylists();
+        getMyPlaylists();
+        getMyPlaylistsFormat();
     }
 }

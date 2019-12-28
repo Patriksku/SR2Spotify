@@ -6,6 +6,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
+/**
+ * This class handles conversions from object to XML or JSON files.
+ * @author Patriksku
+ */
 public class FormatHandler {
     private String jsonFormat;
     private String xmlFormat;

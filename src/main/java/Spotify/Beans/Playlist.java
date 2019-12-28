@@ -1,5 +1,10 @@
 package Spotify.Beans;
 
+/**
+ * This class represents a Playlist-object, which is created
+ * for a user based on their playlists in Spotify.
+ * @author Patriksku
+ */
 public class Playlist {
     private String playlist_name;
     private String spotify_url;
