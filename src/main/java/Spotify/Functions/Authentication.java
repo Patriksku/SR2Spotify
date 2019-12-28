@@ -1,24 +1,21 @@
 package Spotify.Functions;
 
 import Spotify.Beans.Token;
+import Spotify.Beans.User;
+import Spotify.Users.UserSessions;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mashape.unirest.request.body.RequestBodyEntity;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * This class is responsible for authenticating users to Spotify,
+ * requesting Tokens and creating Token-objects for users, and encoding
+ * authentication to Spotify.
+ * @author Patriksku
+ */
 public class Authentication {
-
-    /**
-     * Auth - Funkar
-     * https://accounts.spotify.com/authorize?client_id=a73c33b920fc498d831d79de4542ccc1&response_type=code&redirect_uri=http://localhost:4567/api/spotify/login
-     */
 
     private final String AUTH_DOMAIN = "https://accounts.spotify.com/";
     private final String CLIENT_ID = "a73c33b920fc498d831d79de4542ccc1";
@@ -26,9 +23,9 @@ public class Authentication {
     private final String RESPONSE_TYPE = "code";
     private final String REDIRECT_URI = "http://localhost:4567/api/spotify/login";
     private final String TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
+    private final String SCOPES = "playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private";
 
     private String encoded_auth_key = null;
-    private String session_id = null;
 
     private HttpResponse<JsonNode> response;
 
@@ -38,6 +35,12 @@ public class Authentication {
         this.userSessions = userSessions;
     }
 
+    /**
+     * Requests token information for a user from Spotify API.
+     * @param authCode The user's authorization code which is exchanged for an access token.
+     * @param session_id The user's unique id based on session, for assigning a token
+     *                   to the correct user.
+     */
     public void requestToken(String authCode, String session_id) {
         if(userSessions.contains(session_id)) {
             System.out.println("User with session_id: " + session_id + " already exists.");
@@ -52,6 +55,7 @@ public class Authentication {
                         .field("grant_type", "authorization_code")
                         .field("code", authCode)
                         .field("redirect_uri", REDIRECT_URI)
+                        .field("scope", SCOPES)
                         .asJson();
 
                 createToken(response.getBody(), session_id);
@@ -60,7 +64,14 @@ public class Authentication {
             }
     }
 
+    /**
+     * Creates a Token object and sets it for a new User object.
+     * Token contains all necessary information for authorization to Spotify API.
+     * @param json from Spotify with token information.
+     * @param session_id unique session id for current user.
+     */
     private void createToken(JsonNode json, String session_id) {
+        User user = new User(); //Creates a User-object which will hold the created token.
         Token tokenObject = new Token();
         JSONObject envelope = json.getObject();
 
@@ -70,17 +81,22 @@ public class Authentication {
         tokenObject.setRefresh_token(envelope.getString("refresh_token"));
         tokenObject.setScope(envelope.getString("scope"));
 
-        userSessions.put(session_id, tokenObject);
-        System.out.println("\nTesting if tokenObject is correct... \n");
-        System.out.println(userSessions.get(session_id).toString());
+        user.setToken(tokenObject); //Sets the token for current user.
+        userSessions.put(session_id, user); //Put together user with the token information.
+        System.out.println(userSessions.get(session_id).getToken().toString());
     }
 
+    /**
+     * Refreshes access token for a user.
+     * @param token to be refreshed.
+     */
     public void refreshToken(Token token) {
         try {
             response = Unirest.post(TOKEN_ENDPOINT)
                     .header("Authorization", encoded_auth_key)
                     .field("grant_type", "refresh_token")
                     .field("refresh_token", token.getRefresh_token())
+                    .field("scope", SCOPES)
                     .asJson();
 
             System.out.println("--OLD values of TOKEN--");
@@ -101,10 +117,9 @@ public class Authentication {
         }
     }
 
-    public void setSession_id(String session_id) {
-        this.session_id = session_id;
-    }
-
+    /**
+     * @return URI of the page where a user can choose to grant the API access to the user's Spotify account.
+     */
     public String getUserAuthToSpotify() {
         return AUTH_DOMAIN +
                 "authorize?client_id=" +
@@ -112,9 +127,17 @@ public class Authentication {
                 "&response_type=" +
                 RESPONSE_TYPE +
                 "&redirect_uri=" +
-                REDIRECT_URI;
+                REDIRECT_URI +
+                "&scope=" +
+                SCOPES;
     }
 
+    /**
+     * Encodes Client ID and Client SECRET in Base64 for authorizing the application to Spotify.
+     * @param CLIENT_ID of the application.
+     * @param CLIENT_SECRET of the application.
+     * @return Encoded key.
+     */
     private String getBase64EncodedString(String CLIENT_ID, String CLIENT_SECRET){
         String beginning = "Basic ";
         String toEncode = CLIENT_ID + ":" + CLIENT_SECRET;

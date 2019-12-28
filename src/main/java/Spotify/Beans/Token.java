@@ -1,5 +1,11 @@
 package Spotify.Beans;
 
+/**
+ * This class represents a Token-object, which is created
+ * for a user when granting access to Spotify account. It
+ * contains all information needed for a user for token-management.
+ * @author Patriksku
+ */
 public class Token {
 
     private String access_token;

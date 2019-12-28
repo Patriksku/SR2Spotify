@@ -18,17 +18,28 @@ public class SrAPI {
 
     // http://localhost:4567/api/sveriges-radio/getsongs/207 <-- inga parametrar ger .json
     /**
-     * Returns a JSON-file with various information about recent and upcoming songs
-     * of a given radio-station at Sveriges Radio.
+     * Returns XML or JSON based on the requested Content-Type of the client.
+     * The standard format is JSON if no format is specified.
      * @return JSON-file.
      */
     public Document getSongsJson() {
         get(path + "/getsongs/:channelid", (request, response) -> {
             String channelID = request.params(":channelid");
             String URI = domain + request.params(":channelid");
-
             ChannelSongs channelSongs = new ChannelSongs();
-            response.type("application/json");
+
+            if(request.contentType() != null){
+                if (request.contentType().equalsIgnoreCase("application/xml")) {
+                    response.type("application/xml");
+                    return channelSongs.getFormat(URI, "xml", channelID);
+
+                } else if (request.contentType().equalsIgnoreCase("application/json")) {
+                    response.type("application/json");
+                    return channelSongs.getFormat(URI, "json", channelID);
+                }
+
+            } else
+                response.type("application/json");
             return channelSongs.getFormat(URI, "json", channelID);
         });
         return null;
@@ -57,7 +68,7 @@ public class SrAPI {
                 response.type("application/xml"); //The response type will be XML.
                 return channelSongs.getFormat(URI, "xml", channelID);
             }
-            return "Something went wrong. Check your parameters.";
+            return "Something went wrong. Please check ur parameters. Only XML and JSON is valid.";
         });
         return null;
     }
