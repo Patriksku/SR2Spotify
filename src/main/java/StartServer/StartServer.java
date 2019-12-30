@@ -6,6 +6,7 @@ import com.mashape.unirest.http.Unirest;
 
 import java.io.IOException;
 
+import static spark.Spark.staticFileLocation;
 import static spark.Spark.stop;
 
 /**
@@ -36,6 +37,7 @@ public class StartServer {
 
     public static void main(String[]args){
 
+        staticFileLocation("/public"); // makes http://localhost:4567/ the homepage of our website
         SrAPI srAPI = new SrAPI();
         SpotifyAPI spAPI = new SpotifyAPI();
 

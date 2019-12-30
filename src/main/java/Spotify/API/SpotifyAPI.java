@@ -1,9 +1,6 @@
 package Spotify.API;
 
-import Spotify.Functions.Authentication;
-import Spotify.Functions.AutoRefreshToken;
-import Spotify.Functions.UserPlaylists;
-import Spotify.Functions.UserProfile;
+import Spotify.Functions.*;
 import Spotify.Users.UserSessions;
 import org.w3c.dom.Document;
 
@@ -28,11 +25,25 @@ public class SpotifyAPI {
      * @return response code, and a message if some error occurs.
      */
     public String authUser() {
-        get(path + "/authUser", (request, response) -> {
+        get(path + "/authuser", (request, response) -> {
             response.redirect(auth.getUserAuthToSpotify());
             return response.status();
         });
         return "Something went wrong while authorizing user with Spotify. Please try again.";
+    }
+
+    /**
+     * Returns true if the current user has granted the application access to Spotify,
+     * otherwise false.
+     * @return JSON with "status" set to true or false.
+     */
+    public Document visitorStatus() {
+        get(path + "/visitorstatus", (request, response) -> {
+            response.type("application/json");
+            CheckVisitorStatus checkVisitor = new CheckVisitorStatus();
+            return checkVisitor.checkStatus(userSessions.contains(request.session().id()));
+        });
+        return null;
     }
 
     /**
@@ -56,7 +67,8 @@ public class SpotifyAPI {
                 auth.requestToken(authCode, request.session().id());
                 userProfile.createProfile(request.session().id());
             }
-            return authCode;
+            response.redirect("/");
+            return response.status();
         });
     }
 
@@ -67,7 +79,7 @@ public class SpotifyAPI {
      * @return JSON-file which contains various fields from the user's Spotify profile.
      */
     public Document getProfile() {
-        get(path + "/getProfile/:userid", (request, response) -> {
+        get(path + "/getprofile/:userid", (request, response) -> {
             String sessionOfUserID = userSessions.getUserID(request.params(":userid"));
             if (sessionOfUserID != null) {
                 response.type("application/json");
@@ -87,12 +99,12 @@ public class SpotifyAPI {
      * @return JSON-file with the current user's information from Spotify.
      */
     public Document getMyProfile() {
-        get(path + "/getMyProfile", (request, response) -> {
+        get(path + "/getmyprofile", (request, response) -> {
             if (userSessions.contains(request.session().id())) {
                 response.type("application/json");
                 return userProfile.requestMyProfile(request.session().id(), "json");
             } else {
-                response.redirect(path + "/authUser");
+                response.redirect(path + "/authuser");
             }
             return "An error occurred while trying to load your profile from Spotify.";
         });
@@ -106,7 +118,7 @@ public class SpotifyAPI {
      * @return JSON or XML based on the parameter specified.e
      */
     public Document getMyProfileFormat() {
-        get(path + "/getMyProfile/:format", (request, response) -> {
+        get(path + "/getmyprofile/:format", (request, response) -> {
             if (userSessions.contains(request.session().id())) {
                 if (request.params(":format").equalsIgnoreCase("json")) {
                     response.type("application/json");
@@ -120,7 +132,7 @@ public class SpotifyAPI {
                 }
 
             } else {
-                response.redirect(path + "/authUser");
+                response.redirect(path + "/authuser");
             }
             return "An error occurred while trying to load your profile from Spotify.";
         });
@@ -133,7 +145,7 @@ public class SpotifyAPI {
      * @return JSON with all playlists.
      */
     public Document getPlaylists() {
-        get(path + "/getPlaylists/:userid", (request, response) -> {
+        get(path + "/getplaylists/:userid", (request, response) -> {
             String sessionOfUserID = userSessions.getUserID(request.params(":userid"));
             if (sessionOfUserID != null) {
                 response.type("application/json");
@@ -152,7 +164,7 @@ public class SpotifyAPI {
      * @return JSON containing playlists of the current user.
      */
     public Document getMyPlaylists() {
-        get(path + "/getMyPlaylists/:limit", (request, response) -> {
+        get(path + "/getmyplaylists/:limit", (request, response) -> {
             String limit = request.params(":limit");
             if (Integer.parseInt(limit) > 50 || Integer.parseInt(limit) < 0) {
                 return "The 'limit' parameter has to be a numerical digit between 0 and 50.";
@@ -161,7 +173,7 @@ public class SpotifyAPI {
                 response.type("application/json");
                 return userPlaylists.requestMyPlaylist(request.session().id(), limit, "json");
             } else {
-                response.redirect(path + "/authUser");
+                response.redirect(path + "/authuser");
             }
             return "An error has occurred. Please check your parameters, path, or if the user is authorized to Spotify.";
         });
@@ -175,7 +187,7 @@ public class SpotifyAPI {
      * @return XML or JSON with all playlists.
      */
     public Document getMyPlaylistsFormat() {
-        get(path + "/getMyPlaylists/:limit/:format", (request, response) -> {
+        get(path + "/getmyplaylists/:limit/:format", (request, response) -> {
             String limit = request.params(":limit");
             if (Integer.parseInt(limit) > 50 || Integer.parseInt(limit) < 0) {
                 return "The 'limit' parameter has to be a numerical digit between 0 and 50.";
@@ -194,7 +206,7 @@ public class SpotifyAPI {
                 }
 
             } else {
-                response.redirect(path + "/authUser");
+                response.redirect(path + "/authuser");
             }
 
             return "An error occurred while trying to load your Playlists from Spotify.";
@@ -207,6 +219,7 @@ public class SpotifyAPI {
      */
     public void init(){
         authUser();
+        visitorStatus();
         spotify();
         getProfile();
         getMyProfile();
