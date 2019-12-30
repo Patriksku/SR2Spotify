@@ -1,8 +1,6 @@
 package Spotify.Users;
 
-import Spotify.Beans.Token;
 import Spotify.Beans.User;
-
 import java.util.HashMap;
 
 /**
@@ -18,7 +16,7 @@ public class UserSessions {
     }
 
     /**
-     * @param session_id of user-
+     * @param session_id of user
      * @return True if user exists, otherwise False.
      */
     public boolean contains(String session_id) {

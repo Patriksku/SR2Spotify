@@ -31,7 +31,6 @@ public class AutoRefreshToken extends TimerTask {
     public void run() {
         System.out.println("Timer task started at:" + new Date());
         refresh();
-        System.out.println("Timer task finished at:" + new Date());
     }
 
     /**

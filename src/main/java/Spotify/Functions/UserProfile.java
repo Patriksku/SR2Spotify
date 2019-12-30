@@ -27,8 +27,6 @@ public class UserProfile {
         this.userSessions = userSessions;
     }
 
-    //https://developer.spotify.com/documentation/web-api/reference/users-profile/get-current-users-profile/
-
     /**
      * Requests access to a user's Spotify profile.
      * @param session_id of the user.
@@ -39,40 +37,49 @@ public class UserProfile {
         if (!userSessions.contains(session_id)) {
             return "This user's session_id does not exist. Please connect your account to Spotify first, then try again.";
         } else
-        try {
-            System.out.println("Sending GET request to Spotify [USER_PROFILE_ENDPOINT]...");
-            response = Unirest.get(USER_PROFILE_ENDPOINT)
-                    .header("Authorization", (userSessions.get(session_id).getToken().getToken_type() + " " + userSessions.get(session_id).getToken().getAccess_token()))
-                    .asJson();
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
+            try {
+                System.out.println("Sending GET request to Spotify [USER_PROFILE_ENDPOINT]...");
+                response = Unirest.get(USER_PROFILE_ENDPOINT)
+                        .header("Authorization", (userSessions.get(session_id).getToken().getToken_type() + " " + userSessions.get(session_id).getToken().getAccess_token()))
+                        .asJson();
+            } catch (UnirestException e) {
+                e.printStackTrace();
+            }
 
         JSONObject envelope = response.getBody().getObject();
         return getMyProfile(envelope, format, session_id);
     }
 
+    /**
+     * Creates a Profile-object for a user containing information from their Spotify account
+     * based on the unique session id. This method also checks if the profile has granted
+     * the application access to the user's Spotify account. If a profile exists - it will be updated,
+     * otherwise a profile will be created.
+     * @param session_id unique id for current user.
+     */
     public void createProfile(String session_id) {
         if (!userSessions.contains(session_id)) {
             System.out.println("This user's session_id does not exist. Please connect your account to Spotify first, then try again.");
-        } else
-        try {
-            System.out.println("Sending GET request to Spotify [USER_PROFILE_ENDPOINT]...");
-            response = Unirest.get(USER_PROFILE_ENDPOINT)
-                    .header("Authorization", (userSessions.get(session_id).getToken().getToken_type() + " " + userSessions.get(session_id).getToken().getAccess_token()))
-                    .asJson();
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
+        } else {
+            try {
+                System.out.println("Sending GET request to Spotify [USER_PROFILE_ENDPOINT]...");
+                response = Unirest.get(USER_PROFILE_ENDPOINT)
+                        .header("Authorization", (userSessions.get(session_id).getToken().getToken_type() + " " + userSessions.get(session_id).getToken().getAccess_token()))
+                        .asJson();
+            } catch (UnirestException e) {
+                e.printStackTrace();
+            }
 
-        JSONObject envelope = response.getBody().getObject();
-        getProfile(envelope, session_id);
+            JSONObject envelope = response.getBody().getObject();
+            getProfile(envelope, session_id);
+        }
     }
 
     /**
-     * Creates and returns a Profile-object of information received from a user's Spotify profile.
+     * Creates and returns a Profile-object with information received from the current user's Spotify profile.
      * @param envelope JSONObject returned from Spotify.
      * @param format to be returned.
+     * @param session_id of current user.
      * @return XML or JSON, based on user input.
      */
     private String getMyProfile(JSONObject envelope, String format, String session_id) {
@@ -94,6 +101,11 @@ public class UserProfile {
         return formatHandler.getFormat(format, profile);
     }
 
+    /**
+     * Creates and returns a Profile-object with information received from a user's Spotify profile.
+     * @param envelope JSONObject returned from Spotify.
+     * @param session_id of the user that a profile will be created for.
+     */
     private void getProfile(JSONObject envelope, String session_id) {
         Profile profile = new Profile();
 
@@ -107,8 +119,6 @@ public class UserProfile {
         profile.setImage_url(imageUrl.getString("url"));
         profile.setSession_id(session_id);
 
-        System.out.println("MITT ID ÄR: " + envelope.getString("id"));
-
         setProfile(session_id, profile);
     }
 
@@ -119,9 +129,7 @@ public class UserProfile {
      */
     public void setProfile(String session_id, Profile profile) {
         userSessions.get(session_id).setProfile(profile);
-        System.out.println("Successfully set profile for the user: ");
-        System.out.println("-TOKEN-");
-        System.out.println(userSessions.get(session_id).getToken().toString());
+        System.out.println("Successfully set profile for the user: " + profile.getDisplay_name());
         System.out.println();
         System.out.println("-PROFILE-");
         System.out.println(userSessions.get(session_id).getProfile().toString());
