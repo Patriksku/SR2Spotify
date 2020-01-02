@@ -1,5 +1,6 @@
 package Spotify.API;
 
+import CORS.CORS;
 import Spotify.Functions.*;
 import Spotify.Users.UserSessions;
 import org.w3c.dom.Document;
@@ -19,6 +20,7 @@ public class SpotifyAPI {
     private UserPlaylists userPlaylists = new UserPlaylists(userSessions);
     private AutoRefreshToken autoRefreshToken = null;
     private UserProfile userProfile = new UserProfile(userSessions);
+    private CORS cors = new CORS();
 
     /**
      * Authenticates the user by granting the user a login screen to Spotify.
@@ -26,6 +28,8 @@ public class SpotifyAPI {
      */
     public String authUser() {
         get(path + "/authuser", (request, response) -> {
+            cors.addSupport(request, response);
+
             response.redirect(auth.getUserAuthToSpotify());
             return response.status();
         });
@@ -39,6 +43,8 @@ public class SpotifyAPI {
      */
     public Document visitorStatus() {
         get(path + "/visitorstatus", (request, response) -> {
+            cors.addSupport(request, response);
+
             response.type("application/json");
             CheckVisitorStatus checkVisitor = new CheckVisitorStatus();
             return checkVisitor.checkStatus(userSessions.contains(request.session().id()));
@@ -54,6 +60,8 @@ public class SpotifyAPI {
      */
     public void spotify() {
         get(path + "/login", (request, response) -> {
+            cors.addSupport(request, response);
+
             String authCode;
             authCode = request.queryParams("code");
 
@@ -80,6 +88,8 @@ public class SpotifyAPI {
      */
     public Document getProfile() {
         get(path + "/getprofile/:userid", (request, response) -> {
+            cors.addSupport(request, response);
+
             String sessionOfUserID = userSessions.getUserID(request.params(":userid"));
             if (sessionOfUserID != null) {
                 response.type("application/json");
@@ -100,6 +110,8 @@ public class SpotifyAPI {
      */
     public Document getMyProfile() {
         get(path + "/getmyprofile", (request, response) -> {
+            cors.addSupport(request, response);
+
             if (userSessions.contains(request.session().id())) {
                 response.type("application/json");
                 return userProfile.requestMyProfile(request.session().id(), "json");
@@ -119,6 +131,8 @@ public class SpotifyAPI {
      */
     public Document getMyProfileFormat() {
         get(path + "/getmyprofile/:format", (request, response) -> {
+            cors.addSupport(request, response);
+
             if (userSessions.contains(request.session().id())) {
                 if (request.params(":format").equalsIgnoreCase("json")) {
                     response.type("application/json");
@@ -146,6 +160,8 @@ public class SpotifyAPI {
      */
     public Document getPlaylists() {
         get(path + "/getplaylists/:userid", (request, response) -> {
+            cors.addSupport(request, response);
+
             String sessionOfUserID = userSessions.getUserID(request.params(":userid"));
             if (sessionOfUserID != null) {
                 response.type("application/json");
@@ -165,6 +181,8 @@ public class SpotifyAPI {
      */
     public Document getMyPlaylists() {
         get(path + "/getmyplaylists/:limit", (request, response) -> {
+            cors.addSupport(request, response);
+
             String limit = request.params(":limit");
             if (Integer.parseInt(limit) > 50 || Integer.parseInt(limit) < 0) {
                 return "The 'limit' parameter has to be a numerical digit between 0 and 50.";
@@ -188,6 +206,8 @@ public class SpotifyAPI {
      */
     public Document getMyPlaylistsFormat() {
         get(path + "/getmyplaylists/:limit/:format", (request, response) -> {
+            cors.addSupport(request, response);
+
             String limit = request.params(":limit");
             if (Integer.parseInt(limit) > 50 || Integer.parseInt(limit) < 0) {
                 return "The 'limit' parameter has to be a numerical digit between 0 and 50.";

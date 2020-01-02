@@ -1,5 +1,6 @@
 package SR.API;
 
+import CORS.CORS;
 import SR.Functions.ChannelSongs;
 import org.w3c.dom.Document;
 
@@ -16,6 +17,7 @@ public class SrAPI {
     //http://localhost:4567/
     private final String path = "/api/sveriges-radio";
     private final String domain = "http://api.sr.se/api/v2/playlists/rightnow?channelid=";
+    private CORS cors = new CORS();
 
     // http://localhost:4567/api/sveriges-radio/getsongs/207 <-- inga parametrar ger .json
     /**
@@ -25,21 +27,7 @@ public class SrAPI {
      */
     public Document getSongsJson() {
         get(path + "/getsongs/:channelid", (request, response) -> {
-
-            //CORS SUPPORT
-            String accessControlRequestHeaders = request
-                    .headers("Access-Control-Request-Headers");
-            if (accessControlRequestHeaders != null) {
-                response.header("Access-Control-Allow-Headers",
-                        accessControlRequestHeaders);
-            }
-
-            String accessControlRequestMethod = request
-                    .headers("Access-Control-Request-Method");
-            if (accessControlRequestMethod != null) {
-                response.header("Access-Control-Allow-Methods",
-                        accessControlRequestMethod);
-            }
+            cors.addSupport(request, response);
 
             String channelID = request.params(":channelid");
             String URI = domain + request.params(":channelid");
@@ -72,6 +60,8 @@ public class SrAPI {
      */
     public Document getSongsFormat() {
         get(path + "/getsongs/:channelid/:format", (request, response) -> {
+            cors.addSupport(request, response);
+
             String channelID = request.params(":channelid");
             String URI = domain + request.params(":channelid");
 
