@@ -20,7 +20,7 @@ body{
     font-size: 20px;
     text-align: center;
 }
-  
+
 .nav_btn{
     border-radius: 15px 50px;;
     font-family: 'Merriweather', serif;
@@ -96,6 +96,10 @@ hr{
     box-shadow: 0px 0px 20px black;
 }
 
+#p1{
+    text-align: center;
+}
+
 #spotify_title{
     margin-top: 10px;
     padding: 0px;
@@ -128,7 +132,7 @@ hr{
     text-align: center;
     display: inline-block;
     font-size: 30px;
-    padding: 15px 15px;
+    padding: 10px 10px;
     color: white;
     border: 1px solid white;
     border-radius: 50%;
@@ -161,8 +165,8 @@ footer{
 
 @media screen and (max-width:1664px){
     body{
-      margin-left: 350px;
-      margin-right: 350px;
+        margin-left: 350px;
+        margin-right: 350px;
     }
     #spotify_box{
         padding: 200px;
