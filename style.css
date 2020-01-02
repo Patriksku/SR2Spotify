@@ -1,11 +1,11 @@
 h1{
     font-family: 'Open Sans', sans-serif;
-    color:#1DB954;
+    color:white;
     text-align: center;
     font-size: 50px;
     padding: 20px;
     margin: 0px;
-    background-color: black;
+    background-color: #1DB954;
 }
 
 body{
@@ -15,14 +15,14 @@ body{
 }
 
 #nav_bar{
-    background-color: rgb(0, 0, 0);
+    background-color: #1DB954;
     padding: 20px;
     font-size: 20px;
-    display: block;
     text-align: center;
 }
-  
+
 .nav_btn{
+    border-radius: 15px 50px;;
     font-family: 'Merriweather', serif;
     font-size: 15px;
     text-decoration: none;
@@ -32,7 +32,7 @@ body{
     padding: 10px 50px;
     text-align: center;
     margin: 0px;
-    background-image: linear-gradient(#1DB954, #1DB954), linear-gradient(#1B1B1D, #1B1B1D);
+    background-image: linear-gradient(white, white), linear-gradient(#1B1B1D, #1B1B1D);
     background-size: 0 5px, auto;
     background-repeat: no-repeat;
     background-position: center bottom;
@@ -48,7 +48,7 @@ main{
 }
 
 article{
-    padding: 5px 50px;
+    padding: 5px 65px;
     text-align: left;
     color: white;
     font-family: 'Montserrat', sans-serif;
@@ -96,6 +96,10 @@ hr{
     box-shadow: 0px 0px 20px black;
 }
 
+#p1{
+    text-align: center;
+}
+
 #spotify_title{
     margin-top: 10px;
     padding: 0px;
@@ -116,6 +120,35 @@ hr{
     box-shadow: 0px 0px 20px black;
 }
 
+.media{
+    text-align: center;
+    margin: 0px;
+}
+
+.social_media{
+    text-decoration: none;
+    list-style: none;
+    margin: 0px;
+    text-align: center;
+    display: inline-block;
+    font-size: 30px;
+    padding: 10px 10px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 50%;
+    transition: 1s;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0px 0px 20px black;
+}
+
+.social_media:hover{
+    color: #1DB954;
+    border: 1px solid #1DB954;
+    transition: all 0.8s;
+    box-shadow: 0px 0px 20px #1DB954;
+}
+
 footer{
     background-color: black;
     color: white;
@@ -131,16 +164,14 @@ footer{
 
 
 @media screen and (max-width:1664px){
-    #homepage_body{
-      margin-left: 350px;
-      margin-right: 350px;
-    }
-}
-  
-@media screen and (max-width:1444px){
     body{
-        margin-left: 250px;
-        margin-right: 250px;
+        margin-left: 350px;
+        margin-right: 350px;
+    }
+    #spotify_box{
+        padding: 200px;
+        margin: 30px 50px;
+        width: auto;
     }
 }
 
@@ -149,23 +180,30 @@ footer{
         margin-left: 0px;
         margin-right: 0px;
     }
-    .shirt_display{
-        width: 100px;
-        height: 150px;
+}
+
+@media screen and (max-width:539px){
+    #nav_bar{
+        padding: 10px;
+        text-align: center;
     }
-    image{
-        display: inline-block;
+    .nav_btn{
+        display: block;
+        padding: 10px 30px;
+        margin: 5px;
+    }
+    #spotify_box{
+        padding: 200px;
+        margin: 30px 0px;
     }
 }
 
-@media screen and (max-width:417px){
-    .fade-in{
-        margin-top: 80%;
+@media screen and (max-width:375px){
+    h1{
+        font-size: 30px;
     }
-    #homepage_nav{
-        text-align: center;
-    }
-    #homepage_nav > a{
-        display: block;
+    #spotify_box{
+        padding: 100px;
+        margin: 30px 0px;
     }
 }
