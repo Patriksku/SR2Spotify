@@ -25,6 +25,22 @@ public class SrAPI {
      */
     public Document getSongsJson() {
         get(path + "/getsongs/:channelid", (request, response) -> {
+
+            //CORS SUPPORT
+            String accessControlRequestHeaders = request
+                    .headers("Access-Control-Request-Headers");
+            if (accessControlRequestHeaders != null) {
+                response.header("Access-Control-Allow-Headers",
+                        accessControlRequestHeaders);
+            }
+
+            String accessControlRequestMethod = request
+                    .headers("Access-Control-Request-Method");
+            if (accessControlRequestMethod != null) {
+                response.header("Access-Control-Allow-Methods",
+                        accessControlRequestMethod);
+            }
+
             String channelID = request.params(":channelid");
             String URI = domain + request.params(":channelid");
             ChannelSongs channelSongs = new ChannelSongs();
