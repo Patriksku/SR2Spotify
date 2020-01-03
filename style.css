@@ -22,7 +22,7 @@ body{
 }
 
 .nav_btn{
-    border-radius: 15px 50px;;
+    border-radius: 15px 50px;
     font-family: 'Merriweather', serif;
     font-size: 15px;
     text-decoration: none;
@@ -73,20 +73,36 @@ hr{
 
 #container{
     width: 100%;
+}
+
+#channels{
+    margin: 0px;
+    padding: 0px;
     text-align: center;
 }
 
-#drop_down{
-    margin-top: 15px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
-    padding: 10px 8px 10px 14px;
-    background: rgb(0, 0, 0);
+
+.get_btn{
+    border-radius: 15px;
+    border: 0px;
+    font-family: 'Merriweather', serif;
+    font-size: 15px;
     color: white;
-    border: 2px solid white;
-    border-radius: 6px;
-    position: relative;
-    box-shadow: 0px 0px 8px rgb(255, 255, 255)
+    background-color: black;
+    padding: 10px 50px;
+    margin: 10px;
+    box-shadow: 0 5px white;
+    outline: 0px;
+}
+
+.get_btn:hover {
+    background-color: black
+}
+
+.get_btn:active {
+    background-color: black;
+    box-shadow: 0 3px white;
+    transform: translateY(4px);
 }
 
 #sr{
@@ -94,10 +110,6 @@ hr{
     padding: 100px;
     background-color: black;
     box-shadow: 0px 0px 20px black;
-}
-
-#p1{
-    text-align: center;
 }
 
 #spotify_title{
