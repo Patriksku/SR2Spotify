@@ -1,4 +1,4 @@
-const getBtn = document.getElementById('get_btn');
+const getBtn = document.getElementById('get_p4');
 
 const sendHttpRequest = (method, url, data) => {
     return fetch(url, {
