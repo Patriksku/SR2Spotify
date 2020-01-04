@@ -2,6 +2,7 @@ package Spotify.Handlers;
 
 import Spotify.Beans.PlaylistArray;
 import Spotify.Beans.Profile;
+import Spotify.Beans.SessionID;
 import Spotify.Beans.VisitorStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,7 +57,19 @@ public class FormatHandler {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return "Something went wrong while checking if the visitor has granted the application access to Spotify.";
+        return "Something went wrong while converting VisitorStatus-object to JSON.";
+    }
+
+    public String getFormat(SessionID sessionID) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            jsonFormat = mapper.writeValueAsString(sessionID);
+
+            return jsonFormat;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "Something went wrong while converting SessionID-object to JSON.";
     }
 
     /**

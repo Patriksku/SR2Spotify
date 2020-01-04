@@ -106,6 +106,30 @@ public class SpotifyAPI {
     }
 
     /**
+     * This method returns a JSON object containing the unique session_id of
+     * the current user, together with a boolean which is True if the current user
+     * has granted the application access to the user's Spotify account - otherwise False.
+     * @return JSON
+     */
+    public String getSessionID() {
+        get(path + "/getsession", (request, response) -> {
+            cors.addSupport(request, response);
+
+            UserSessionID userSessionID = new UserSessionID(userSessions);
+
+            String sessionResponse = userSessionID.getSessionID(request.session().id());
+            if (sessionResponse.equalsIgnoreCase("Something went wrong while converting SessionID-object to JSON.")) {
+                response.status(500);
+                return sessionResponse;
+            } else
+                response.status(200);
+            response.type("application/json");
+            return sessionResponse;
+        });
+        return "Something went wrong while converting SessionID-object to JSON.";
+    }
+
+    /**
      * Returns the current user's information from Spotify if the user's unique
      * session-id exists in the server. If not, the user is redirected to the login-page
      * where the user may grant the application access to the user's information from Spotify.
@@ -170,6 +194,7 @@ public class SpotifyAPI {
                 response.type("application/json");
                 return userPlaylists.requestMyPlaylist(request.session().id(), "50", "json");
             } else {
+                response.status(401);
                 return "User with ID: " + request.params(":userid") + " has not authorized " +
                         "access to Spotify.";
             }
@@ -237,6 +262,16 @@ public class SpotifyAPI {
         return null;
     }
 
+    /**
+     * POST method for adding a song to the current user's playlist.
+     * 3 Body parameters are needed in x-www-form-urlencoded format,
+     * in the following order:
+     * - session_id
+     * - playlist_id
+     * - song_uri
+     * @return 200 OK if everything went fine, or 400 Bad Request
+     * with an error message stating what went wrong.
+     */
     public String addSongToPlaylist() {
         post(path + "/addsongplaylist", (request, response) -> {
             cors.addSupport(request, response);
@@ -244,17 +279,21 @@ public class SpotifyAPI {
             System.out.println("Request BODY:\n" + request.body());
             String body = request.body();
 
+            //Splits the parameters accordingly to Spotify requirements.
             String[] pairs = body.split("&");
             String[] bodyParams = new String[3];
             System.out.println(pairs.length);
-            for (int i = 0; i < pairs.length; i++) {
-                String[] eachParam = pairs[i].split("=");
-                String param = URLDecoder.decode(eachParam[1], "UTF-8");
-                bodyParams[i] = param;
+            try {
+                for (int i = 0; i < pairs.length; i++) {
+                    String[] eachParam = pairs[i].split("=");
+                    String param = URLDecoder.decode(eachParam[1], "UTF-8");
+                    bodyParams[i] = param;
+                }
+            } catch (ArrayIndexOutOfBoundsException aiobe) {
+                response.status(400);
+                aiobe.getStackTrace();
+                return "Something went wrong while adding song to playlist. Please check your parameters.";
             }
-            System.out.println(bodyParams[0]);
-            System.out.println(bodyParams[1]);
-            System.out.println(bodyParams[2]);
 
             AddSongToPlaylist addSong = new AddSongToPlaylist(userSessions);
             response.status();
@@ -274,6 +313,7 @@ public class SpotifyAPI {
         authUser();
         visitorStatus();
         spotify();
+        getSessionID();
         getProfile();
         getMyProfile();
         getMyProfileFormat();
