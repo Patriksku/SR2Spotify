@@ -6,15 +6,15 @@ package Spotify.Beans;
  * @author Patriksku
  */
 public class VisitorStatus {
-    private boolean status;
+    private boolean authorized_to_spotify;
 
     public VisitorStatus() {}
 
     public boolean isStatus() {
-        return status;
+        return authorized_to_spotify;
     }
 
     public void setStatus(boolean status) {
-        this.status = status;
+        this.authorized_to_spotify = status;
     }
 }
