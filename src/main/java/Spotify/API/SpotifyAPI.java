@@ -5,7 +5,10 @@ import Spotify.Functions.*;
 import Spotify.Users.UserSessions;
 import org.w3c.dom.Document;
 
+import java.net.URLDecoder;
+
 import static spark.Spark.get;
+import static spark.Spark.post;
 
 /**
  * This class is responsible for handling user requests to the Spoitfy API based
@@ -234,8 +237,38 @@ public class SpotifyAPI {
         return null;
     }
 
+    public String addSongToPlaylist() {
+        post(path + "/addsongplaylist", (request, response) -> {
+            cors.addSupport(request, response);
+
+            System.out.println("Request BODY:\n" + request.body());
+            String body = request.body();
+
+            String[] pairs = body.split("&");
+            String[] bodyParams = new String[3];
+            System.out.println(pairs.length);
+            for (int i = 0; i < pairs.length; i++) {
+                String[] eachParam = pairs[i].split("=");
+                String param = URLDecoder.decode(eachParam[1], "UTF-8");
+                bodyParams[i] = param;
+            }
+            System.out.println(bodyParams[0]);
+            System.out.println(bodyParams[1]);
+            System.out.println(bodyParams[2]);
+
+            AddSongToPlaylist addSong = new AddSongToPlaylist(userSessions);
+            response.status();
+            String status = addSong.addSongToPlaylist(bodyParams[0], bodyParams[1], bodyParams[2]);
+            if (!status.equalsIgnoreCase("Successfully added song to playlist.")) {
+                response.status(400);
+            }
+            return status;
+        });
+        return "Something went wrong while adding song to playlist. Please check your parameters.";
+    }
+
     /**
-     * Method initializes all methods in this class, so that the endpoints are active.
+     * Method initializes all methods in this class so that the endpoints are active.
      */
     public void init(){
         authUser();
@@ -247,5 +280,6 @@ public class SpotifyAPI {
         getPlaylists();
         getMyPlaylists();
         getMyPlaylistsFormat();
+        addSongToPlaylist();
     }
 }

@@ -76,6 +76,7 @@ public class UserPlaylists {
             playlist.setSpotify_url(SPOTIFY_PLAYLIST_DOMAIN + objectsOfItems[i].getString("id"));
             playlist.setPlaylist_id(objectsOfItems[i].getString("id"));
             playlist.setImage_url(imageURL);
+            System.out.println(playlist.toString());
             arrayOfPlaylists.getArrayOfPlaylists()[i] = playlist;
         }
 
