@@ -1,4 +1,7 @@
-const getBtn = document.getElementById('get_p4');
+const getP1 = document.querySelector('#get_p1');
+const getP2 = document.querySelector('#get_p2');
+const getP3 = document.querySelector('#get_p3');
+const getP4 = document.querySelector('#get_p4');
 
 const sendHttpRequest = (method, url, data) => {
     return fetch(url, {
@@ -19,10 +22,24 @@ const sendHttpRequest = (method, url, data) => {
     });
 };
 
-const getData = () => {
-    sendHttpRequest('GET', 'http://localhost:4567/api/sveriges-radio/getsongs/207').then(responseData => {
-        console.log(responseData);
+const getData = (url) => {
+    sendHttpRequest('GET', url).then(url => {
+        console.log(url);
     });
 };
 
-getBtn.addEventListener('click', getData);
+getP1.addEventListener('click', () => {
+    getData('http://localhost:4567/api/sveriges-radio/getsongs/132')
+})
+
+getP2.addEventListener('click', () => {
+    getData('http://localhost:4567/api/sveriges-radio/getsongs/163')
+})
+
+getP3.addEventListener('click', () => {
+    getData('http://localhost:4567/api/sveriges-radio/getsongs/164')
+})
+
+getP4.addEventListener('click', () => {
+    getData('http://localhost:4567/api/sveriges-radio/getsongs/207')
+})
