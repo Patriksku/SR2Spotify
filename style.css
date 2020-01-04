@@ -165,11 +165,10 @@ hr{
     transform: translateY(4px);
 }
 
-#sr{
-    margin: 30px;
-    padding: 100px;
-    background-color: black;
-    box-shadow: 0px 0px 20px black;
+#sr_data{
+    margin: 15px;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
 }
 
 #spotify_title{
