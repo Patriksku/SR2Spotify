@@ -22,7 +22,7 @@ body{
 }
 
 .nav_btn{
-    border-radius: 15px 50px;;
+    border-radius: 15px 50px;
     font-family: 'Merriweather', serif;
     font-size: 15px;
     text-decoration: none;
@@ -71,33 +71,104 @@ hr{
     background-image: linear-gradient(to right, rgb(0, 0, 0), rgb(255, 255, 255), rgba(0, 0, 0, 0));
 }
 
-#container{
-    width: 100%;
+#channels{
+    margin: 0px;
+    padding: 0px;
     text-align: center;
 }
 
-#drop_down{
-    margin-top: 15px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
-    padding: 10px 8px 10px 14px;
-    background: rgb(0, 0, 0);
+#get_p1{
+    border-radius: 15px;
+    border: 0px;
+    font-family: 'Merriweather', serif;
+    font-size: 15px;
     color: white;
-    border: 2px solid white;
-    border-radius: 6px;
-    position: relative;
-    box-shadow: 0px 0px 8px rgb(255, 255, 255)
+    background-color: #31a1bd;
+    padding: 10px 50px;
+    margin: 10px;
+    box-shadow: 0 5px white;
+    outline: 0px;
 }
 
-#sr{
-    margin: 30px;
-    padding: 100px;
-    background-color: black;
-    box-shadow: 0px 0px 20px black;
+#get_p1:hover{
+    background-color: #31a1bdd2;
 }
 
-#p1{
-    text-align: center;
+#get_p1:active {
+    box-shadow: 0 3px white;
+    transform: translateY(4px);
+}
+
+#get_p2{
+    border-radius: 15px;
+    border: 0px;
+    font-family: 'Merriweather', serif;
+    font-size: 15px;
+    color: white;
+    background-color: #ff5a00;
+    padding: 10px 50px;
+    margin: 10px;
+    box-shadow: 0 5px white;
+    outline: 0px;
+}
+
+#get_p2:hover{
+    background-color: #ff5900d2;
+}
+
+#get_p2:active {
+    box-shadow: 0 3px white;
+    transform: translateY(4px);
+}
+
+#get_p3{
+    border-radius: 15px;
+    border: 0px;
+    font-family: 'Merriweather', serif;
+    font-size: 15px;
+    color: white;
+    background-color: #19a972;
+    padding: 10px 50px;
+    margin: 10px;
+    box-shadow: 0 5px white;
+    outline: 0px;
+}
+
+#get_p3:hover{
+    background-color: #19a972d2;
+}
+
+#get_p3:active {
+    box-shadow: 0 3px white;
+    transform: translateY(4px);
+}
+
+#get_p4{
+    border-radius: 15px;
+    border: 0px;
+    font-family: 'Merriweather', serif;
+    font-size: 15px;
+    color: white;
+    background-color: #c31eaa;
+    padding: 10px 50px;
+    margin: 10px;
+    box-shadow: 0 5px white;
+    outline: 0px;
+}
+
+#get_p4:hover{
+    background-color: #c31eaad2;
+}
+
+#get_p4:active {
+    box-shadow: 0 3px white;
+    transform: translateY(4px);
+}
+
+#sr_data{
+    margin: 15px;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
 }
 
 #spotify_title{
