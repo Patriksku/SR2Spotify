@@ -71,7 +71,6 @@ public class UserProfile {
             }
 
             JSONObject envelope = response.getBody().getObject();
-            System.out.println("TEST:" + envelope.toString());
             getProfile(envelope, session_id);
         }
     }
@@ -87,11 +86,9 @@ public class UserProfile {
         Profile profile = new Profile();
 
         JSONObject externalUrls = envelope.getJSONObject("external_urls");
-
-        if (envelope.has("images")) { //If user has a profile picture
-            JSONArray images = envelope.getJSONArray("images");
+        JSONArray images = envelope.getJSONArray("images");
+        if (images.length() > 0) {
             JSONObject imageUrl = images.getJSONObject(0);
-
             profile.setDisplay_name(envelope.getString("display_name"));
             profile.setUser_id(envelope.getString("id"));
             profile.setProfile_url(externalUrls.getString("spotify"));
@@ -118,10 +115,9 @@ public class UserProfile {
         Profile profile = new Profile();
 
         JSONObject externalUrls = envelope.getJSONObject("external_urls");
-        if (envelope.has("images")) { //If user has a profile picture
-            JSONArray images = envelope.getJSONArray("images");
+        JSONArray images = envelope.getJSONArray("images");
+        if (images.length() > 0) {
             JSONObject imageUrl = images.getJSONObject(0);
-
             profile.setDisplay_name(envelope.getString("display_name"));
             profile.setUser_id(envelope.getString("id"));
             profile.setProfile_url(externalUrls.getString("spotify"));
