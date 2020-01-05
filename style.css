@@ -184,6 +184,38 @@ hr{
     background-image: linear-gradient(to right, rgba(29, 185, 84, 0.089), #1DB954, rgba(29, 185, 84, 0.089));
 }
 
+#spotify_access{
+    text-align: center;
+    margin: 30px;
+}
+
+#spotify_login{
+    text-align: center;
+    border-radius: 15px;
+    border: 0px;
+    background-color: #1DB954;
+    box-shadow: 0 5px white;
+    outline: 0px;
+}
+
+#spotify_login > a{
+    text-decoration: none;
+    font-family: 'Merriweather', serif;
+    font-size: 15px;
+    color: white;
+    padding: 10px 30px;
+    display: inline-block;
+}
+
+#spotify_login:hover{
+    background-color: rgba(29, 185, 84, 0.822);
+}
+
+#spotify_login:active {
+    box-shadow: 0 3px white;
+    transform: translateY(4px);
+}
+
 #spotify_box{
     background-color: black;
     padding: 300px;

@@ -2,6 +2,7 @@ const getP1 = document.querySelector('#get_p1');
 const getP2 = document.querySelector('#get_p2');
 const getP3 = document.querySelector('#get_p3');
 const getP4 = document.querySelector('#get_p4');
+const spotifyLogin = document.querySelector('#spotify_user');
 
 const getData = (url) => {
     $(document).ready(function(){
@@ -34,4 +35,8 @@ getP3.addEventListener('click', () => {
 
 getP4.addEventListener('click', () => {
     getData('http://localhost:4567/api/sveriges-radio/getsongs/207')
+})
+
+spotifyLogin.addEventListener('click', () => {
+    getData('http://localhost:4567/api/spotify/authuser')
 })
