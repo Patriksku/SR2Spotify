@@ -34,6 +34,7 @@ public class SpotifyAPI {
             cors.addSupport(request, response);
 
             response.redirect(auth.getUserAuthToSpotify());
+
             return response.status();
         });
         return "Something went wrong while authorizing user with Spotify. Please try again.";
