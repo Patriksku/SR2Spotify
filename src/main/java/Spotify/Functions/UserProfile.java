@@ -71,6 +71,7 @@ public class UserProfile {
             }
 
             JSONObject envelope = response.getBody().getObject();
+            System.out.println("TEST:" + envelope.toString());
             getProfile(envelope, session_id);
         }
     }
@@ -86,15 +87,22 @@ public class UserProfile {
         Profile profile = new Profile();
 
         JSONObject externalUrls = envelope.getJSONObject("external_urls");
-        JSONArray images = envelope.getJSONArray("images");
-        JSONObject imageUrl = images.getJSONObject(0);
 
-        profile.setDisplay_name(envelope.getString("display_name"));
-        profile.setUser_id(envelope.getString("id"));
-        profile.setProfile_url(externalUrls.getString("spotify"));
-        profile.setImage_url(imageUrl.getString("url"));
+        if (envelope.has("images")) { //If user has a profile picture
+            JSONArray images = envelope.getJSONArray("images");
+            JSONObject imageUrl = images.getJSONObject(0);
+
+            profile.setDisplay_name(envelope.getString("display_name"));
+            profile.setUser_id(envelope.getString("id"));
+            profile.setProfile_url(externalUrls.getString("spotify"));
+            profile.setImage_url(imageUrl.getString("url"));
+        } else {
+            profile.setDisplay_name(envelope.getString("display_name"));
+            profile.setUser_id(envelope.getString("id"));
+            profile.setProfile_url(externalUrls.getString("spotify"));
+            profile.setImage_url(null);
+        }
         profile.setSession_id(session_id);
-
         setProfile(session_id, profile); //Sets the profile for user.
 
         FormatHandler formatHandler = new FormatHandler();
@@ -110,15 +118,21 @@ public class UserProfile {
         Profile profile = new Profile();
 
         JSONObject externalUrls = envelope.getJSONObject("external_urls");
-        JSONArray images = envelope.getJSONArray("images");
-        JSONObject imageUrl = images.getJSONObject(0);
+        if (envelope.has("images")) { //If user has a profile picture
+            JSONArray images = envelope.getJSONArray("images");
+            JSONObject imageUrl = images.getJSONObject(0);
 
-        profile.setDisplay_name(envelope.getString("display_name"));
-        profile.setUser_id(envelope.getString("id"));
-        profile.setProfile_url(externalUrls.getString("spotify"));
-        profile.setImage_url(imageUrl.getString("url"));
+            profile.setDisplay_name(envelope.getString("display_name"));
+            profile.setUser_id(envelope.getString("id"));
+            profile.setProfile_url(externalUrls.getString("spotify"));
+            profile.setImage_url(imageUrl.getString("url"));
+        } else {
+            profile.setDisplay_name(envelope.getString("display_name"));
+            profile.setUser_id(envelope.getString("id"));
+            profile.setProfile_url(externalUrls.getString("spotify"));
+            profile.setImage_url(null);
+        }
         profile.setSession_id(session_id);
-
         setProfile(session_id, profile);
     }
 
