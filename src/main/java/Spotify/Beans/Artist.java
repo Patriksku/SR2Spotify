@@ -10,6 +10,9 @@ public class Artist {
     private String artist_id;
     private String artist_uri;
     private String artist_url;
+    public String h = "<a href=\"https://api.spotify.com/v1/artists/{id}";
+    public String h2 = "<a href=\"https://api.spotify.com/v1/album/{id}";// temporär lösning för track2
+    public Artist artist_array[];
 
     public Artist(){}
 
@@ -45,10 +48,37 @@ public class Artist {
         this.artist_url = artist_url;
     }
 
+    public String getH(){
+        return h;
+    }
+
+    public void setH(String h) {
+        this.h = h;
+    }
+
+    //temporär lösning för track2
+    public String getH2(){
+        return h2;
+    }
+
+
+    public void setH2(String h2) {
+        this.h2 = h2;
+    }
+
+    public Artist[] getArtist_array(){
+        return artist_array;
+    }
+
+    public void setArtist_array(Artist[] artist_array) {
+        this.artist_array = artist_array;
+    }
+
     public String toString() {
-        return artist_name + "\n" + artist_id + "\n" + artist_uri + "\n" + artist_url + "\n";
+        return artist_name + "\n" + artist_id + "\n" + artist_uri + "\n" + artist_url + "\n" + h + "\n" + h2 + "\n";
     }
 }
+
 
 
 
