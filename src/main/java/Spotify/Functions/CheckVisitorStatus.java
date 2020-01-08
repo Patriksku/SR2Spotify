@@ -1,7 +1,7 @@
 package Spotify.Functions;
 
 import Spotify.Beans.VisitorStatus;
-import Spotify.Handlers.FormatHandler;
+import Handlers.FormatHandler;
 
 /**
  * The only function of this class is to return a JSON-file with one object (one key/value pair),

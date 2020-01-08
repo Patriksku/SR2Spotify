@@ -1,7 +1,7 @@
 package Spotify.Functions;
 
 import Spotify.Beans.Profile;
-import Spotify.Handlers.FormatHandler;
+import Handlers.FormatHandler;
 import Spotify.Users.UserSessions;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;

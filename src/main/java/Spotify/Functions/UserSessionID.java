@@ -1,7 +1,7 @@
 package Spotify.Functions;
 
 import Spotify.Beans.SessionID;
-import Spotify.Handlers.FormatHandler;
+import Handlers.FormatHandler;
 import Spotify.Users.UserSessions;
 
 /**
