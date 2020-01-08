@@ -1,5 +1,6 @@
 package StartServer;
 
+import Handlers.StandardErrorMessage;
 import SR.API.SrAPI;
 import Spotify.API.SpotifyAPI;
 import com.mashape.unirest.http.Unirest;
@@ -35,15 +36,21 @@ public class StartServer {
         }));
     }
 
-    public static void main(String[]args){
+    public static void main(String[]args) {
 
         staticFileLocation("/public"); // makes http://localhost:4567/ the homepage of our website
+
         SrAPI srAPI = new SrAPI();
         SpotifyAPI spAPI = new SpotifyAPI();
 
         srAPI.init();
         spAPI.init();
 
+        StandardErrorMessage standardErrorMessage = new StandardErrorMessage();
+        standardErrorMessage.init();
+
         shutdownOnExit();
+
+
     }
 }

@@ -12,7 +12,7 @@ import static spark.Spark.post;
 
 /**
  * This class is responsible for handling user requests to the Spoitfy API based
- * on available functionalities, and returning JSON or XML formats when necessary.
+ * on available functionalities and returning JSON files when necessary.
  * @author Patriksku
  */
 public class SpotifyAPI {
@@ -34,10 +34,11 @@ public class SpotifyAPI {
             cors.addSupport(request, response);
 
             response.redirect(auth.getUserAuthToSpotify());
+            response.status(202); //Accepted - Spotify handles the login process.
 
             return response.status();
         });
-        return "Something went wrong while authorizing user with Spotify. Please try again.";
+        return null;
     }
 
     /**
@@ -45,7 +46,7 @@ public class SpotifyAPI {
      * otherwise false.
      * @return JSON with "status" set to true or false.
      */
-    public Document visitorStatus() {
+    public String visitorStatus() {
         get(path + "/visitorstatus", (request, response) -> {
             cors.addSupport(request, response);
 

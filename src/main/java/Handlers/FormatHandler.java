@@ -1,5 +1,6 @@
-package Spotify.Handlers;
+package Handlers;
 
+import SR.Beans.Songs2Keys;
 import Spotify.Beans.PlaylistArray;
 import Spotify.Beans.Profile;
 import Spotify.Beans.SessionID;
@@ -64,6 +65,18 @@ public class FormatHandler {
         try {
             ObjectMapper mapper = new ObjectMapper();
             jsonFormat = mapper.writeValueAsString(sessionID);
+
+            return jsonFormat;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "Something went wrong while converting SessionID-object to JSON.";
+    }
+
+    public String getFormat(Songs2Keys songs2Keys) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            jsonFormat = mapper.writeValueAsString(songs2Keys);
 
             return jsonFormat;
         } catch (JsonProcessingException e) {
