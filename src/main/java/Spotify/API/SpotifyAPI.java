@@ -23,6 +23,7 @@ public class SpotifyAPI {
     private UserPlaylists userPlaylists = new UserPlaylists(userSessions);
     private AutoRefreshToken autoRefreshToken = null;
     private UserProfile userProfile = new UserProfile(userSessions);
+    private UserSessionID userSessionID = new UserSessionID(userSessions);
     private CORS cors = new CORS();
 
     /**
@@ -71,7 +72,8 @@ public class SpotifyAPI {
             authCode = request.queryParams("code");
 
             if(authCode == null) {
-
+                response.type("text/plain");
+                response.status(403);
                 return "Something went wrong while authorizing access to user information. Perhaps the user " +
                         "is already verified, or did not use the correct endpoint for verification.";
             } else {
@@ -79,8 +81,9 @@ public class SpotifyAPI {
                     autoRefreshToken = new AutoRefreshToken(userSessions, auth);
                 }
                 auth.requestToken(authCode, request.session().id());
-                userProfile.createProfile(request.session().id());
+                userProfile.createProfile(request.session().id(), response);
             }
+            response.status(200);
             response.redirect("/");
             return response.status();
         });
@@ -93,14 +96,17 @@ public class SpotifyAPI {
      * @return JSON-file which contains various fields from the user's Spotify profile.
      */
     public Document getProfile() {
-        get(path + "/getprofile/:userid", (request, response) -> {
+        get(path + "/profile/:userid", (request, response) -> {
             cors.addSupport(request, response);
 
             String sessionOfUserID = userSessions.getUserID(request.params(":userid"));
             if (sessionOfUserID != null) {
                 response.type("application/json");
-                return userProfile.requestMyProfile(sessionOfUserID, "json");
+                response.status(200);
+                return userProfile.requestMyProfile(sessionOfUserID);
             } else {
+                response.type("text/plain");
+                response.status(401);
                 return "User with ID: " + request.params(":userid") + " has not authorized " +
                         "access to Spotify.";
             }
@@ -115,21 +121,19 @@ public class SpotifyAPI {
      * @return JSON
      */
     public String getSessionID() {
-        get(path + "/getsession", (request, response) -> {
+        get(path + "/session", (request, response) -> {
             cors.addSupport(request, response);
 
-            UserSessionID userSessionID = new UserSessionID(userSessions);
-
-            String sessionResponse = userSessionID.getSessionID(request.session().id());
-            if (sessionResponse.equalsIgnoreCase("Something went wrong while converting SessionID-object to JSON.")) {
+            String sessionID = userSessionID.getSessionID(request.session().id());
+            if (sessionID.equalsIgnoreCase("Something went wrong while converting SessionID-object to JSON.")) {
                 response.status(500);
-                return sessionResponse;
+                return sessionID;
             } else
                 response.status(200);
             response.type("application/json");
-            return sessionResponse;
+            return sessionID;
         });
-        return "Something went wrong while converting SessionID-object to JSON.";
+        return null;
     }
 
     /**
@@ -139,46 +143,17 @@ public class SpotifyAPI {
      * @return JSON-file with the current user's information from Spotify.
      */
     public Document getMyProfile() {
-        get(path + "/getmyprofile", (request, response) -> {
+        get(path + "/myprofile", (request, response) -> {
             cors.addSupport(request, response);
 
             if (userSessions.contains(request.session().id())) {
                 response.type("application/json");
-                return userProfile.requestMyProfile(request.session().id(), "json");
-            } else {
-                response.redirect(path + "/authuser");
+                return userProfile.requestMyProfile(request.session().id());
             }
-            return "An error occurred while trying to load your profile from Spotify.";
-        });
-        return null;
-    }
-
-    /**
-     * Returns the current user's information from Spotify, if the user's unique
-     * session-id exists in the server. If not, the user is redirected to the login-page
-     * where the user may grant access to the user's information from Spotify.
-     * @return JSON or XML based on the parameter specified.e
-     */
-    public Document getMyProfileFormat() {
-        get(path + "/getmyprofile/:format", (request, response) -> {
-            cors.addSupport(request, response);
-
-            if (userSessions.contains(request.session().id())) {
-                if (request.params(":format").equalsIgnoreCase("json")) {
-                    response.type("application/json");
-                    return userProfile.requestMyProfile(request.session().id(), "json");
-
-                } else if (request.params(":format").equalsIgnoreCase("xml")) {
-                    response.type("application/xml");
-                    return userProfile.requestMyProfile(request.session().id(), "xml");
-                } else {
-                    return "Something went wrong. Please check ur parameters. Only XML and JSON is valid.";
-                }
-
-            } else {
-                response.redirect(path + "/authuser");
-            }
-            return "An error occurred while trying to load your profile from Spotify.";
+            response.status(401);
+            response.type("text/plain");
+            return "An error occurred while trying to load your profile from Spotify. Please verify that you " +
+                    "have granted the application access to your Spotify Account.";
         });
         return null;
     }
@@ -189,13 +164,13 @@ public class SpotifyAPI {
      * @return JSON with all playlists.
      */
     public Document getPlaylists() {
-        get(path + "/getplaylists/:userid", (request, response) -> {
+        get(path + "/playlists/:userid", (request, response) -> {
             cors.addSupport(request, response);
 
             String sessionOfUserID = userSessions.getUserID(request.params(":userid"));
             if (sessionOfUserID != null) {
                 response.type("application/json");
-                return userPlaylists.requestMyPlaylist(request.session().id(), "50", "json");
+                return userPlaylists.requestMyPlaylist(sessionOfUserID, "50", "json");
             } else {
                 response.status(401);
                 return "User with ID: " + request.params(":userid") + " has not authorized " +
@@ -211,56 +186,24 @@ public class SpotifyAPI {
      * @return JSON containing playlists of the current user.
      */
     public Document getMyPlaylists() {
-        get(path + "/getmyplaylists/:limit", (request, response) -> {
+        get(path + "/myplaylists/:limit", (request, response) -> {
             cors.addSupport(request, response);
 
             String limit = request.params(":limit");
             if (Integer.parseInt(limit) > 50 || Integer.parseInt(limit) < 0) {
+                response.status(400);
+                response.type("text/plain");
                 return "The 'limit' parameter has to be a numerical digit between 0 and 50.";
             }
             if (userSessions.contains(request.session().id())) {
+                response.status(200);
                 response.type("application/json");
                 return userPlaylists.requestMyPlaylist(request.session().id(), limit, "json");
             } else {
-                response.redirect(path + "/authuser");
+                response.status(401);
+                response.type("text/plain");
+                return "This user has not granted access to Spotify.";
             }
-            return "An error has occurred. Please check your parameters, path, or if the user is authorized to Spotify.";
-        });
-        return null;
-    }
-
-    /**
-     * Returns playlists of the current user from Spotify.
-     * The user will be redirected to a login page where access can be granted,
-     * if this has not been made before.
-     * @return XML or JSON with all playlists.
-     */
-    public Document getMyPlaylistsFormat() {
-        get(path + "/getmyplaylists/:limit/:format", (request, response) -> {
-            cors.addSupport(request, response);
-
-            String limit = request.params(":limit");
-            if (Integer.parseInt(limit) > 50 || Integer.parseInt(limit) < 0) {
-                return "The 'limit' parameter has to be a numerical digit between 0 and 50.";
-            }
-            if (userSessions.contains(request.session().id())) {
-                if (request.params(":format").equalsIgnoreCase("json")) {
-                    response.type("application/json");
-                    return userPlaylists.requestMyPlaylist(request.session().id(), limit, "json");
-
-                } else if (request.params(":format").equalsIgnoreCase("xml")) {
-                    response.type("application/xml");
-                    return userPlaylists.requestMyPlaylist(request.session().id(), limit, "xml");
-
-                } else {
-                    return "Something went wrong. Please check ur parameters. Only XML and JSON is valid.";
-                }
-
-            } else {
-                response.redirect(path + "/authuser");
-            }
-
-            return "An error occurred while trying to load your Playlists from Spotify.";
         });
         return null;
     }
@@ -294,6 +237,7 @@ public class SpotifyAPI {
                 }
             } catch (ArrayIndexOutOfBoundsException aiobe) {
                 response.status(400);
+                response.type("text/plain");
                 aiobe.getStackTrace();
                 return "Something went wrong while adding song to playlist. Please check your parameters.";
             }
@@ -303,7 +247,11 @@ public class SpotifyAPI {
             String status = addSong.addSongToPlaylist(bodyParams[0], bodyParams[1], bodyParams[2]);
             if (!status.equalsIgnoreCase("Successfully added song to playlist.")) {
                 response.status(400);
+                response.type("text/plain");
+                return "Something went wrong while adding song to playlist. Please check your parameters.";
             }
+            response.status(200);
+            response.type("");
             return status;
         });
         return "Something went wrong while adding song to playlist. Please check your parameters.";
@@ -319,10 +267,8 @@ public class SpotifyAPI {
         getSessionID();
         getProfile();
         getMyProfile();
-        getMyProfileFormat();
         getPlaylists();
         getMyPlaylists();
-        getMyPlaylistsFormat();
         addSongToPlaylist();
     }
 }
