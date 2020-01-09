@@ -46,8 +46,7 @@ public class ChartLyricsAPI {
                     //System.out.println(jsonPrettyPrintString);
                     JSONObject json = new JSONObject(jsonPrettyPrintString);
                     lyrics = json.getJSONObject("GetLyricResult").getString("Lyric");
-                    System.out.println(lyrics);
-
+                    //System.out.println(lyrics);
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -69,6 +68,5 @@ public class ChartLyricsAPI {
      */
     public void init(){
         getLyrics();
-
     }
 }
