@@ -71,6 +71,7 @@ public class SpotifyAPI {
             authCode = request.queryParams("code");
 
             if(authCode == null) {
+
                 return "Something went wrong while authorizing access to user information. Perhaps the user " +
                         "is already verified, or did not use the correct endpoint for verification.";
             } else {
