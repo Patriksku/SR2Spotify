@@ -42,9 +42,11 @@ public class StartServer {
 
         SrAPI srAPI = new SrAPI();
         SpotifyAPI spAPI = new SpotifyAPI();
+        ChartLyricsAPI clAPI = new ChartLyricsAPI();
 
         srAPI.init();
         spAPI.init();
+        clAPI.init();
 
         StandardStatusMessage standardErrorMessage = new StandardStatusMessage();
         standardErrorMessage.init();
