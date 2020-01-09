@@ -9,6 +9,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import spark.Response;
 
 /**
  * This class is responsible for returning JSON or XML containing information
@@ -30,13 +31,9 @@ public class UserProfile {
     /**
      * Requests access to a user's Spotify profile.
      * @param session_id of the user.
-     * @param format to be returned.
      * @return XML or JSON based on user input.
      */
-    public String requestMyProfile(String session_id, String format) {
-        if (!userSessions.contains(session_id)) {
-            return "This user's session_id does not exist. Please connect your account to Spotify first, then try again.";
-        } else
+    public String requestMyProfile(String session_id) {
             try {
                 System.out.println("Sending GET request to Spotify [USER_PROFILE_ENDPOINT]...");
                 response = Unirest.get(USER_PROFILE_ENDPOINT)
@@ -47,7 +44,7 @@ public class UserProfile {
             }
 
         JSONObject envelope = response.getBody().getObject();
-        return getMyProfile(envelope, format, session_id);
+        return getMyProfile(envelope, session_id);
     }
 
     /**
@@ -57,8 +54,10 @@ public class UserProfile {
      * otherwise a profile will be created.
      * @param session_id unique id for current user.
      */
-    public void createProfile(String session_id) {
+    public void createProfile(String session_id, Response serverResponse) {
         if (!userSessions.contains(session_id)) {
+            serverResponse.status(401);
+            serverResponse.type("text/plain");
             System.out.println("This user's session_id does not exist. Please connect your account to Spotify first, then try again.");
         } else {
             try {
@@ -78,11 +77,10 @@ public class UserProfile {
     /**
      * Creates and returns a Profile-object with information received from the current user's Spotify profile.
      * @param envelope JSONObject returned from Spotify.
-     * @param format to be returned.
      * @param session_id of current user.
      * @return XML or JSON, based on user input.
      */
-    private String getMyProfile(JSONObject envelope, String format, String session_id) {
+    private String getMyProfile(JSONObject envelope, String session_id) {
         Profile profile = new Profile();
 
         JSONObject externalUrls = envelope.getJSONObject("external_urls");
@@ -103,7 +101,7 @@ public class UserProfile {
         setProfile(session_id, profile); //Sets the profile for user.
 
         FormatHandler formatHandler = new FormatHandler();
-        return formatHandler.getFormat(format, profile);
+        return formatHandler.getFormat(profile);
     }
 
     /**

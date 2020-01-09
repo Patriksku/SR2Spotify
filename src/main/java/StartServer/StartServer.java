@@ -1,6 +1,6 @@
 package StartServer;
 
-import Handlers.StandardErrorMessage;
+import Handlers.StandardStatusMessage;
 import SR.API.SrAPI;
 import Spotify.API.SpotifyAPI;
 import com.mashape.unirest.http.Unirest;
@@ -46,7 +46,7 @@ public class StartServer {
         srAPI.init();
         spAPI.init();
 
-        StandardErrorMessage standardErrorMessage = new StandardErrorMessage();
+        StandardStatusMessage standardErrorMessage = new StandardStatusMessage();
         standardErrorMessage.init();
 
         shutdownOnExit();

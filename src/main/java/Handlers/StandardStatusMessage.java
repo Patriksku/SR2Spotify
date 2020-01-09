@@ -12,7 +12,7 @@ import static spark.Spark.get;
  * for the client when a request is made for a resource that the server can not find.
  * @author Patriksku
  */
-public class StandardErrorMessage {
+public class StandardStatusMessage {
 
     private CORS cors = new CORS();
 
@@ -26,6 +26,6 @@ public class StandardErrorMessage {
     }
 
     public void init() {
-        standardErrorMessage();;
+        standardErrorMessage();
     }
 }

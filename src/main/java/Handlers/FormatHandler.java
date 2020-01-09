@@ -19,24 +19,15 @@ public class FormatHandler {
 
     /**
      * Creates and returns a JSON or XML file based on a Profile object.
-     * @param format to be returned - JSON or XML.
      * @param profile represents a user's Spotify profile.
      * @return XML or JSON based on the format.
      */
-    public String getFormat(String format, Profile profile) {
+    public String getFormat(Profile profile) {
         try {
-            if (format.equalsIgnoreCase("json")) {
                 ObjectMapper mapper = new ObjectMapper();
                 jsonFormat = mapper.writeValueAsString(profile);
-
                 return jsonFormat;
 
-            } else if (format.equalsIgnoreCase("xml")) {
-                ObjectMapper mapper = new XmlMapper();
-                xmlFormat = mapper.writeValueAsString(profile);
-
-                return xmlFormat;
-            }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
