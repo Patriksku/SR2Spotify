@@ -1,6 +1,7 @@
 package StartServer;
 
 import Handlers.StandardStatusMessage;
+import Lyrics.API.ChartLyricsAPI;
 import SR.API.SrAPI;
 import Spotify.API.SpotifyAPI;
 import com.mashape.unirest.http.Unirest;
@@ -42,9 +43,11 @@ public class StartServer {
 
         SrAPI srAPI = new SrAPI();
         SpotifyAPI spAPI = new SpotifyAPI();
+        ChartLyricsAPI clAPI = new ChartLyricsAPI();
 
         srAPI.init();
         spAPI.init();
+        clAPI.init();
 
         StandardStatusMessage standardErrorMessage = new StandardStatusMessage();
         standardErrorMessage.init();
