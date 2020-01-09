@@ -23,7 +23,7 @@ public class SrAPI {
      * @return JSON-file.
      */
     public Document getSongsJson() {
-        get(path + "/getsongs/:channelid", (request, response) -> {
+        get(path + "/songs/:channelid", (request, response) -> {
             cors.addSupport(request, response);
 
             String URI = domain + request.params(":channelid");
