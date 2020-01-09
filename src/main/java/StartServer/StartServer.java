@@ -1,6 +1,6 @@
 package StartServer;
 
-import Handlers.StandardErrorMessage;
+import Handlers.StandardStatusMessage;
 import Lyrics.API.ChartLyricsAPI;
 import SR.API.SrAPI;
 import Spotify.API.SpotifyAPI;
@@ -49,8 +49,8 @@ public class StartServer {
         spAPI.init();
         clAPI.init();
 
-        StandardErrorMessage standardErrorMessage = new StandardErrorMessage();
-        standardErrorMessage.init();
+        StandardStatusMessage standardStatusMessage = new StandardStatusMessage();
+        standardStatusMessage.init();
 
         shutdownOnExit();
 
