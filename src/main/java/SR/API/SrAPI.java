@@ -1,6 +1,5 @@
 package SR.API;
 
-import CORS.CORS;
 import SR.Functions.ChannelSongs;
 import org.w3c.dom.Document;
 
@@ -15,7 +14,6 @@ public class SrAPI {
 
     private final String path = "/api/sveriges-radio";
     private final String domain = "http://api.sr.se/api/v2/playlists/rightnow?channelid=";
-    private CORS cors = new CORS();
 
     /**
      * Returns a JSON with various information about recent and upcoming songs
@@ -24,7 +22,6 @@ public class SrAPI {
      */
     public Document getSongsJson() {
         get(path + "/songs/:channelid", (request, response) -> {
-            cors.addSupport(request, response);
 
             String URI = domain + request.params(":channelid");
             ChannelSongs channelSongs = new ChannelSongs();
