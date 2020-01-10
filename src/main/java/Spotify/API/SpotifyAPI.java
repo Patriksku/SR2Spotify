@@ -12,7 +12,7 @@ import static spark.Spark.post;
 /**
  * This class is responsible for handling user requests to the Spoitfy API based
  * on available functionalities and returning JSON files when necessary.
- * @author Patriksku
+ * @author Patriksku, Sara Karic
  */
 public class SpotifyAPI {
 
@@ -23,6 +23,7 @@ public class SpotifyAPI {
     private AutoRefreshToken autoRefreshToken = null;
     private UserProfile userProfile = new UserProfile(userSessions);
     private UserSessionID userSessionID = new UserSessionID(userSessions);
+    private SearchSpotify searchSpotify = new SearchSpotify(userSessions);
 
     /**
      * Authenticates the user by granting the user a login screen to Spotify.
@@ -247,6 +248,22 @@ public class SpotifyAPI {
     }
 
     /**
+     *
+     * @return
+     */
+    public String getSearch(){
+        get(path + "/getsearch/:search", ((request, response) -> {
+
+
+            searchSpotify.requestSearch(request.params(":search"), request.session().id());
+            response.type("text/plain");
+            return request.params(":search");
+        }));
+
+        return null;
+    }
+
+    /**
      * Method initializes all methods in this class so that the endpoints are active.
      */
     public void init(){
@@ -259,5 +276,6 @@ public class SpotifyAPI {
         getPlaylists();
         getMyPlaylists();
         addSongToPlaylist();
+        getSearch();
     }
 }
