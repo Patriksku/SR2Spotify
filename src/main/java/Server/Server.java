@@ -8,8 +8,7 @@ import com.mashape.unirest.http.Unirest;
 
 import java.io.IOException;
 
-import static spark.Spark.staticFileLocation;
-import static spark.Spark.stop;
+import static spark.Spark.*;
 
 /**
  * Starts the server with our mash-up REST API from Sveriges Radio API, Spotify API and ChartLyrics API.
@@ -40,6 +39,31 @@ public class Server {
 
     public void startServer() {
         staticFileLocation("/public"); // makes http://localhost:4567/ the homepage of our website
+        staticFiles.header("Access-Control-Allow-Origin", "*");
+
+        //------------------CORS START------------------//
+        options("/*",
+                (request, response) -> {
+
+                    String accessControlRequestHeaders = request
+                            .headers("Access-Control-Request-Headers");
+                    if (accessControlRequestHeaders != null) {
+                        response.header("Access-Control-Allow-Headers",
+                                accessControlRequestHeaders);
+                    }
+
+                    String accessControlRequestMethod = request
+                            .headers("Access-Control-Request-Method");
+                    if (accessControlRequestMethod != null) {
+                        response.header("Access-Control-Allow-Methods",
+                                accessControlRequestMethod);
+                    }
+
+                    return "OK";
+                });
+
+        before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
+        //-------------------CORS END-------------------//
 
         SrAPI srAPI = new SrAPI();
         SpotifyAPI spAPI = new SpotifyAPI();
