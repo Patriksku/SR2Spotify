@@ -1,4 +1,4 @@
-package StartServer;
+package Server;
 
 import Handlers.StandardStatusMessage;
 import Lyrics.API.ChartLyricsAPI;
@@ -15,7 +15,9 @@ import static spark.Spark.stop;
  * Starts the server with our mash-up REST API from Sveriges Radio API, Spotify API and ChartLyrics API.
  * @author Patriksku
  */
-public class StartServer {
+public class Server {
+    private boolean running;
+    private boolean threadExist;
 
     /**
      * När vi stänger applikationen behöver vi få exit code 0 -> vilket innebär att allt gick korrekt.
@@ -23,13 +25,12 @@ public class StartServer {
      * viktigt just nu, men det är ett krav att stänga ner servern korrekt och Unirest när projektet väl ska
      * lämnas in. Jag fixar detta när hela projektet är klart.
      */
-    private static void shutdownOnExit() {
+    private void shutdownOnExit() {
         Runtime.getRuntime().addShutdownHook(new Thread(() ->
         {
             try {
                 stop();
                 Unirest.shutdown();
-                System.out.println("Unirest has been shutdown successfully!");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Unirest shutdown error.");
@@ -37,8 +38,7 @@ public class StartServer {
         }));
     }
 
-    public static void main(String[]args) {
-
+    public void startServer() {
         staticFileLocation("/public"); // makes http://localhost:4567/ the homepage of our website
 
         SrAPI srAPI = new SrAPI();
@@ -52,8 +52,26 @@ public class StartServer {
         StandardStatusMessage standardStatusMessage = new StandardStatusMessage();
         standardStatusMessage.init();
 
-        shutdownOnExit();
+        if (!threadExist) {
+            System.out.println("Timing a thread for alternative shutdown.");
+            shutdownOnExit();
+            threadExist = true;
+        }
+        running = true;
+    }
 
+    public void shutdownServer() {
+        try {
+            stop();
+            Unirest.shutdown();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Unirest shutdown error.");
+        }
+        running = false;
+    }
 
+    public boolean isRunning() {
+        return running;
     }
 }
