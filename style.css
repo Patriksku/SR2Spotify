@@ -48,7 +48,7 @@ main{
 }
 
 article{
-    padding: 5px 100px;
+    padding: 3px 70px;
     text-align: left;
     color: white;
     font-family: 'Montserrat', sans-serif;
@@ -56,6 +56,7 @@ article{
 
 article > p{
     padding: 10px;
+    margin: 0px;
 }
 
 h2{
@@ -71,7 +72,24 @@ h2{
 hr{
     width: 80%;
     border: 0;
-    height: 1px;
+    height: 2px;
+    background-image: linear-gradient(to right, rgb(0, 0, 0, 0), rgb(255, 255, 255), rgba(0, 0, 0, 0));
+}
+
+#sr_title{
+    font-family: 'Merriweather', serif;
+    font-size: 30px;
+    background-color: #1B1B1D;
+    color: white;
+    margin: 0px;
+    padding-top: 15px;
+    text-align: center;
+}
+
+#sr_line{
+    width: 80%;
+    border: 0;
+    height: 2px;
     background-image: linear-gradient(to right, rgb(0, 0, 0, 0), rgb(255, 255, 255), rgba(0, 0, 0, 0));
 }
 
@@ -184,7 +202,7 @@ hr{
 #spotify_line{
     width: 80%;
     border: 0;
-    height: 1px;
+    height: 2px;
     background-image: linear-gradient(to right, rgba(29, 185, 84, 0.089), #1DB954, rgba(29, 185, 84, 0.089));
 }
 
@@ -223,9 +241,10 @@ hr{
 #spotify_box{
     background-color: black;
     padding: 30px;
-    margin: 30px 80px;
+    margin: 30px 80px 30px 80px;
     box-shadow: 0px 0px 20px black;
     text-align: center;
+    border-radius: 20px;
 }
 
 #get_play_list{
@@ -254,66 +273,159 @@ hr{
 .my_playlist_1{
     font-family: 'Merriweather', serif;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 .my_playlist_2{
     font-family: 'Merriweather', serif;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 .my_playlist_3{
     font-family: 'Merriweather', serif;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 .my_playlist_4{
     font-family: 'Merriweather', serif;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 .my_playlist_5{
     font-family: 'Merriweather', serif;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 .my_playlist_6{
     font-family: 'Merriweather', serif;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 .my_playlist_7{
     font-family: 'Merriweather', serif;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 .my_playlist_8{
     font-family: 'Merriweather', serif;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 .my_playlist_9{
     font-family: 'Merriweather', serif;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 .my_playlist_10{
     font-family: 'Merriweather', serif;
     color: white;
+    text-align: left;
+}
+
+#cl_title{
+    font-family: 'Merriweather', serif;
+    font-size: 30px;
+    background-color: #1B1B1D;
+    color: crimson;
+    margin: 0px;
+    text-align: center;
+    padding: 0px;
+}
+
+#cl_line{
+    width: 80%;
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(220, 20, 60, 0.11), #dc143c, rgba(220, 20, 60, 0.11));
+}
+
+#chartlyrics{
+    margin: 30px 80px;
     text-align: center;
 }
 
-.media{
+#artist_my_input{
+    width: 200px;
+    font-size: 16px;
+    padding-left: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    outline: none;
+    font-family: 'Merriweather', serif;
+    border-color: #dc143c;
+    box-shadow: 0px 0px 25px black;
+    transition: 0.5s all;
+    color: white;
+    background-color: black;
+}
+
+#artist_my_input:focus{
+    width: 300px;
+}
+#song_my_input{
+    width: 200px;
+    font-size: 16px;
+    padding-left: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    outline: none;
+    font-family: 'Merriweather', serif;
+    border-color: #dc143c;
+    box-shadow: 0px 0px 25px black;
+    transition: 0.5s all;
+    color: white;
+    background-color: black;
+}
+
+#song_my_input:focus{
+    width: 300px;
+}
+
+#search{
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 20px;
+    outline: none;
+    font-family: 'Merriweather', serif;
+    border-color: #dc143c;
+    box-shadow: 0px 0px 15px black;
+    transition: all 0.5s;
+}
+
+#search:hover{
+    font-family: 'Merriweather', serif;
+    color: white;
+    background-color: black;
+}
+
+#cl_box{
+    background-color: black;
+    padding: 30px;
+    margin: 0px 40px;
+    box-shadow: 0px 0px 20px black;
     text-align: center;
+    color: white;
+    border-radius: 20px;
+}
+
+.lyrics{
+    color: white;
+    font-family: 'Merriweather', serif;
+}
+
+.media{
     margin: 0px;
+    text-align: right;
 }
 
 .social_media{
@@ -321,8 +433,7 @@ hr{
     list-style: none;
     margin: 0px;
     text-align: center;
-    display: inline-block;
-    font-size: 30px;
+    font-size: 20px;
     padding: 10px 10px;
     color: white;
     border: 1px solid white;
@@ -343,16 +454,16 @@ hr{
 footer{
     background-color: black;
     color: white;
-    padding: 20px;
+    padding: 30px;
     margin-top: 20px;
-    text-align: center;
 }
 
 #footer_text{
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     margin: 0px;
+    float: left;
+    font-size: 20px;
 }
-
 
 @media screen and (max-width:1664px){
     body{
@@ -360,7 +471,7 @@ footer{
         margin-right: 350px;
     }
     #spotify_box{
-        margin: 30px 50px;
+        margin: 30px 50px 30px 50px;
         width: auto;
     }
 }
@@ -369,6 +480,25 @@ footer{
     body{
         margin-left: 0px;
         margin-right: 0px;
+    }
+}
+
+@media screen and (max-width:578px){
+    #get_p1{
+        margin: 7px;
+
+    }
+    #get_p2{
+        margin: 7px;
+
+    }
+    #get_p3{
+        margin: 7px;
+
+    }
+    #get_p4{
+        margin: 7px;
+
     }
 }
 
@@ -385,6 +515,12 @@ footer{
     #spotify_box{
         margin: 30px 0px;
     }
+    #chartlyrics{
+        margin: 50px 30px
+    }
+    #my_input:focus{
+        width: 300px;
+    }
 }
 
 @media screen and (max-width:375px){
@@ -393,5 +529,17 @@ footer{
     }
     #spotify_box{
         margin: 30px 0px;
+    }
+    #chartlyrics{
+        margin: 20px 30px;
+    }
+    #my_input:focus{
+        width: 200px;
+    }
+}
+
+@media screen and (max-width:335px){
+    #search{
+        margin-top: 10px;
     }
 }
