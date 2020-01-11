@@ -1,5 +1,6 @@
 package Handlers;
 
+import Lyrics.Functions.Lyrics;
 import SR.Beans.Songs2Keys;
 import Spotify.Beans.PlaylistArray;
 import Spotify.Beans.Profile;
@@ -100,5 +101,22 @@ public class FormatHandler {
             e.printStackTrace();
         }
         return "Something went wrong while returning playlist information. Please check your parameters.";
+    }
+
+    /**
+     * creates a Json based on Lyrics object
+     * @param lyrics
+     * @return JSON
+     */
+    public String getFormat(Lyrics lyrics){
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            jsonFormat = mapper.writeValueAsString(lyrics);
+
+            return jsonFormat;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "Something went wrong while converting Lyrics to JSON.";
     }
 }
