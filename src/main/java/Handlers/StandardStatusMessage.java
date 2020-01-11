@@ -1,9 +1,5 @@
 package Handlers;
 
-import CORS.CORS;
-import SR.Functions.ChannelSongs;
-import org.w3c.dom.Document;
-
 import static spark.Spark.get;
 
 /**
@@ -14,14 +10,11 @@ import static spark.Spark.get;
  */
 public class StandardStatusMessage {
 
-    private CORS cors = new CORS();
-
     public void standardErrorMessage() {
         get("*", (request, response) -> {
-            cors.addSupport(request, response);
-            response.type("text/html; charset=UTF-8");
+            response.type("text/plain");
             response.status(404);
-            return "<html><body><h2>404 Not found</h2></body></html>";
+            return "404 Not found";
         });
     }
 

@@ -1,19 +1,14 @@
 package Lyrics.API;
 
-import static spark.Spark.defaultResponseTransformer;
-import static spark.Spark.get;
-import CORS.CORS;
 import Handlers.FormatHandler;
 import Lyrics.Functions.Lyrics;
-import com.google.gson.JsonObject;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.request.body.Body;
 import org.json.JSONObject;
 import org.json.XML;
 
 import javax.swing.text.Document;
+
+import static spark.Spark.get;
 
 
 /**
@@ -25,8 +20,7 @@ public class ChartLyricsAPI {
 
     private final String path = "/api/chartlyrics";
     private final String domain = "http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?artist=";
-    private CORS cors = new CORS();
-    FormatHandler formatHandler = new FormatHandler();
+    private FormatHandler formatHandler = new FormatHandler();
 
 
 
@@ -42,7 +36,6 @@ public class ChartLyricsAPI {
     public String getLyrics(){
 
         get(path + "/getLyrics/:artist/:song", (request, response) ->{
-            cors.addSupport(request, response);
             String lyrics = "no lyrics found";
             String body = "";
             String artist = request.params(":artist");

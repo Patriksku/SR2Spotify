@@ -120,10 +120,11 @@ public class SpotifyAPI {
             String sessionID = userSessionID.getSessionID(request.session().id());
             if (sessionID.equalsIgnoreCase("Something went wrong while converting SessionID-object to JSON.")) {
                 response.status(500);
-                return sessionID;
-            } else
+                response.type("text/plain");
+            } else {
                 response.status(200);
-            response.type("application/json");
+                response.type("application/json");
+            }
             return sessionID;
         });
         return null;
@@ -139,6 +140,7 @@ public class SpotifyAPI {
         get(path + "/myprofile", (request, response) -> {
 
             if (userSessions.contains(request.session().id())) {
+                response.status(200);
                 response.type("application/json");
                 return userProfile.requestMyProfile(request.session().id());
             }
@@ -160,10 +162,12 @@ public class SpotifyAPI {
 
             String sessionOfUserID = userSessions.getUserID(request.params(":userid"));
             if (sessionOfUserID != null) {
+                response.status(200);
                 response.type("application/json");
                 return userPlaylists.requestMyPlaylist(sessionOfUserID, "50", "json");
             } else {
                 response.status(401);
+                response.type("text/plain");
                 return "User with ID: " + request.params(":userid") + " has not authorized " +
                         "access to Spotify.";
             }

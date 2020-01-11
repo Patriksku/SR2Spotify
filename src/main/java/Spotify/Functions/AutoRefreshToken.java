@@ -2,7 +2,6 @@ package Spotify.Functions;
 
 import Spotify.Beans.User;
 import Spotify.Users.UserSessions;
-
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;

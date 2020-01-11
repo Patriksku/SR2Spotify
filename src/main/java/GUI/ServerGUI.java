@@ -34,9 +34,9 @@ public class ServerGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (server.isRunning()) {
                     server.shutdownServer();
-                    startServerButton.setEnabled(true);
-                    stopServerButton.setEnabled(false);
                     statusLbl.setText("Server has successfully stopped.");
+                    System.out.println("Server has successfully stopped.");
+                    System.exit(0);
                 }
 
             }
