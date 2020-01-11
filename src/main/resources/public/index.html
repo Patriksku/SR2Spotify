@@ -21,8 +21,8 @@
             <a class="nav_btn" href="about.html">About</a>
         </nav>
         <main>
-            <h2>Sveriges Radio</h2>
-            <hr>
+            <h2 id="sr_title">Sveriges Radio</h2>
+            <hr id="sr_line">
             <div id="channels">
                 <button id="get_p1">P1</button>
                 <button id="get_p2">P2</button>
@@ -46,7 +46,7 @@
                 </button>
             </div>
             <div id="spotify_box">
-                <button id="get_play_list">Play List</button>
+                <button id="get_play_list">Play Lists</button>
                 <p class="my_playlist_1"></p>
                 <p class="my_playlist_2"></p>
                 <p class="my_playlist_3"></p>
@@ -58,14 +58,26 @@
                 <p class="my_playlist_9"></p>
                 <p class="my_playlist_10"></p>
             </div>
+            <h2 id="cl_title">ChartLyrics</h2>
+            <hr id="cl_line">
+            <div id="chartlyrics">
+                <form id="search_box">
+                    <input id="artist_my_input" type="text" placeholder="Search for lyrics..." title="Type in the artist or the song title">
+                    <input id="song_my_input" type="text" placeholder="Search for lyrics..." title="Type in the artist or the song title">
+                    <input id="search" type="button" type="submit" value="Sök">
+                </form>
+            </div>
+            <div id="cl_box">
+                <p class="lyrics"></p>
+            </div>
         </main>
-        <div class="media">
-            <a class="social_media" href="https://github.com/Patriksku/SR2Spotify" target="_blank">
-                <i class="fab fa-github"></i>
-            </a>
-        </div>
         <footer>
-            <p id="footer_text">&copySR2Spotify</p>
+            <div class="media">
+                <p id="footer_text">&copySR2Spotify</p>
+                <a class="social_media" href="https://github.com/Patriksku/SR2Spotify" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
         </footer>
     </body>
 </html>

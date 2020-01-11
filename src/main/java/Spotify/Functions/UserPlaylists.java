@@ -1,8 +1,8 @@
 package Spotify.Functions;
 
+import Handlers.FormatHandler;
 import Spotify.Beans.Playlist;
 import Spotify.Beans.PlaylistArray;
-import Handlers.FormatHandler;
 import Spotify.Users.UserSessions;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
