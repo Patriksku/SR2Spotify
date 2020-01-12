@@ -98,15 +98,22 @@ public class ChartLyricsAPI {
                 System.out.println(lyrics);
 
                 if(lyrics.getText().equals("")){
-                    response.status(204);
-                    return lyrics;
+                    response.status(404); //artist is found but no song
+                    response.type("text/plain");
+                    System.out.println("404");
+                    return "no lyrics found";
                 } else {
+                    System.out.println("200");
                     response.status(200);
                 }
             }
             catch (Exception e){
+                System.out.println("500"); //no artist or an error happens
                 response.status(500);
+                response.type("text/plain");
                 e.printStackTrace();
+                return "error";
+
             }
             response.type("application/json");
             return formatHandler.getFormat(lyrics);
