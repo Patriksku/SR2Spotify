@@ -73,7 +73,8 @@ public class SpotifyAPI {
             } else if(authCode == null) {
                 response.type("text/plain");
                 response.status(403);
-                return "The user did not use the correct endpoint for verification.";
+                return "This endpoint was used for other purposes than for the verification process by the API itself. " +
+                        "Do not use this endpoint on your own - the API handles this redirect automatically.";
             } else {
                 if(autoSessionManager == null) {
                     autoSessionManager = new AutoSessionManager(userSessions);
