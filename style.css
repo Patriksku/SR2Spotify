@@ -247,7 +247,7 @@ hr{
     border-radius: 20px;
 }
 
-#get_play_list{
+#get_session_id{
     border-radius: 15px;
     border: 0px;
     font-family: 'Merriweather', serif;
@@ -261,11 +261,40 @@ hr{
     text-align: center;
 }
 
-#get_play_list:hover{
+#get_session_id:hover{
     background-color: rgba(29, 185, 84, 0.822);
 }
 
-#get_play_list:active {
+#get_session_id:active {
+    box-shadow: 0 3px white;
+    transform: translateY(4px);
+}
+
+.my_session_id{
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-align: left;
+}
+
+#get_playlist{
+    border-radius: 15px;
+    border: 0px;
+    font-family: 'Merriweather', serif;
+    font-size: 15px;
+    color: white;
+    background-color: #1DB954;
+    padding: 10px 50px;
+    margin: 10px;
+    box-shadow: 0 5px white;
+    outline: 0px;
+    text-align: center;
+}
+
+#get_playlist:hover{
+    background-color: rgba(29, 185, 84, 0.822);
+}
+
+#get_playlist:active {
     box-shadow: 0 3px white;
     transform: translateY(4px);
 }
@@ -278,7 +307,7 @@ hr{
 
 .my_playlist_id_1{
     font-family: 'Merriweather', serif;
-    color: white;
+    color: #1DB954;
     text-align: left;
 }
 
@@ -290,7 +319,7 @@ hr{
 
 .my_playlist_id_2{
     font-family: 'Merriweather', serif;
-    color: white;
+    color: #1DB954;
     text-align: left;
 }
 
@@ -302,7 +331,7 @@ hr{
 
 .my_playlist_id_3{
     font-family: 'Merriweather', serif;
-    color: white;
+    color: #1DB954;
     text-align: left;
 }
 
@@ -314,7 +343,7 @@ hr{
 
 .my_playlist_id_4{
     font-family: 'Merriweather', serif;
-    color: white;
+    color: #1DB954;
     text-align: left;
 }
 
@@ -326,7 +355,7 @@ hr{
 
 .my_playlist_id_5{
     font-family: 'Merriweather', serif;
-    color: white;
+    color: #1DB954;
     text-align: left;
 }
 
@@ -338,7 +367,7 @@ hr{
 
 .my_playlist_id_6{
     font-family: 'Merriweather', serif;
-    color: white;
+    color: #1DB954;
     text-align: left;
 }
 
@@ -350,7 +379,7 @@ hr{
 
 .my_playlist_id_7{
     font-family: 'Merriweather', serif;
-    color: white;
+    color: #1DB954;
     text-align: left;
 }
 
@@ -362,7 +391,7 @@ hr{
 
 .my_playlist_id_8{
     font-family: 'Merriweather', serif;
-    color: white;
+    color: #1DB954;
     text-align: left;
 }
 
@@ -374,7 +403,7 @@ hr{
 
 .my_playlist_id_9{
     font-family: 'Merriweather', serif;
-    color: white;
+    color: #1DB954;
     text-align: left;
 }
 
@@ -386,9 +415,10 @@ hr{
 
 .my_playlist_id_10{
     font-family: 'Merriweather', serif;
-    color: white;
+    color: #1DB954;
     text-align: left;
 }
+
 
 #add_song_box{
     text-align: center;
