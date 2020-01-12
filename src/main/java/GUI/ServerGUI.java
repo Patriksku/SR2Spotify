@@ -6,6 +6,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Class for building and creating the functionalities of the GUI.
+ * @author Patriksku
+ */
 public class ServerGUI extends JFrame {
     private JPanel mainPanel;
     private JButton startServerButton;
@@ -13,6 +17,9 @@ public class ServerGUI extends JFrame {
     private JLabel statusLbl;
     private Server server;
 
+    /**
+     * Sets the functionalities for the GUI when this class is instantiated.
+     */
     public ServerGUI() {
         stopServerButton.setEnabled(false);
         startServerButton.addActionListener(new ActionListener() {
@@ -20,25 +27,21 @@ public class ServerGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (server == null) {
                     server = new Server();
-                } if (!server.isRunning()) {
-                    server.startServer();
-                    statusLbl.setText("Server is running.");
-                    startServerButton.setEnabled(false);
-                    stopServerButton.setEnabled(true);
                 }
-                }
-            });
+                server.startServer();
+                statusLbl.setText("Server is running.");
+                startServerButton.setEnabled(false);
+                stopServerButton.setEnabled(true);
+            }
+        });
 
         stopServerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (server.isRunning()) {
-                    server.shutdownServer();
-                    statusLbl.setText("Server has successfully stopped.");
-                    System.out.println("Server has successfully stopped.");
-                    System.exit(0);
-                }
-
+                server.shutdownServer();
+                statusLbl.setText("Server has successfully stopped.");
+                System.out.println("Server has successfully stopped.");
+                System.exit(0);
             }
         });
     }

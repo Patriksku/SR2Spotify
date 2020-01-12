@@ -28,3 +28,4 @@ public class User {
         this.profile = profile;
     }
 }
+

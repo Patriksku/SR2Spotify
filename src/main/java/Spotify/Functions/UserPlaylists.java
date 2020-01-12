@@ -32,10 +32,9 @@ public class UserPlaylists {
      * Requests access to a user's playlists from Spotify.
      * @param session_id of the user.
      * @param limit amount of playlists to return, a number between 0 and 50.
-     * @param format XML or JSON.
      * @return XML or JSON with a user's Spotify playlists.
      */
-    public String requestMyPlaylist(String session_id, String limit, String format) {
+    public String requestMyPlaylist(String session_id, String limit) {
         try {
             System.out.println("Sending GET request to Spotify [USER_PLAYLIST_ENDPOINT]...");
             response = Unirest.get(USER_PLAYLIST_ENDPOINT)
@@ -45,16 +44,15 @@ public class UserPlaylists {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
-        return getPlaylist(response.getBody().getObject(), format);
+        return getPlaylist(response.getBody().getObject());
     }
 
     /**
      * Returns a user's playlists from Spotify.
      * @param envelope JSONObject returned from Spotify with playlists.
-     * @param format XML or JSON
-     * @return XML or JSON containing playlists.
+     * @return JSON containing playlists.
      */
-    public String getPlaylist(JSONObject envelope, String format) {
+    public String getPlaylist(JSONObject envelope) {
         JSONArray items = envelope.getJSONArray("items");
         JSONObject objectInsideItems;
         JSONArray images;
@@ -80,6 +78,6 @@ public class UserPlaylists {
         }
 
         FormatHandler formatHandler = new FormatHandler();
-        return formatHandler.getFormat(format, arrayOfPlaylists);
+        return formatHandler.getFormat(arrayOfPlaylists);
     }
 }

@@ -11,18 +11,16 @@ import java.io.IOException;
 import static spark.Spark.*;
 
 /**
- * Starts the server with our mash-up REST API from Sveriges Radio API, Spotify API and ChartLyrics API.
+ * Class containing two methods - one for starting the server, API and all related functions,
+ * and one for shutting these down safely.
  * @author Patriksku
  */
 public class Server {
-    private boolean running;
-    private boolean threadExist;
 
     /**
-     * När vi stänger applikationen behöver vi få exit code 0 -> vilket innebär att allt gick korrekt.
-     * Just nu har vi ingen UI (t.ex. en knapp för "Shutdown Server") som vi kan använda. Detta är ingenting
-     * viktigt just nu, men det är ett krav att stänga ner servern korrekt och Unirest när projektet väl ska
-     * lämnas in. Jag fixar detta när hela projektet är klart.
+     * Creates a thread that makes sure that the server stops safely, in case a user of this
+     * application shuts down the server by exiting the GUI with the X-button on the top
+     * most right corner.
      */
     private void shutdownOnExit() {
         Runtime.getRuntime().addShutdownHook(new Thread(() ->
@@ -30,6 +28,8 @@ public class Server {
             try {
                 stop();
                 Unirest.shutdown();
+                System.out.println("Unirest has shutdown.");
+                System.out.println("Server shutdown successfully.");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Unirest shutdown error.");
@@ -37,6 +37,9 @@ public class Server {
         }));
     }
 
+    /**
+     * Starts the Server with the API and website with all related functions.
+     */
     public void startServer() {
         staticFileLocation("/public"); // makes http://localhost:4567/ the homepage of our website
         staticFiles.header("Access-Control-Allow-Origin", "*");
@@ -75,27 +78,20 @@ public class Server {
 
         StandardStatusMessage standardStatusMessage = new StandardStatusMessage();
         standardStatusMessage.init();
-
-        if (!threadExist) {
-            System.out.println("Timing a thread for alternative shutdown.");
-            shutdownOnExit();
-            threadExist = true;
-        }
-        running = true;
+        shutdownOnExit();
     }
 
+    /**
+     * Shuts down the Server safely.
+     */
     public void shutdownServer() {
         try {
             stop();
             Unirest.shutdown();
+            System.out.println("Unirest has shutdown.");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Unirest shutdown error.");
         }
-        running = false;
-    }
-
-    public boolean isRunning() {
-        return running;
     }
 }

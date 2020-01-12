@@ -1,4 +1,4 @@
-package Spotify.Functions;
+package Spotify.Authentication;
 
 import Spotify.Beans.Token;
 import Spotify.Beans.User;
@@ -109,6 +109,8 @@ public class Authentication {
             token.setToken_type(envelope.getString("token_type"));
             token.setExpires_in(envelope.getInt("expires_in"));
             token.setScope(envelope.getString("scope"));
+
+            token.logActivityEvent(); // Logs that an activity event has occurred.
 
             System.out.println("--NEW values of TOKEN--");
             System.out.println(token.toString());
