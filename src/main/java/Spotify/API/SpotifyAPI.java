@@ -32,7 +32,8 @@ public class SpotifyAPI {
         get(path + "/authuser", (request, response) -> {
 
             response.redirect(auth.getUserAuthToSpotify());
-            response.status(202); //Accepted - Spotify handles the login process.
+            response.status(200);
+            response.type("");
 
             return response.status();
         });
@@ -67,13 +68,13 @@ public class SpotifyAPI {
 
             if (request.queryParams().contains("error")) {
                 response.type("text/plain");
-                response.status(403);
+                response.status(401);
                 return "The user chose not to authorize the application to the user's Spotify account.";
             } else if(authCode == null) {
                 response.type("text/plain");
                 response.status(403);
-                return "Something went wrong while authorizing access to user information. Perhaps the user " +
-                        "is already verified, or did not use the correct endpoint for verification.";
+                return "This endpoint was used for other purposes than for the verification process by the API itself. " +
+                        "Do not use this endpoint on your own - the API handles this redirect automatically.";
             } else {
                 if(autoSessionManager == null) {
                     autoSessionManager = new AutoSessionManager(userSessions);
@@ -82,8 +83,9 @@ public class SpotifyAPI {
                 userProfile.createProfile(request.session().id(), response);
             }
             response.status(200);
+            response.type("text/plain");
             response.redirect("/");
-            return response.status();
+            return "User was successfully authorized to Spotify.";
         });
     }
 

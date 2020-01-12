@@ -1,6 +1,7 @@
 package SR.API;
 
 import SR.Functions.ChannelSongs;
+import org.w3c.dom.Document;
 
 import static spark.Spark.get;
 
@@ -18,7 +19,7 @@ public class SrAPI {
      * of a given radio-station at Sveriges Radio - the specified channelid query parameter,
      * when accessing this endpoint.
      */
-    public void getSongsJson() {
+    public Document getSongsJson() {
         get("/api/v1/sveriges-radio/songs/:channelid", (request, response) -> {
 
             String URI = domain + request.params(":channelid");
@@ -28,6 +29,7 @@ public class SrAPI {
             response.type("application/json");
             return channelSongs.getFormat(URI, response);
         });
+        return null;
     }
 
     /**
