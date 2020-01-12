@@ -17,8 +17,8 @@
             <h1><strong>SR2Spotify</strong></h1>
         </header>
         <nav id="nav_bar">
-            <a class="nav_btn" href="index.html">Home</a>
-            <a class="nav_btn" href="about.html">About</a>
+            <a class="nav_btn" href="index.html">Hem</a>
+            <a class="nav_btn" href="about.html">Om oss</a>
         </nav>
         <main>
             <h2 id="sr_title">Sveriges Radio</h2>
@@ -42,28 +42,43 @@
             <hr id="spotify_line">
             <div id="spotify_access">
                 <button id="spotify_login">
-                    <a href="http://localhost:4567/api/spotify/authuser">Access Spotify</a>
+                    <a href="http://localhost:4567/api/v1/spotify/authuser">Spotify Login</a>
                 </button>
             </div>
             <div id="spotify_box">
-                <button id="get_play_list">Play Lists</button>
+                <button id="get_play_list">Spellistor</button>
                 <p class="my_playlist_1"></p>
+                <p class="my_playlist_id_1"></p>
                 <p class="my_playlist_2"></p>
+                <p class="my_playlist_id_2"></p>
                 <p class="my_playlist_3"></p>
+                <p class="my_playlist_id_3"></p>
                 <p class="my_playlist_4"></p>
+                <p class="my_playlist_id_4"></p>
                 <p class="my_playlist_5"></p>
+                <p class="my_playlist_id_5"></p>
                 <p class="my_playlist_6"></p>
+                <p class="my_playlist_id_6"></p>
                 <p class="my_playlist_7"></p>
+                <p class="my_playlist_id_7"></p>
                 <p class="my_playlist_8"></p>
+                <p class="my_playlist_id_8"></p>
                 <p class="my_playlist_9"></p>
+                <p class="my_playlist_id_9"></p>
                 <p class="my_playlist_10"></p>
+                <p class="my_playlist_id_"></p>
+                <form id="add_song_box">
+                    <input id="session_id_my_input" type="text" placeholder="Skriv in session ID..." title="Skriv in session id">
+                    <input id="playlist_id_my_input" type="text" placeholder="Skriv in ID på spellistan..." title="Skriv in låttiteln">
+                    <input id="song_uri_my_input" type="text" placeholder="Skriv in låt URI..." title="Skriv in låt URI">
+                </form>
             </div>
             <h2 id="cl_title">ChartLyrics</h2>
             <hr id="cl_line">
             <div id="chartlyrics">
-                <form id="search_box">
-                    <input id="artist_my_input" type="text" placeholder="Search for lyrics..." title="Type in the artist or the song title">
-                    <input id="song_my_input" type="text" placeholder="Search for lyrics..." title="Type in the artist or the song title">
+                <form>
+                    <input id="artist_my_input" type="text" placeholder="Sök efter artist..." title="Skriv in artisten">
+                    <input id="song_my_input" type="text" placeholder="Sök efter låt..." title="Skriv in låttiteln">
                     <input id="search" type="button" type="submit" value="Sök">
                 </form>
             </div>
