@@ -58,7 +58,7 @@ public class SearchSpotify extends Search {
         JSONArray searchItemsArtist = envelope.getJSONArray("searchItemsArtist");
         JSONArray searchItemsPlaylist = envelope.getJSONArray("searchItemsPlaylist");
         JSONArray searchItemsTrack = envelope.getJSONArray("searchItemsTrack");
-        
+
 
         int amountOfAlbumItems = searchItemsAlbum.length();
         int amountOfArtistItems = searchItemsArtist.length();
@@ -79,7 +79,7 @@ public class SearchSpotify extends Search {
             objectsofAlbumItems[i] = searchItemsAlbum.getJSONObject(i);
 
             album.setAlbum_name(objectsofAlbumItems[i].getString("name"));
-            album.setAlbum_url(SEARCH_DOMAIN + objectsofAlbumItems[i].getString("id"));
+            album.setAlbum_uri(SEARCH_ENDPOINT + objectsofAlbumItems[i].getString("id"));
             album.setAlbum_id(objectsofAlbumItems[i].getString("id"));
 
             return formatHandler.getFormatAll(format, allArray);
@@ -91,7 +91,7 @@ public class SearchSpotify extends Search {
             objectsofArtistItems[i] = searchItemsArtist.getJSONObject(i);
 
             artist.setArtist_name(objectsofArtistItems[i].getString("name"));
-            artist.setArtist_url(SEARCH_DOMAIN + objectsofArtistItems[i].getString("id"));
+            artist.setArtist_uri(SEARCH_ENDPOINT + objectsofArtistItems[i].getString("id"));
             artist.setArtist_id(objectsofArtistItems[i].getString("id"));
 
             return formatHandler.getFormatAll(format, allArray);
@@ -104,7 +104,7 @@ public class SearchSpotify extends Search {
             objectsofPlaylistItems[i] = searchItemsPlaylist.getJSONObject(i);
 
             playlist.setPlaylist_name(objectsofPlaylistItems[i].getString("name"));
-            playlist.setSpotify_url(SEARCH_DOMAIN + objectsofPlaylistItems[i].getString("id"));
+            playlist.setSpotify_uri(SEARCH_ENDPOINT + objectsofPlaylistItems[i].getString("id"));
             playlist.setPlaylist_id(objectsofPlaylistItems[i].getString("id"));
 
             return formatHandler.getFormatAll(format, allArray);
@@ -115,7 +115,7 @@ public class SearchSpotify extends Search {
                 objectsofTrackItems[i] = searchItemsTrack.getJSONObject(i);
 
                 track.setTrack_name(objectsofTrackItems[i].getString("name"));
-                track.setTrack_url(SEARCH_DOMAIN + objectsofTrackItems[i].getString("id"));
+                track.setTrack_uri(SEARCH_ENDPOINT + objectsofTrackItems[i].getString("id"));
                 track.setTrack_id(objectsofTrackItems[i].getString("id"));
 
                 return formatHandler.getFormatAll(format, allArray);
@@ -143,4 +143,5 @@ return null;
 
 
     }
+
 
