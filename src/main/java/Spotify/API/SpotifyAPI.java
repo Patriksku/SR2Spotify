@@ -65,7 +65,11 @@ public class SpotifyAPI {
             String authCode;
             authCode = request.queryParams("code");
 
-            if(authCode == null) {
+            if (request.queryParams().contains("error")) {
+                response.type("text/plain");
+                response.status(403);
+                return "The user chose not to authorize the application to the user's Spotify account.";
+            } else if(authCode == null) {
                 response.type("text/plain");
                 response.status(403);
                 return "Something went wrong while authorizing access to user information. Perhaps the user " +
