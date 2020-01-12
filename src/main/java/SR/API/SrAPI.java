@@ -19,12 +19,11 @@ public class SrAPI {
      * when accessing this endpoint.
      */
     public void getSongsJson() {
-        get("/api/sveriges-radio/songs/:channelid", (request, response) -> {
+        get("/api/v1/sveriges-radio/songs/:channelid", (request, response) -> {
 
             String URI = domain + request.params(":channelid");
             ChannelSongs channelSongs = new ChannelSongs();
 
-            String status = channelSongs.getFormat(URI, response);
             response.status(200);
             response.type("application/json");
             return channelSongs.getFormat(URI, response);

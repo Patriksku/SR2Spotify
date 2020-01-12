@@ -1,7 +1,7 @@
 package Spotify.API;
 
 import Spotify.Authentication.Authentication;
-import Spotify.Authentication.AutoRefreshToken;
+import Spotify.Authentication.AutoSessionManager;
 import Spotify.Functions.*;
 import Spotify.Users.UserSessions;
 import org.w3c.dom.Document;
@@ -17,11 +17,11 @@ import static spark.Spark.post;
  */
 public class SpotifyAPI {
 
-    private final String path = "/api/spotify";
+    private final String path = "/api/v1/spotify";
     private UserSessions userSessions = new UserSessions();
     private Authentication auth = new Authentication(userSessions);
     private UserPlaylists userPlaylists = new UserPlaylists(userSessions);
-    private AutoRefreshToken autoRefreshToken = null;
+    private AutoSessionManager autoSessionManager = null;
     private UserProfile userProfile = new UserProfile(userSessions);
     private UserSessionID userSessionID = new UserSessionID(userSessions);
 
@@ -71,8 +71,8 @@ public class SpotifyAPI {
                 return "Something went wrong while authorizing access to user information. Perhaps the user " +
                         "is already verified, or did not use the correct endpoint for verification.";
             } else {
-                if(autoRefreshToken == null) {
-                    autoRefreshToken = new AutoRefreshToken(userSessions);
+                if(autoSessionManager == null) {
+                    autoSessionManager = new AutoSessionManager(userSessions);
                 }
                 auth.requestToken(authCode, request.session().id());
                 userProfile.createProfile(request.session().id(), response);
@@ -243,8 +243,8 @@ public class SpotifyAPI {
                     response.type("text/plain");
                     return "Something went wrong while adding song to playlist. Please check your parameters.";
                 } else {
-                    response.status(200);
-                    response.type("");
+                    response.status(201);
+                    response.type("text/plain");
                     return status;
                 }
             } else {

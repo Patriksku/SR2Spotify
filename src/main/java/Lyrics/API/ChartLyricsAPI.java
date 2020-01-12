@@ -18,7 +18,7 @@ import static spark.Spark.get;
  */
 public class ChartLyricsAPI {
 
-    private final String path = "/api/chartlyrics";
+    private final String path = "/api/v1/chartlyrics";
     private final String domain = "http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?artist=";
     private FormatHandler formatHandler = new FormatHandler();
 
