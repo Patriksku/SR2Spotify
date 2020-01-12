@@ -108,14 +108,9 @@ public class ChartLyricsAPI {
                 response.status(500);
                 e.printStackTrace();
             }
-
-
             response.type("application/json");
             return formatHandler.getFormat(lyrics);
-
-
         });
-
         return null;
     }
 
