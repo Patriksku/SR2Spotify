@@ -39,28 +39,28 @@ getP4.addEventListener('click', () => {
     getData('http://localhost:4567/api/v1/sveriges-radio/songs/207')
 })
 
-const getMyPlayList_1 = document.querySelector('#get_play_list');
-const getMyPlayList_ID_1 = document.querySelector('#get_play_list');
-const getMyPlayList_2 = document.querySelector('#get_play_list');
-const getMyPlayList_ID_2 = document.querySelector('#get_play_list');
-const getMyPlayList_3 = document.querySelector('#get_play_list');
-const getMyPlayList_ID_3 = document.querySelector('#get_play_list');
-const getMyPlayList_4 = document.querySelector('#get_play_list');
-const getMyPlayList_ID_4 = document.querySelector('#get_play_list');
-const getMyPlayList_5 = document.querySelector('#get_play_list');
-const getMyPlayList_ID_5 = document.querySelector('#get_play_list');
-const getMyPlayList_6 = document.querySelector('#get_play_list');
-const getMyPlayList_ID_6 = document.querySelector('#get_play_list');
-const getMyPlayList_7 = document.querySelector('#get_play_list');
-const getMyPlayList_ID_7 = document.querySelector('#get_play_list');
-const getMyPlayList_8 = document.querySelector('#get_play_list');
-const getMyPlayList_ID_8 = document.querySelector('#get_play_list');
-const getMyPlayList_9 = document.querySelector('#get_play_list');
-const getMyPlayList_ID_9 = document.querySelector('#get_play_list');
-const getMyPlayList_10 = document.querySelector('#get_play_list');
-const getMyPlayList_ID_10 = document.querySelector('#get_play_list');
+const getMyPlayList_1 = document.querySelector('#get_playlist');
+const getMyPlayList_ID_1 = document.querySelector('#get_playlist');
+const getMyPlayList_2 = document.querySelector('#get_playlist');
+const getMyPlayList_ID_2 = document.querySelector('#get_playlist');
+const getMyPlayList_3 = document.querySelector('#get_playlist');
+const getMyPlayList_ID_3 = document.querySelector('#get_playlist');
+const getMyPlayList_4 = document.querySelector('#get_playlist');
+const getMyPlayList_ID_4 = document.querySelector('#get_playlist');
+const getMyPlayList_5 = document.querySelector('#get_playlist');
+const getMyPlayList_ID_5 = document.querySelector('#get_playlist');
+const getMyPlayList_6 = document.querySelector('#get_playlist');
+const getMyPlayList_ID_6 = document.querySelector('#get_playlist');
+const getMyPlayList_7 = document.querySelector('#get_playlist');
+const getMyPlayList_ID_7 = document.querySelector('#get_playlist');
+const getMyPlayList_8 = document.querySelector('#get_playlist');
+const getMyPlayList_ID_8 = document.querySelector('#get_playlist');
+const getMyPlayList_9 = document.querySelector('#get_playlist');
+const getMyPlayList_ID_9 = document.querySelector('#get_playlist');
+const getMyPlayList_10 = document.querySelector('#get_playlist');
+const getMyPlayList_ID_10 = document.querySelector('#get_playlist');
 
-const getPlayList = (url) => {
+const getPlaylist = (url) => {
     $(document).ready(function(){
         $.ajax({
             dataType: 'json',
@@ -94,83 +94,103 @@ const getPlayList = (url) => {
 };
 
 getMyPlayList_1.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_ID_1.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_2.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_ID_2.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_3.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_ID_3.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_4.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_ID_4.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_5.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_ID_5.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_6.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_ID_6.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_7.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_ID_7.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_8.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_ID_8.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_9.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_ID_9.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_10.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
 getMyPlayList_ID_10.addEventListener('click', () => {
-    getPlayList('http://localhost:4567/api/v1/spotify/myplaylists/10')
+    getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
+})
+
+const getMySessionID = document.querySelector('#get_session_id');
+
+const getSessionID = (url) => {
+    $(document).ready(function(){
+        $.ajax({
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            type: 'GET',
+            url: url,
+        }).then(function(data) {
+            $('.my_session_id').html("Session ID:  " + data.session_id);
+        });
+    });
+    console.log(url);
+};
+
+getMySessionID.addEventListener('click', () => {
+    getSessionID('http://localhost:4567/api/v1/spotify/session')
 })
 
 const getMyLyrics = document.querySelector('#search');
