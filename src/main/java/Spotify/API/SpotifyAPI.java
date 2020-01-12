@@ -32,7 +32,7 @@ public class SpotifyAPI {
         get(path + "/authuser", (request, response) -> {
 
             response.redirect(auth.getUserAuthToSpotify());
-            response.status(200); //Accepted - Spotify handles the login process.
+            response.status(200);
             response.type("");
 
             return response.status();
