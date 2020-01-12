@@ -12,9 +12,9 @@ const getData = (url) => {
             url: url,
         }).then(function(data) {
             $('.channel_id').html("Kanal: " + data.channelname);
-            $('.title').html("Nuvarande låt:  " + data.previoustitle);
-            $('.artist').html("Artist:  " + data.previousartist);
-            $('.album').html("Album:  " + data.previousalbum);
+            $('.title').html("Nuvarande låt:  " + data.title);
+            $('.artist').html("Artist:  " + data.artist);
+            $('.album').html("Album:  " + data.album);
             $('.next_title').html("Nästa låt: " + data.nexttitle);
             $('.next_artist').html("Nästa artist: " + data.nextartist);
             $('.next_album').html("Nästa album:  " + data.nextalbum);
