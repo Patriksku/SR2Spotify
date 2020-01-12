@@ -11,10 +11,10 @@ public class Songs2Keys {
     private int channelid;
     private String channelname;
 
-    private String previoustitle;
-    private String previousdescription;
-    private String previousartist;
-    private String previousalbum;
+    private String title;
+    private String description;
+    private String artist;
+    private String album;
 
     private String nexttitle;
     private String nextdescription;
@@ -39,36 +39,36 @@ public class Songs2Keys {
         this.channelname = channelname;
     }
 
-    public String getPrevioustitle() {
-        return previoustitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setPrevioustitle(String previoustitle) {
-        this.previoustitle = previoustitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getPreviousdescription() {
-        return previousdescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPreviousdescription(String previousdescription) {
-        this.previousdescription = previousdescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getPreviousartist() {
-        return previousartist;
+    public String getArtist() {
+        return artist;
     }
 
-    public void setPreviousartist(String previousartist) {
-        this.previousartist = previousartist;
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
-    public String getPreviousalbum() {
-        return previousalbum;
+    public String getAlbum() {
+        return album;
     }
 
-    public void setPreviousalbum(String previousalbum) {
-        this.previousalbum = previousalbum;
+    public void setAlbum(String album) {
+        this.album = album;
     }
 
     public String getNexttitle() {

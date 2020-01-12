@@ -53,10 +53,10 @@ public class ChannelSongs {
                     songs.setChannelid(channel.getInt("id"));
                     songs.setChannelname(channel.getString("name"));
 
-                    songs.setPrevioustitle("");
-                    songs.setPreviousdescription("");
-                    songs.setPreviousartist("");
-                    songs.setPreviousalbum("");
+                    songs.setTitle("");
+                    songs.setDescription("");
+                    songs.setArtist("");
+                    songs.setAlbum("");
 
                     songs.setNexttitle(nextsong.getString("title"));
                     songs.setNextdescription(nextsong.getString("description"));
@@ -72,10 +72,10 @@ public class ChannelSongs {
                     songs.setChannelid(channel.getInt("id"));
                     songs.setChannelname(channel.getString("name"));
 
-                    songs.setPrevioustitle(previoussong.getString("title"));
-                    songs.setPreviousdescription(previoussong.getString("description"));
-                    songs.setPreviousartist(previoussong.getString("artist"));
-                    songs.setPreviousalbum(previoussong.getString("albumname"));
+                    songs.setTitle(previoussong.getString("title"));
+                    songs.setDescription(previoussong.getString("description"));
+                    songs.setArtist(previoussong.getString("artist"));
+                    songs.setAlbum(previoussong.getString("albumname"));
 
                     songs.setNexttitle("");
                     songs.setNextdescription("");
@@ -92,10 +92,10 @@ public class ChannelSongs {
                     songs.setChannelid(channel.getInt("id"));
                     songs.setChannelname(channel.getString("name"));
 
-                    songs.setPrevioustitle(previoussong.getString("title"));
-                    songs.setPreviousdescription(previoussong.getString("description"));
-                    songs.setPreviousartist(previoussong.getString("artist"));
-                    songs.setPreviousalbum(previoussong.getString("albumname"));
+                    songs.setTitle(previoussong.getString("title"));
+                    songs.setDescription(previoussong.getString("description"));
+                    songs.setArtist(previoussong.getString("artist"));
+                    songs.setAlbum(previoussong.getString("albumname"));
 
                     songs.setNexttitle(nextsong.getString("title"));
                     songs.setNextdescription(nextsong.getString("description"));
