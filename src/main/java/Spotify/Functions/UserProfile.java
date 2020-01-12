@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import spark.Response;
 
 /**
- * This class is responsible for returning JSON or XML containing information
+ * This class is responsible for returning a JSON-file containing information
  * from a user's Spotify profile, and setting the profile together with
  * the specified User.
  * @author Patriksku
@@ -22,7 +22,6 @@ public class UserProfile {
     private final String USER_PROFILE_ENDPOINT = "https://api.spotify.com/v1/me";
 
     private HttpResponse<JsonNode> response;
-    //tog bort session id private!
 
     public UserProfile(UserSessions userSessions) {
         this.userSessions = userSessions;
@@ -31,7 +30,7 @@ public class UserProfile {
     /**
      * Requests access to a user's Spotify profile.
      * @param session_id of the user.
-     * @return XML or JSON based on user input.
+     * @return JSON.
      */
     public String requestMyProfile(String session_id) {
             try {
@@ -78,7 +77,7 @@ public class UserProfile {
      * Creates and returns a Profile-object with information received from the current user's Spotify profile.
      * @param envelope JSONObject returned from Spotify.
      * @param session_id of current user.
-     * @return XML or JSON, based on user input.
+     * @return JSON.
      */
     private String getMyProfile(JSONObject envelope, String session_id) {
         Profile profile = new Profile();
@@ -105,7 +104,7 @@ public class UserProfile {
     }
 
     /**
-     * Creates and returns a Profile-object with information received from a user's Spotify profile.
+     * Creates a Profile-object with information received from a user's Spotify profile.
      * @param envelope JSONObject returned from Spotify.
      * @param session_id of the user that a profile will be created for.
      */
@@ -137,9 +136,5 @@ public class UserProfile {
      */
     public void setProfile(String session_id, Profile profile) {
         userSessions.get(session_id).setProfile(profile);
-        System.out.println("Successfully set profile for the user: " + profile.getDisplay_name());
-        System.out.println();
-        System.out.println("-PROFILE-");
-        System.out.println(userSessions.get(session_id).getProfile().toString());
     }
 }

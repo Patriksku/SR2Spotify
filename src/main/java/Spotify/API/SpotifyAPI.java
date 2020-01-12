@@ -5,7 +5,6 @@ import Spotify.Authentication.AutoRefreshToken;
 import Spotify.Functions.*;
 import Spotify.Users.UserSessions;
 import org.w3c.dom.Document;
-
 import java.net.URLDecoder;
 
 import static spark.Spark.get;

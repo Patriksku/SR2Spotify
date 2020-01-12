@@ -1,11 +1,12 @@
 package Spotify.Users;
 
 import Spotify.Beans.User;
-import java.util.HashMap;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A class which contains a HashMap with every session id and its corresponding token.
+ * A class which contains a ConcurrentHashMap with every session id and its corresponding token for this session.
+ * A session is 45 minutes long.
  * @author Patriksku
  */
 public class UserSessions {
@@ -37,7 +38,7 @@ public class UserSessions {
 
     /**
      * @param session_id of user.
-     * @return Token of the user.
+     * @return User-object of the user.
      */
     public User get(String session_id) {
         if(userSessionsMap.containsKey(session_id)) {
@@ -47,7 +48,7 @@ public class UserSessions {
     }
 
     /**
-     * @return the userSessionsMap.
+     * @return the userSessionsMap with all sessions together with all User-objects.
      */
     public ConcurrentHashMap<String, User> getHashMap() {
         return this.userSessionsMap;
@@ -60,7 +61,7 @@ public class UserSessions {
      * @return session_id for the user.
      */
     public String getUserID(String userID) {
-        for (HashMap.Entry<String, User> entry : userSessionsMap.entrySet()) {
+        for (ConcurrentHashMap.Entry<String, User> entry : userSessionsMap.entrySet()) {
             String session_id = entry.getKey();
             User user = entry.getValue();
             if (user.getProfile().getUser_id().equals(userID)) {

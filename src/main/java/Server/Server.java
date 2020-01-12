@@ -5,7 +5,6 @@ import Lyrics.API.ChartLyricsAPI;
 import SR.API.SrAPI;
 import Spotify.API.SpotifyAPI;
 import com.mashape.unirest.http.Unirest;
-
 import java.io.IOException;
 
 import static spark.Spark.*;

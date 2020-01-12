@@ -64,6 +64,13 @@ public class Token {
         return active;
     }
 
+    /**
+     * Every time a user uses a function that needs to contact the Spotify API, this function
+     * is called. A user is defined as "Active" by the server is the user has used three of
+     * these functions in a time frame of 45 minutes. This functions logs of these events -
+     * once the total number of these functions reaches three for a user, that user will
+     * be labeled as "Active".
+     */
     public void logActivityEvent() {
         if (!isActive()) {
             if (activityActions < 3) {
@@ -80,7 +87,6 @@ public class Token {
         this.active = active;
         if (!active) {
             activityActions = 0;
-            System.out.println("ActivityActions is now 0 again.");
         }
     }
 

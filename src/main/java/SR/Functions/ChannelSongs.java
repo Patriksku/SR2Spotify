@@ -6,24 +6,24 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.json.JSONException;
 import org.json.JSONObject;
 import spark.Response;
 
 /**
- * This class is responsible for grabbing the resource with song information from Sveriges Radio API as a JSON-file.
- * Modifications are made, and then either returned as XML or JSON-files, depending on what the user requests.
+ * This class is responsible for grabbing the resource with song information from Sveriges Radio API as a JSON-file -
+ * modifications are made for cleaner information, and then returns this as a JSON-file.
  * @author Patriksku
  */
 public class ChannelSongs {
 
     HttpResponse<JsonNode> response;
-    FormatHandler formatHandler = new FormatHandler();
 
     /**
      * Modifies and returns the acquired information from a given radio station.
      * @param URI endpoint of a resource in Sveriges Radio API.
-     * @param serverResponse ----
-     * @return String representation of a XML or JSON file.
+     * @param serverResponse Response object for setting HTTP status code and Content-Type.
+     * @return JSON.
      */
     public String getFormat(String URI, Response serverResponse) {
 
@@ -33,10 +33,6 @@ public class ChannelSongs {
             response = Unirest.get(URI) //Loads the resource into a response object.
                     .queryString("format", "json")
                     .asJson();
-
-            System.out.println("Response from SR:");
-            System.out.println(response.getBody());
-            System.out.println();
 
             //Creates JSON objects of the necessary fields.
             JsonNode json = response.getBody();
@@ -52,8 +48,6 @@ public class ChannelSongs {
             } else {
 
                 if (!playlist.has("previoussong")) {
-                    System.out.println("PREVIOUSSONG IS NOT HYE");
-
                     JSONObject nextsong = playlist.getJSONObject("nextsong");
 
                     songs.setChannelid(channel.getInt("id"));
@@ -73,8 +67,6 @@ public class ChannelSongs {
                     return formatHandler.getFormat(songs);
 
                 } else if (!playlist.has("nextsong")) {
-                    System.out.println("NEXTSONG IS NOT HYE");
-
                     JSONObject previoussong = playlist.getJSONObject("previoussong");
 
                     songs.setChannelid(channel.getInt("id"));
@@ -114,10 +106,10 @@ public class ChannelSongs {
                     return formatHandler.getFormat(songs);
                 }
             }
-        } catch (UnirestException ue) {
+        } catch (UnirestException | JSONException e) {
             serverResponse.status(404);
-            ue.printStackTrace();
+            serverResponse.type("text/plain");
+            return "404 Not Found. Make sure that your parameter is right - only numerical values are valid.";
         }
-        return formatHandler.getFormat(songs);
     }
 }
