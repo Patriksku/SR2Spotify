@@ -13,11 +13,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * every 45 minutes of all users that currently exist in the server.
  * @author Patriksku
  */
-public class AutoRefreshToken extends TimerTask {
+public class AutoSessionManager extends TimerTask {
     private Timer timer = new Timer(true);
     private UserSessions userSessions;
 
-    public AutoRefreshToken(UserSessions userSessions) {
+    public AutoSessionManager(UserSessions userSessions) {
         this.userSessions = userSessions;
         timer.scheduleAtFixedRate(this, 60000*45, 60000*45); // 20 sec
     }
