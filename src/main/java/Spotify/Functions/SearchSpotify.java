@@ -40,7 +40,7 @@ public class SearchSpotify extends Search {
             response = Unirest.get(SEARCH_ENDPOINT)
                     .header("Authorization", (userSessions.get(session_id).getToken().getToken_type() + " " + userSessions.get(session_id).getToken().getAccess_token()))
                     .queryString("q", search)
-                    .queryString("type", "album")
+                    .queryString("type", "album,artist,playlist,track")
                     .asJson();
 
 
