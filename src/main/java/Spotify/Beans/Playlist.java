@@ -8,6 +8,7 @@ package Spotify.Beans;
 public class Playlist {
     private String playlist_name;
     private String spotify_url;
+    private String spotify_uri;
     private String playlist_id;
     private String image_url;
 
@@ -29,6 +30,14 @@ public class Playlist {
         this.spotify_url = spotify_url;
     }
 
+    public String getSpotify_uri() {
+        return spotify_uri;
+    }
+
+    public void setSpotify_uri(String spotify_uri) {
+        this.spotify_uri = spotify_uri;
+    }
+
     public String getPlaylist_id() {
         return playlist_id;
     }
@@ -47,6 +56,6 @@ public class Playlist {
 
     @Override
     public String toString() {
-        return playlist_name + "\n" + spotify_url + "\n" + playlist_id + "\n" + image_url + "\n";
+        return playlist_name + "\n" + spotify_url + "\n" + playlist_id + "\n" + image_url + "\n" + spotify_uri;
     }
 }
