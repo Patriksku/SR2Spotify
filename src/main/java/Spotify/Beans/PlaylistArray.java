@@ -10,8 +10,6 @@ public class PlaylistArray {
     private int amountOfPlaylists;
     private Playlist[] arrayOfPlaylists;
 
-    public PlaylistArray() {}
-
     public PlaylistArray(int amountOfPlaylists) {
         this.amountOfPlaylists = amountOfPlaylists;
         arrayOfPlaylists = new Playlist[amountOfPlaylists];

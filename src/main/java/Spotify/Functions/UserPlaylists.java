@@ -12,14 +12,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * This class is responsible for returning JSON or XML
+ * This class is responsible for returning a JSON file
  * containing playlists from a user's Spotify account.
  * @author Patriksku
  */
 public class UserPlaylists {
-
-    private final String SPOTIFY_PLAYLIST_DOMAIN = "https://open.spotify.com/playlist/";
-    private final String USER_PLAYLIST_ENDPOINT = "https://api.spotify.com/v1/me/playlists";
 
     private UserSessions userSessions;
     private HttpResponse<JsonNode> response;
@@ -32,12 +29,12 @@ public class UserPlaylists {
      * Requests access to a user's playlists from Spotify.
      * @param session_id of the user.
      * @param limit amount of playlists to return, a number between 0 and 50.
-     * @param format XML or JSON.
-     * @return XML or JSON with a user's Spotify playlists.
+     * @return JSON with a user's Spotify playlists.
      */
-    public String requestMyPlaylist(String session_id, String limit, String format) {
+    public String requestMyPlaylist(String session_id, String limit) {
         try {
             System.out.println("Sending GET request to Spotify [USER_PLAYLIST_ENDPOINT]...");
+            String USER_PLAYLIST_ENDPOINT = "https://api.spotify.com/v1/me/playlists";
             response = Unirest.get(USER_PLAYLIST_ENDPOINT)
                     .header("Authorization", (userSessions.get(session_id).getToken().getToken_type() + " " + userSessions.get(session_id).getToken().getAccess_token()))
                     .queryString("limit", limit)
@@ -45,20 +42,20 @@ public class UserPlaylists {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
-        return getPlaylist(response.getBody().getObject(), format);
+        return getPlaylist(response.getBody().getObject());
     }
 
     /**
      * Returns a user's playlists from Spotify.
      * @param envelope JSONObject returned from Spotify with playlists.
-     * @param format XML or JSON
-     * @return XML or JSON containing playlists.
+     * @return JSON containing playlists.
      */
-    public String getPlaylist(JSONObject envelope, String format) {
+    public String getPlaylist(JSONObject envelope) {
         JSONArray items = envelope.getJSONArray("items");
         JSONObject objectInsideItems;
         JSONArray images;
         String imageURL;
+        String SPOTIFY_PLAYLIST_DOMAIN = "https://open.spotify.com/playlist/";
         int amountOfPlaylists = items.length();
         PlaylistArray arrayOfPlaylists = new PlaylistArray(amountOfPlaylists);
         JSONObject[] objectsOfItems = new JSONObject[amountOfPlaylists];
@@ -80,6 +77,6 @@ public class UserPlaylists {
         }
 
         FormatHandler formatHandler = new FormatHandler();
-        return formatHandler.getFormat(format, arrayOfPlaylists);
+        return formatHandler.getFormat(arrayOfPlaylists);
     }
 }

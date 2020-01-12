@@ -1,41 +1,38 @@
 package SR.API;
 
 import SR.Functions.ChannelSongs;
-import org.w3c.dom.Document;
 
 import static spark.Spark.get;
 
 /**
- * This class is responsible for returning a representation of a resource
- * from Sveriges Radio API.
+ * This class is responsible for returning a representation of a resource - current songs playing
+ * at a given radio station, from Sveriges Radio API.
  * @author Patriksku
  */
 public class SrAPI {
 
-    private final String path = "/api/sveriges-radio";
     private final String domain = "http://api.sr.se/api/v2/playlists/rightnow?channelid=";
 
     /**
      * Returns a JSON with various information about recent and upcoming songs
-     * of a given radio-station at Sveriges Radio - the specified channelid query parameter.
-     * @return JSON-file.
+     * of a given radio-station at Sveriges Radio - the specified channelid query parameter,
+     * when accessing this endpoint.
      */
-    public Document getSongsJson() {
-        get(path + "/songs/:channelid", (request, response) -> {
+    public void getSongsJson() {
+        get("/api/sveriges-radio/songs/:channelid", (request, response) -> {
 
             String URI = domain + request.params(":channelid");
             ChannelSongs channelSongs = new ChannelSongs();
 
+            String status = channelSongs.getFormat(URI, response);
             response.status(200);
             response.type("application/json");
             return channelSongs.getFormat(URI, response);
         });
-        return null;
     }
 
     /**
-     * Initializes/deploys all methods within this class to act upon various URI-inputs based on
-     * paths specified in the methods.
+     * Initializes methods with endpoints in this class.
      */
     public void init(){
         getSongsJson();

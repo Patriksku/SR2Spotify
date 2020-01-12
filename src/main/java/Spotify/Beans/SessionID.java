@@ -1,9 +1,8 @@
 package Spotify.Beans;
 
 /**
- * An object representing the unique session id that is used for
- * identifying the current user. This object is returned as JSON
- * whenever the client needs a user's session_id.
+ * An object representing the unique session id of a user and if the user has granted
+ * the application access to its Spotify account, based on a boolean value.
  * @author Patriksku
  */
 public class SessionID {

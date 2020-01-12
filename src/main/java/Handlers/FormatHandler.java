@@ -8,20 +8,18 @@ import Spotify.Beans.SessionID;
 import Spotify.Beans.VisitorStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 /**
- * This class handles conversions from object to XML or JSON files.
+ * This class handles conversions from various objects to JSON.
  * @author Patriksku
  */
 public class FormatHandler {
     private String jsonFormat;
-    private String xmlFormat;
 
     /**
-     * Creates and returns a JSON or XML file based on a Profile object.
+     * Creates and returns a JSON based on a Profile object.
      * @param profile represents a user's Spotify profile.
-     * @return XML or JSON based on the format.
+     * @return JSON.
      */
     public String getFormat(Profile profile) {
         try {
@@ -38,8 +36,8 @@ public class FormatHandler {
     /**
      * Creates and returns a JSON file based on a VisitorStatus object.
      * @param visitorStatus contains a boolean value - true if current user has
-     *                      granted the application access to the user's Spotify account - or false.
-     * @return JSON
+     *                      granted the application access to the user's Spotify account - otherwise false.
+     * @return JSON.
      */
     public String getFormat(VisitorStatus visitorStatus) {
         try {
@@ -53,6 +51,11 @@ public class FormatHandler {
         return "Something went wrong while converting VisitorStatus-object to JSON.";
     }
 
+    /**
+     * Creates and returns a JSON file based on a SessionID object.
+     * @param sessionID object with session_id and Spotify-authorization status of a user.
+     * @return JSON.
+     */
     public String getFormat(SessionID sessionID) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -65,6 +68,11 @@ public class FormatHandler {
         return "Something went wrong while converting SessionID-object to JSON.";
     }
 
+    /**
+     * Creates and returns a JSON file based on a Songs2Keys object.
+     * @param songs2Keys object with various information about current songs of a radio station.
+     * @return JSON.
+     */
     public String getFormat(Songs2Keys songs2Keys) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -78,25 +86,16 @@ public class FormatHandler {
     }
 
     /**
-     * Creates and returns a JSON or XML file based on a PlaylistArray object.
-     * @param format to be returned - JSON or XML.
+     * Creates and returns a JSON file based on a PlaylistArray object.
      * @param playlistArray represents a user's playlists from Spotify.
-     * @return XML or JSON based on the format.
+     * @return JSON.
      */
-    public String getFormat(String format, PlaylistArray playlistArray) {
+    public String getFormat(PlaylistArray playlistArray) {
         try {
-            if (format.equalsIgnoreCase("json")) {
                 ObjectMapper mapper = new ObjectMapper();
                 jsonFormat = mapper.writeValueAsString(playlistArray);
 
                 return jsonFormat;
-
-            } else if (format.equalsIgnoreCase("xml")) {
-                ObjectMapper mapper = new XmlMapper();
-                xmlFormat = mapper.writeValueAsString(playlistArray);
-
-                return xmlFormat;
-            }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -108,7 +107,7 @@ public class FormatHandler {
      * @param lyrics
      * @return JSON
      */
-    public String getFormat(Lyrics lyrics){
+    public String getFormat(Lyrics lyrics) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             jsonFormat = mapper.writeValueAsString(lyrics);

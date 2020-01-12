@@ -14,6 +14,10 @@ public class Token {
     private String refresh_token;
     private String scope;
 
+    //Keeps track if user is active.
+    private boolean active;
+    private int activityActions = 0;
+
     public Token() {}
 
     public String getAccess_token() {
@@ -56,11 +60,43 @@ public class Token {
         this.scope = scope;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * Every time a user uses a function that needs to contact the Spotify API, this function
+     * is called. A user is defined as "Active" by the server is the user has used three of
+     * these functions in a time frame of 45 minutes. This functions logs of these events -
+     * once the total number of these functions reaches three for a user, that user will
+     * be labeled as "Active".
+     */
+    public void logActivityEvent() {
+        if (!isActive()) {
+            if (activityActions < 3) {
+                activityActions++;
+                if (activityActions == 3) {
+                    System.out.println("User now qualifies for staying in the system for another time-unit.");
+                    setActive(true);
+                }
+            }
+        }
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+        if (!active) {
+            activityActions = 0;
+        }
+    }
+
     public String toString() {
         return "access_token: " + getAccess_token() + "\n" +
                 "token_type: " + getToken_type() + "\n" +
                 "expires_in: " + getExpires_in() + "\n" +
                 "refresh_token: " + getRefresh_token() + "\n" +
-                "scope: " + getScope() + "\n";
+                "scope: " + getScope() + "\n" +
+                "active: " + isActive() + "\n" +
+                "activity actions: " + activityActions + "\n";
     }
 }

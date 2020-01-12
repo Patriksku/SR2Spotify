@@ -1,9 +1,10 @@
 package Spotify.API;
 
+import Spotify.Authentication.Authentication;
+import Spotify.Authentication.AutoRefreshToken;
 import Spotify.Functions.*;
 import Spotify.Users.UserSessions;
 import org.w3c.dom.Document;
-
 import java.net.URLDecoder;
 
 import static spark.Spark.get;
@@ -26,9 +27,8 @@ public class SpotifyAPI {
 
     /**
      * Authenticates the user by granting the user a login screen to Spotify.
-     * @return response code, and a message if some error occurs.
      */
-    public String authUser() {
+    public void authUser() {
         get(path + "/authuser", (request, response) -> {
 
             response.redirect(auth.getUserAuthToSpotify());
@@ -36,7 +36,6 @@ public class SpotifyAPI {
 
             return response.status();
         });
-        return null;
     }
 
     /**
@@ -47,6 +46,7 @@ public class SpotifyAPI {
     public String visitorStatus() {
         get(path + "/visitorstatus", (request, response) -> {
 
+            response.status(200);
             response.type("application/json");
             CheckVisitorStatus checkVisitor = new CheckVisitorStatus();
             return checkVisitor.checkStatus(userSessions.contains(request.session().id()));
@@ -56,8 +56,7 @@ public class SpotifyAPI {
 
     /**
      * The Callback or redirect URI where a user lands after a successful authentication.
-     * If everything goes well, the user is matched with his token for later usage,
-     * and a Thread is created which automatically refreshes access tokens every 30 minutes.
+     * If everything goes well, the user is matched with his token for later usage.
      * A profile-object is also created for the user with information from Spotify profile.
      */
     public void spotify() {
@@ -73,7 +72,7 @@ public class SpotifyAPI {
                         "is already verified, or did not use the correct endpoint for verification.";
             } else {
                 if(autoRefreshToken == null) {
-                    autoRefreshToken = new AutoRefreshToken(userSessions, auth);
+                    autoRefreshToken = new AutoRefreshToken(userSessions);
                 }
                 auth.requestToken(authCode, request.session().id());
                 userProfile.createProfile(request.session().id(), response);
@@ -85,9 +84,7 @@ public class SpotifyAPI {
     }
 
     /**
-     * Returns information from the specified user's Spotify profile.
-     * Note: The user needs to grant the application access first -
-     * The client will get an information message if no access has been granted.
+     * Returns information from the specified user's Spotify profile if authentication has been granted.
      * @return JSON-file which contains various fields from the user's Spotify profile.
      */
     public Document getProfile() {
@@ -97,6 +94,7 @@ public class SpotifyAPI {
             if (sessionOfUserID != null) {
                 response.type("application/json");
                 response.status(200);
+                auth.refreshToken(userSessions.get(request.session().id()).getToken());
                 return userProfile.requestMyProfile(sessionOfUserID);
             } else {
                 response.type("text/plain");
@@ -110,7 +108,7 @@ public class SpotifyAPI {
 
     /**
      * This method returns a JSON object containing the unique session_id of
-     * the current user, together with a boolean which is True if the current user
+     * the current user together with a boolean which is True if the current user
      * has granted the application access to the user's Spotify account - otherwise False.
      * @return JSON
      */
@@ -132,8 +130,7 @@ public class SpotifyAPI {
 
     /**
      * Returns the current user's information from Spotify if the user's unique
-     * session-id exists in the server. If not, the user is redirected to the login-page
-     * where the user may grant the application access to the user's information from Spotify.
+     * session-id exists in the server.
      * @return JSON-file with the current user's information from Spotify.
      */
     public Document getMyProfile() {
@@ -142,6 +139,7 @@ public class SpotifyAPI {
             if (userSessions.contains(request.session().id())) {
                 response.status(200);
                 response.type("application/json");
+                auth.refreshToken(userSessions.get(request.session().id()).getToken());
                 return userProfile.requestMyProfile(request.session().id());
             }
             response.status(401);
@@ -164,7 +162,8 @@ public class SpotifyAPI {
             if (sessionOfUserID != null) {
                 response.status(200);
                 response.type("application/json");
-                return userPlaylists.requestMyPlaylist(sessionOfUserID, "50", "json");
+                auth.refreshToken(userSessions.get(request.session().id()).getToken());
+                return userPlaylists.requestMyPlaylist(sessionOfUserID, "50");
             } else {
                 response.status(401);
                 response.type("text/plain");
@@ -192,7 +191,8 @@ public class SpotifyAPI {
             if (userSessions.contains(request.session().id())) {
                 response.status(200);
                 response.type("application/json");
-                return userPlaylists.requestMyPlaylist(request.session().id(), limit, "json");
+                auth.refreshToken(userSessions.get(request.session().id()).getToken());
+                return userPlaylists.requestMyPlaylist(request.session().id(), limit);
             } else {
                 response.status(401);
                 response.type("text/plain");
@@ -221,7 +221,6 @@ public class SpotifyAPI {
             //Splits the parameters accordingly to Spotify requirements.
             String[] pairs = body.split("&");
             String[] bodyParams = new String[3];
-            System.out.println(pairs.length);
             try {
                 for (int i = 0; i < pairs.length; i++) {
                     String[] eachParam = pairs[i].split("=");
@@ -235,17 +234,25 @@ public class SpotifyAPI {
                 return "Something went wrong while adding song to playlist. Please check your parameters.";
             }
 
-            AddSongToPlaylist addSong = new AddSongToPlaylist(userSessions);
-            response.status();
-            String status = addSong.addSongToPlaylist(bodyParams[0], bodyParams[1], bodyParams[2]);
-            if (!status.equalsIgnoreCase("Successfully added song to playlist.")) {
-                response.status(400);
+            if (userSessions.contains(bodyParams[0])) {
+                auth.refreshToken(userSessions.get(bodyParams[0]).getToken());
+                AddSongToPlaylist addSong = new AddSongToPlaylist(userSessions);
+                String status = addSong.addSongToPlaylist(bodyParams[0], bodyParams[1], bodyParams[2]);
+                if (!status.equalsIgnoreCase("Successfully added song to playlist.")) {
+                    response.status(400);
+                    response.type("text/plain");
+                    return "Something went wrong while adding song to playlist. Please check your parameters.";
+                } else {
+                    response.status(200);
+                    response.type("");
+                    return status;
+                }
+            } else {
+                response.status(401);
                 response.type("text/plain");
-                return "Something went wrong while adding song to playlist. Please check your parameters.";
+                return "This user is currently not authorized to Spotify. Please grant the application access to your Spotify account" +
+                        " if you wish to use this feature.";
             }
-            response.status(200);
-            response.type("");
-            return status;
         });
         return "Something went wrong while adding song to playlist. Please check your parameters.";
     }
