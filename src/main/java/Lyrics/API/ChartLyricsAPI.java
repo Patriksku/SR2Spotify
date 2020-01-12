@@ -24,7 +24,7 @@ public class ChartLyricsAPI {
 
 
 
-    //http://localhost:4567/api/chartlyrics/getLyrics/artist/song
+    //http://localhost:4567/api/v1/chartlyrics/getLyrics/artist/song
 
     /**
      * gets the lyrics of a song by seraching for the artist name and song
@@ -34,7 +34,6 @@ public class ChartLyricsAPI {
      * @return string with lyrics
      */
     public String getLyrics(){
-
         get(path + "/getLyrics/:artist/:song", (request, response) ->{
             String lyrics = "no lyrics found";
             String body = "";
@@ -78,39 +77,45 @@ public class ChartLyricsAPI {
      * @return
      */
     public Document getLyricsJson(){
-
+        System.out.println("comes here fist");
         get(path + "/getLyrics/:artist/:song", (request, response) ->{
-
+            System.out.println("comes here");
             String artist = request.params(":artist");
             String song = request.params(":song");
             String URI = domain + artist + "&song=" + song;
             Lyrics lyrics = new Lyrics();
             String body = "";
-            // System.out.println(URI); //test
+            System.out.println(URI); //test
 
             try{
                 body = Unirest.get(URI).asString().getBody();
-                try{
-                    JSONObject xmlJsonObj = XML.toJSONObject(body);
-                    String jsonPrettyPrintString = xmlJsonObj.toString(4);
-                    //System.out.println(jsonPrettyPrintString);
-                    JSONObject json = new JSONObject(jsonPrettyPrintString);
-                    System.out.println(json);
-                    lyrics.setText(json.getJSONObject("GetLyricResult").getString("Lyric"));
-                    //System.out.println(lyrics);
-                }
-                catch (Exception e){
-                    e.printStackTrace();
+                JSONObject xmlJsonObj = XML.toJSONObject(body);
+                String jsonPrettyPrintString = xmlJsonObj.toString(4);
+                System.out.println(jsonPrettyPrintString);
+                JSONObject json = new JSONObject(jsonPrettyPrintString);
+                System.out.println(json);
+                lyrics.setText(json.getJSONObject("GetLyricResult").getString("Lyric"));
+                System.out.println(lyrics);
+
+                if(lyrics.getText().equals("")){
+                    response.status(204);
+                    return lyrics;
+                } else {
+                    response.status(200);
                 }
             }
             catch (Exception e){
+                response.status(500);
                 e.printStackTrace();
             }
-            if(lyrics.equals("")){
-                return "no lyrics found";
-            }
+
+
+            response.type("application/json");
             return formatHandler.getFormat(lyrics);
+
+
         });
+
         return null;
     }
 
