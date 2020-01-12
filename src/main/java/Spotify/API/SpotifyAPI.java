@@ -24,6 +24,8 @@ public class SpotifyAPI {
     private UserProfile userProfile = new UserProfile(userSessions);
     private UserSessionID userSessionID = new UserSessionID(userSessions);
     private SearchSpotify searchSpotify = new SearchSpotify(userSessions);
+    private final String SEARCH_ENDPOINT = "https://api.spotify.com/v1/search";
+
 
     /**
      * Authenticates the user by granting the user a login screen to Spotify.
@@ -255,7 +257,8 @@ public class SpotifyAPI {
         get(path + "/getsearch/:search", ((request, response) -> {
 
 
-            searchSpotify.requestSearch(request.params(":search"), request.session().id());
+
+            searchSpotify.requestSearch(request.params(":search"), request.session().id(), request.params("format"));
             response.type("text/plain");
             return request.params(":search");
         }));
