@@ -73,7 +73,7 @@ hr{
     width: 80%;
     border: 0;
     height: 2px;
-    background-image: linear-gradient(to right, rgb(0, 0, 0), rgb(255, 255, 255), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgb(255, 255, 255), rgba(0, 0, 0, 0));
 }
 
 #sr_title{
@@ -90,7 +90,7 @@ hr{
     width: 80%;
     border: 0;
     height: 2px;
-    background-image: linear-gradient(to right, rgb(0, 0, 0), rgb(255, 255, 255), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgb(255, 255, 255), rgba(0, 0, 0, 0));
 }
 
 #channels{
@@ -276,7 +276,19 @@ hr{
     text-align: left;
 }
 
+.my_playlist_id_1{
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-align: left;
+}
+
 .my_playlist_2{
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-align: left;
+}
+
+.my_playlist_id_2{
     font-family: 'Merriweather', serif;
     color: white;
     text-align: left;
@@ -288,7 +300,19 @@ hr{
     text-align: left;
 }
 
+.my_playlist_id_3{
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-align: left;
+}
+
 .my_playlist_4{
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-align: left;
+}
+
+.my_playlist_id_4{
     font-family: 'Merriweather', serif;
     color: white;
     text-align: left;
@@ -300,7 +324,19 @@ hr{
     text-align: left;
 }
 
+.my_playlist_id_5{
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-align: left;
+}
+
 .my_playlist_6{
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-align: left;
+}
+
+.my_playlist_id_6{
     font-family: 'Merriweather', serif;
     color: white;
     text-align: left;
@@ -312,7 +348,19 @@ hr{
     text-align: left;
 }
 
+.my_playlist_id_7{
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-align: left;
+}
+
 .my_playlist_8{
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-align: left;
+}
+
+.my_playlist_id_8{
     font-family: 'Merriweather', serif;
     color: white;
     text-align: left;
@@ -324,10 +372,79 @@ hr{
     text-align: left;
 }
 
+.my_playlist_id_9{
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-align: left;
+}
+
 .my_playlist_10{
     font-family: 'Merriweather', serif;
     color: white;
     text-align: left;
+}
+
+.my_playlist_id_10{
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-align: left;
+}
+
+#add_song_box{
+    text-align: center;
+    padding: 20px;
+    margin: 20px;
+}
+
+#session_id_my_input{
+    width: 200px;
+    font-size: 16px;
+    padding-left: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    outline: none;
+    font-family: 'Merriweather', serif;
+    border-color: #1DB954;
+    box-shadow: 0px 0px 25px black;
+    transition: 0.5s all;
+    color: white;
+    background-color: rgb(27, 27, 29);
+    margin: 5px;
+}
+
+#playlist_id_my_input{
+    width: 200px;
+    font-size: 16px;
+    padding-left: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    outline: none;
+    font-family: 'Merriweather', serif;
+    border-color: #1DB954;
+    box-shadow: 0px 0px 25px black;
+    transition: 0.5s all;
+    color: white;
+    background-color: rgb(27, 27, 29);
+    margin: 5px;
+}
+
+#song_uri_my_input{
+    width: 200px;
+    font-size: 16px;
+    padding-left: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    outline: none;
+    font-family: 'Merriweather', serif;
+    border-color: #1DB954;
+    box-shadow: 0px 0px 25px black;
+    transition: 0.5s all;
+    color: white;
+    background-color: rgb(27, 27, 29);
+    margin: 5px;
 }
 
 #cl_title{
@@ -378,6 +495,8 @@ hr{
     padding-top: 10px;
     padding-bottom: 10px;
     border-radius: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
     outline: none;
     font-family: 'Merriweather', serif;
     border-color: #dc143c;
