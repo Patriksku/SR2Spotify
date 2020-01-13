@@ -77,9 +77,9 @@ public class ChartLyricsAPI {
      * @return
      */
     public Document getLyricsJson(){
-        System.out.println("comes here fist");
+        /*System.out.println("comes here fist");*/
         get(path + "/getLyrics/:artist/:song", (request, response) ->{
-            System.out.println("comes here");
+            /*System.out.println("comes here");*/
             String artist = request.params(":artist");
             String song = request.params(":song");
             String URI = domain + artist + "&song=" + song;
