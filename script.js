@@ -1,7 +1,11 @@
-const getP1 = document.querySelector('#get_p1');
+//Här skapas variabler för alla SR-radiostationer
+
+const getP1 = document.querySelector('#get_p1'); 
 const getP2 = document.querySelector('#get_p2');
 const getP3 = document.querySelector('#get_p3');
 const getP4 = document.querySelector('#get_p4');
+
+//Här får vi datan från servern i JSON-format, som vi sedan skriver ut i html-form
 
 const getData = (url) => {
     $(document).ready(function(){
@@ -23,6 +27,8 @@ const getData = (url) => {
     console.log(url);
 };
 
+//Här skapas funktioner för att när användaren trycker på knappen, hämtar man data från servern
+
 getP1.addEventListener('click', () => {
     getData('http://localhost:4567/api/v1/sveriges-radio/songs/132')
 })
@@ -38,6 +44,8 @@ getP3.addEventListener('click', () => {
 getP4.addEventListener('click', () => {
     getData('http://localhost:4567/api/v1/sveriges-radio/songs/207')
 })
+
+//Här skapas variabler för Spotify-spellistor
 
 const getMyPlayList_1 = document.querySelector('#get_playlist');
 const getMyPlayList_ID_1 = document.querySelector('#get_playlist');
@@ -59,6 +67,8 @@ const getMyPlayList_9 = document.querySelector('#get_playlist');
 const getMyPlayList_ID_9 = document.querySelector('#get_playlist');
 const getMyPlayList_10 = document.querySelector('#get_playlist');
 const getMyPlayList_ID_10 = document.querySelector('#get_playlist');
+
+//Här hämta vi data från vår JSON-fil och plockar ut det objekt som vi vill ska visa sig på sidan och vi bestämmer även vart objekten ska någonstans
 
 const getPlaylist = (url) => {
     $(document).ready(function(){
