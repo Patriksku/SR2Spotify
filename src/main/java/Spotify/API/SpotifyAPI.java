@@ -107,7 +107,7 @@ public class SpotifyAPI {
                 response.type("text/plain");
                 response.status(401);
                 return "User with ID: " + request.params(":userid") + " has not authorized " +
-                        "access to Spotify.";
+                        "access to the user's Spotify.";
             }
         });
         return null;
@@ -151,8 +151,8 @@ public class SpotifyAPI {
             }
             response.status(401);
             response.type("text/plain");
-            return "An error occurred while trying to load your profile from Spotify. Please verify that you " +
-                    "have granted the application access to your Spotify Account.";
+            return "An error occurred while trying to load the user's profile from Spotify. Please verify that the user " +
+                    "has granted the application access to the user's Spotify Account.";
         });
         return null;
     }
