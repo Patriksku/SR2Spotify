@@ -12,15 +12,11 @@ public class AllArray {
 
     public AllArray() {}
 
-    public AllArray(int amountOfAlbumItems, int amountOfArtistItems, int amountOfPlaylists, int amountOfTrackItems) {
-        this.amountOfAlbumItems = amountOfAlbumItems;
-        arrayOfSearchAlbum = new Album[amountOfAlbumItems];
+    public AllArray(int amountOfArtistItems) {
+
         this.amountOfArtistItems = amountOfArtistItems;
         arrayOfSearchArtist = new Artist[amountOfArtistItems];
-        this.amountOfPlaylists = amountOfPlaylists;
-        arrayOfPlaylists = new Playlist[amountOfPlaylists];
-        this.amountOfTrackItems = amountOfTrackItems;
-        arrayOfSearchTrack = new Track[amountOfTrackItems];
+
     }
 
     public int getAmountOfAlbumItems() {
@@ -57,21 +53,21 @@ public class AllArray {
     }
 
 
-public int getAmountOfPlaylists() {
+    public int getAmountOfPlaylists() {
         return amountOfPlaylists;
-        }
+    }
 
-public void setAmountOfPlaylists(int amountOfPlaylists) {
+    public void setAmountOfPlaylists(int amountOfPlaylists) {
         this.amountOfPlaylists = amountOfPlaylists;
-        }
+    }
 
-public Playlist[] getArrayOfPlaylists() {
+    public Playlist[] getArrayOfPlaylists() {
         return arrayOfPlaylists;
-        }
+    }
 
-public void setArrayOfPlaylists(Playlist[] arrayOfPlaylists) {
+    public void setArrayOfPlaylists(Playlist[] arrayOfPlaylists) {
         this.arrayOfPlaylists = arrayOfPlaylists;
-        }
+    }
 
     public int getAmountOfTrackItems() {
         return amountOfTrackItems;
@@ -89,4 +85,3 @@ public void setArrayOfPlaylists(Playlist[] arrayOfPlaylists) {
         this.arrayOfSearchTrack = arrayOfSearchTrack;
     }
 }
-
