@@ -25,6 +25,7 @@ public class SpotifyAPI {
     private UserProfile userProfile = new UserProfile(userSessions);
     private UserSessionID userSessionID = new UserSessionID(userSessions);
     private SearchSpotify searchSpotify = new SearchSpotify(userSessions);
+    private AddSongToPlaylist addSong = new AddSongToPlaylist(userSessions);
 
     /**
      * Authenticates the user by granting the user a login screen to Spotify.
@@ -52,6 +53,28 @@ public class SpotifyAPI {
             response.type("application/json");
             CheckVisitorStatus checkVisitor = new CheckVisitorStatus();
             return checkVisitor.checkStatus(userSessions.contains(request.session().id()));
+        });
+        return null;
+    }
+
+    /**
+     * This method returns a JSON object containing the unique session_id of
+     * the current user together with a boolean which is True if the current user
+     * has granted the application access to the user's Spotify account - otherwise False.
+     * @return JSON
+     */
+    public String getSessionID() {
+        get(path + "/session", (request, response) -> {
+
+            String sessionID = userSessionID.getSessionID(request.session().id());
+            if (sessionID.equalsIgnoreCase("Something went wrong while converting SessionID-object to JSON.")) {
+                response.status(500);
+                response.type("text/plain");
+            } else {
+                response.status(200);
+                response.type("application/json");
+            }
+            return sessionID;
         });
         return null;
     }
@@ -101,7 +124,6 @@ public class SpotifyAPI {
             if (sessionOfUserID != null) {
                 response.type("application/json");
                 response.status(200);
-                auth.refreshToken(userSessions.get(request.session().id()).getToken());
                 return userProfile.requestMyProfile(sessionOfUserID);
             } else {
                 response.type("text/plain");
@@ -109,28 +131,6 @@ public class SpotifyAPI {
                 return "User with ID: " + request.params(":userid") + " has not authorized " +
                         "access to the user's Spotify.";
             }
-        });
-        return null;
-    }
-
-    /**
-     * This method returns a JSON object containing the unique session_id of
-     * the current user together with a boolean which is True if the current user
-     * has granted the application access to the user's Spotify account - otherwise False.
-     * @return JSON
-     */
-    public String getSessionID() {
-        get(path + "/session", (request, response) -> {
-
-            String sessionID = userSessionID.getSessionID(request.session().id());
-            if (sessionID.equalsIgnoreCase("Something went wrong while converting SessionID-object to JSON.")) {
-                response.status(500);
-                response.type("text/plain");
-            } else {
-                response.status(200);
-                response.type("application/json");
-            }
-            return sessionID;
         });
         return null;
     }
@@ -169,7 +169,6 @@ public class SpotifyAPI {
             if (sessionOfUserID != null) {
                 response.status(200);
                 response.type("application/json");
-                auth.refreshToken(userSessions.get(request.session().id()).getToken());
                 return userPlaylists.requestMyPlaylist(sessionOfUserID, "50");
             } else {
                 response.status(401);
@@ -243,7 +242,6 @@ public class SpotifyAPI {
 
             if (userSessions.contains(bodyParams[0])) {
                 auth.refreshToken(userSessions.get(bodyParams[0]).getToken());
-                AddSongToPlaylist addSong = new AddSongToPlaylist(userSessions);
                 String status = addSong.addSongToPlaylist(bodyParams[0], bodyParams[1], bodyParams[2]);
                 if (!status.equalsIgnoreCase("Successfully added song to playlist.")) {
                     response.status(400);

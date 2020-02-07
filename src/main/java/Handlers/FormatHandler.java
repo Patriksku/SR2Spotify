@@ -1,7 +1,7 @@
 package Handlers;
 
 import Lyrics.Functions.Lyrics;
-import SR.Beans.Songs2Keys;
+import SR.Beans.Radio;
 import Spotify.Beans.PlaylistArray;
 import Spotify.Beans.Profile;
 import Spotify.Beans.SessionID;
@@ -70,13 +70,13 @@ public class FormatHandler {
 
     /**
      * Creates and returns a JSON file based on a Songs2Keys object.
-     * @param songs2Keys object with various information about current songs of a radio station.
+     * @param radio object with various information about current songs of a radio station.
      * @return JSON.
      */
-    public String getFormat(Songs2Keys songs2Keys) {
+    public String getFormat(Radio radio) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            jsonFormat = mapper.writeValueAsString(songs2Keys);
+            jsonFormat = mapper.writeValueAsString(radio);
 
             return jsonFormat;
         } catch (JsonProcessingException e) {

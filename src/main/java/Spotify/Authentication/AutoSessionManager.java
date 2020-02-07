@@ -9,13 +9,14 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * This class creates a Thread that automatically refreshes the access-tokens
- * every 45 minutes of all users that currently exist in the server.
+ * This class creates a Thread that automatically removes inactive users that
+ * have granted the application access to the users Spotify account.
  * @author Patriksku
  */
 public class AutoSessionManager extends TimerTask {
     private Timer timer = new Timer(true);
     private UserSessions userSessions;
+    private int minutes = 45; // Defines a time-period interval for when the Thread runs.
 
     public AutoSessionManager(UserSessions userSessions) {
         this.userSessions = userSessions;

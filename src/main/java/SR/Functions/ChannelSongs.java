@@ -1,7 +1,7 @@
 package SR.Functions;
 
-import SR.Beans.Songs2Keys;
 import Handlers.FormatHandler;
+import SR.Beans.Radio;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -11,8 +11,8 @@ import org.json.JSONObject;
 import spark.Response;
 
 /**
- * This class is responsible for grabbing the resource with song information from Sveriges Radio API as a JSON-file -
- * modifications are made for cleaner information, and then returns this as a JSON-file.
+ * This class is responsible for grabbing the resource with song information from Sveriges Radio API as a JSON-file,
+ * creating an object based on available information, and returning this as a JSON.
  * @author Patriksku
  */
 public class ChannelSongs {
@@ -27,7 +27,7 @@ public class ChannelSongs {
      */
     public String getFormat(String URI, Response serverResponse) {
 
-        Songs2Keys songs = new Songs2Keys(); //Object representation of the resource.
+        Radio radio = new Radio(); //Object representation of the resource.
 
         try {
             response = Unirest.get(URI) //Loads the resource into a response object.
@@ -47,64 +47,72 @@ public class ChannelSongs {
                 return ""; //Return nothing
             } else {
 
-                if (!playlist.has("previoussong")) {
-                    JSONObject nextsong = playlist.getJSONObject("nextsong");
+                radio.setChannelid(channel.getInt("id"));
+                radio.setChannelname(channel.getString("name"));
 
-                    songs.setChannelid(channel.getInt("id"));
-                    songs.setChannelname(channel.getString("name"));
-
-                    songs.setTitle("");
-                    songs.setDescription("");
-                    songs.setArtist("");
-                    songs.setAlbum("");
-
-                    songs.setNexttitle(nextsong.getString("title"));
-                    songs.setNextdescription(nextsong.getString("description"));
-                    songs.setNextartist(nextsong.getString("artist"));
-                    songs.setNextalbum(nextsong.getString("albumname"));
-
-                    FormatHandler formatHandler = new FormatHandler();
-                    return formatHandler.getFormat(songs);
-
-                } else if (!playlist.has("nextsong")) {
+                //
+                if (playlist.has("previoussong")) {
                     JSONObject previoussong = playlist.getJSONObject("previoussong");
 
-                    songs.setChannelid(channel.getInt("id"));
-                    songs.setChannelname(channel.getString("name"));
+                    if (previoussong.has("title")) {
+                        radio.setPrevioustitle(previoussong.getString("title"));
+                    }
 
-                    songs.setTitle(previoussong.getString("title"));
-                    songs.setDescription(previoussong.getString("description"));
-                    songs.setArtist(previoussong.getString("artist"));
-                    songs.setAlbum(previoussong.getString("albumname"));
+                    if (previoussong.has("description")) {
+                        radio.setPreviousdescription(previoussong.getString("description"));
+                    }
 
-                    songs.setNexttitle("");
-                    songs.setNextdescription("");
-                    songs.setNextartist("");
-                    songs.setNextalbum("");
+                    if (previoussong.has("artist")) {
+                        radio.setPreviousartist(previoussong.getString("artist"));
+                    }
 
-                    FormatHandler formatHandler = new FormatHandler();
-                    return formatHandler.getFormat(songs);
+                    if (previoussong.has("album")) {
+                        radio.setPreviousalbum(previoussong.getString("album"));
+                    }
+                }
 
-                } else { //all fields exist in response-object from SR-API
-                    JSONObject previoussong = playlist.getJSONObject("previoussong"); //--
+                if (playlist.has("song")) {
+                    JSONObject song = playlist.getJSONObject("song");
+
+                    if (song.has("title")) {
+                        radio.setTitle(song.getString("title"));
+                    }
+
+                    if (song.has("description")) {
+                        radio.setDescription(song.getString("description"));
+                    }
+
+                    if (song.has("artist")) {
+                        radio.setArtist(song.getString("artist"));
+                    }
+
+                    if (song.has("album")) {
+                        radio.setAlbum(song.getString("album"));
+                    }
+                }
+
+                if (playlist.has("nextsong")) {
                     JSONObject nextsong = playlist.getJSONObject("nextsong");
 
-                    songs.setChannelid(channel.getInt("id"));
-                    songs.setChannelname(channel.getString("name"));
+                    if (nextsong.has("title")) {
+                        radio.setNexttitle(nextsong.getString("title"));
+                    }
 
-                    songs.setTitle(previoussong.getString("title"));
-                    songs.setDescription(previoussong.getString("description"));
-                    songs.setArtist(previoussong.getString("artist"));
-                    songs.setAlbum(previoussong.getString("albumname"));
+                    if (nextsong.has("description")) {
+                        radio.setNextdescription(nextsong.getString("description"));
+                    }
 
-                    songs.setNexttitle(nextsong.getString("title"));
-                    songs.setNextdescription(nextsong.getString("description"));
-                    songs.setNextartist(nextsong.getString("artist"));
-                    songs.setNextalbum(nextsong.getString("albumname"));
+                    if (nextsong.has("artist")) {
+                        radio.setNextartist(nextsong.getString("artist"));
+                    }
 
-                    FormatHandler formatHandler = new FormatHandler();
-                    return formatHandler.getFormat(songs);
+                    if (nextsong.has("album")) {
+                        radio.setNextalbum(nextsong.getString("album"));
+                    }
                 }
+
+                FormatHandler formatHandler = new FormatHandler();
+                return formatHandler.getFormat(radio);
             }
         } catch (UnirestException | JSONException e) {
             serverResponse.status(404);
