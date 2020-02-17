@@ -118,4 +118,16 @@ public class FormatHandler {
         }
         return "Something went wrong while converting Lyrics to JSON.";
     }
+    
+        public String getFormatAll(AllArray allArray) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            jsonFormat = mapper.writeValueAsString(allArray);
+
+            return jsonFormat;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "Something went wrong while converting Search to JSON.";
+    }
 }
