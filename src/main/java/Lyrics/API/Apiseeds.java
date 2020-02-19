@@ -16,7 +16,7 @@ import static spark.Spark.get;
 
 /**
  *
- * class that gets the lyrics from chartlyrics
+ * class that gets the lyrics from APIseeds
  * @author RacquelC
  */
 
@@ -25,7 +25,7 @@ public class Apiseeds {
     private final String domain = "https://orion.apiseeds.com/api/music/lyric/";
     private final String key = "apikey=ZyX167NCY5HPP0emPMV7pmZhVAl4XJtytkY7OLawdxJ7vJ2Sx20vUCvCGMsjIwY2";
     private FormatHandler formatHandler = new FormatHandler();
-    private HttpResponse<JsonNode> response2;
+    private HttpResponse<JsonNode> responseNode;
 
    // http://localhost:4567/api/v2/lyrics/getLyrics/artist/song
 
@@ -41,12 +41,12 @@ public class Apiseeds {
 
             try{
 
-                response2 = Unirest.get(URI).queryString("format", "json").asJson();
-                JsonNode json = response2.getBody();
+                responseNode = Unirest.get(URI).queryString("format", "json").asJson();
+                JsonNode json = responseNode.getBody();
                 JSONObject envelope = json.getObject();
                 String text = envelope.getJSONObject("result").getJSONObject("track").getString("text");
                 lyrics.setText(text);
-                
+
                 System.out.println("200");
                 response.status(200);
 
