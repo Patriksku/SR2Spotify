@@ -1,6 +1,7 @@
 package Server;
 
 import Handlers.StandardStatusMessage;
+import Lyrics.API.Apiseeds;
 import Lyrics.API.ChartLyricsAPI;
 import SR.API.SrAPI;
 import Spotify.API.SpotifyAPI;
@@ -69,11 +70,13 @@ public class Server {
 
         SrAPI srAPI = new SrAPI();
         SpotifyAPI spAPI = new SpotifyAPI();
-        ChartLyricsAPI clAPI = new ChartLyricsAPI();
+        //ChartLyricsAPI clAPI = new ChartLyricsAPI();
+        Apiseeds Aapi = new Apiseeds();
 
         srAPI.init();
         spAPI.init();
-        clAPI.init();
+        //clAPI.init();
+        Aapi.init();
 
         StandardStatusMessage standardStatusMessage = new StandardStatusMessage();
         standardStatusMessage.init();

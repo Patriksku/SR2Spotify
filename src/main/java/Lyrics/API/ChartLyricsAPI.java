@@ -99,7 +99,7 @@ public class ChartLyricsAPI {
 
                 if(lyrics.getText().equals("")){
                     response.status(404); //artist is found but no song
-                    //response.type("text/plain");
+                    response.type("text/plain");
                     System.out.println("404");
                     return "no lyrics found";
                 } else {
@@ -110,12 +110,12 @@ public class ChartLyricsAPI {
             catch (Exception e){
                 System.out.println("500"); //no artist or an error happens
                 response.status(500);
-                //response.type("text/plain");
+                response.type("text/plain");
                 e.printStackTrace();
                 return "error";
 
             }
-            //response.type("application/json");
+            response.type("application/json");
             return formatHandler.getFormat(lyrics);
         });
         return null;
