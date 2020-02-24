@@ -1,18 +1,14 @@
 package Spotify.Functions;
 
 import Handlers.FormatHandler;
-import Spotify.API.SpotifyAPI;
-
-import Spotify.Beans.*;
+import Spotify.Beans.AllArray;
+import Spotify.Beans.Artist;
 import Spotify.Users.UserSessions;
-import com.google.gson.FieldAttributes;
-import com.google.gson.JsonObject;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -47,32 +43,49 @@ public class SearchSpotify {
             e.printStackTrace();
 
         }
+        /*JSONObject envelope = response.getBody().getObject();
+        System.out.println(envelope);*/
         return getSearch(response.getBody().getObject());
 
     }
 
     public String getSearch(JSONObject envelope) {
-        JSONArray items = envelope.getJSONArray("items");
-        int amountOfArtistItems = items.length();
-        AllArray allArray = new AllArray(amountOfArtistItems);
-        JSONObject[] objectsofArtistItems = new JSONObject[amountOfArtistItems];
+        System.out.println(envelope);
+        JSONObject albums = envelope.getJSONObject("albums");
+        JSONArray artists = albums.getJSONArray("artists");
+        JSONObject objectInsideAlbums;
+        JSONObject objectInsideArtists;
+      //  String albumname;
+        String artistname;
+        String uri;
+        int amount = artists.length();
+        AllArray allArray = new AllArray(amount);
+        JSONObject[] objectsofArtists = new JSONObject[amount];
+        //JSONObject[] object
 
 
-        for (int i = 0; i < amountOfArtistItems; i++) {
-            Artist artist = new Artist();
-            objectsofArtistItems[i] = items.getJSONObject(i);
+        for (int i = 0; i < amount; i++) {
+            AllArray allarray = new AllArray();
+            objectsofArtists[i] = artists.getJSONObject(i);
+            objectInsideArtists = artists.getJSONObject(i);
+           // albumname = albums.getJSONObject(0).getString("name");
+            artistname = artists.getJSONObject(0).getString("name");
+            uri = artists.getJSONObject(0).getString("uri");
 
-            artist.setArtist_name(objectsofArtistItems[i].getString("name"));
-            artist.setArtist_uri(SEARCH_ENDPOINT + objectsofArtistItems[i].getString("id"));
-            artist.setArtist_id(objectsofArtistItems[i].getString("id"));
 
-            FormatHandler formatHandler = new FormatHandler();
-            return formatHandler.getFormatAll(allArray);
+            allarray.setArtist_name(objectsofArtists[i].getString("name"));
+            allarray.setArtist_uri(SEARCH_ENDPOINT + objectsofArtists[i].getString("uri"));
+
+         //   FormatHandler formatHandler = new FormatHandler();
+           // return formatHandler.getFormatAll(allArray);
+            //allarray.setArtistItm..
+
 
 
         }
 
-        return null;
+        FormatHandler format = new FormatHandler();
+        return format.getFormat(allArray);
     }
 }
 
@@ -86,8 +99,9 @@ public class SearchSpotify {
 
 
 
-    //   JSONObject envelope = response.getBody().getObject();
-    //   System.out.println(envelope);
+//   JSONObject envelope = response.getBody().getObject();
+//   System.out.println(envelope);
+
 
 
 
