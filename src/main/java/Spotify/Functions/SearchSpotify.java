@@ -11,9 +11,11 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.eclipse.jetty.io.EndPoint;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONString;
 
 
 /**
@@ -52,36 +54,59 @@ public class SearchSpotify {
     }
 
     public String getSearch(JSONObject envelope) {
-        JSONArray albums = envelope.getJSONArray("albums");
-        JSONObject objectInsideAlbums;
-        JSONArray artists;
-        String artisturi;
-        int amountOfArtistItems = albums.length();
-        AllArray allArray = new AllArray(amountOfArtistItems);
-        JSONObject[] objectsofArtistItems = new JSONObject[amountOfArtistItems];
+        JSONObject albums = envelope.getJSONObject("albums");
+        JSONArray items = albums.getJSONArray("items");
+        JSONObject itemsdata = items.getJSONObject(1);
+        JSONArray artists = itemsdata.getJSONArray("artists");
+        JSONObject artistsdata;
+        artistsdata = artists.getJSONObject(0);
+        String artistname;
+        String uri;
+        int amount = artists.length();
+        AllArray arrayOfSearch = new AllArray(amount);
+        JSONObject[] objectsofItems = new JSONObject[amount];
+        JSONObject[] objectsofArtists = new JSONObject[amount];
 
-
-        for (int i = 0; i < amountOfArtistItems; i++) {
+        for(int i = 0; i < amount; i++){
             Artist artist = new Artist();
-            objectsofArtistItems[i] = albums.getJSONObject(i);
-            objectInsideAlbums = albums.getJSONObject(i);
-            artists = objectInsideAlbums.getJSONArray("artists");
-            artisturi = artists.getJSONObject(0).getString("uri");
+            objectsofItems[i] = items.getJSONObject(i);
+            objectsofArtists[i] = artists.getJSONObject(i);
 
-            artist.setArtist_name(objectsofArtistItems[i].getString("name"));
-            artist.setArtist_uri(SEARCH_ENDPOINT + objectsofArtistItems[i].getString("id"));
-            artist.setArtist_id(objectsofArtistItems[i].getString("id"));
-            artist.setArtist_uri(artisturi);
+            itemsdata = items.getJSONObject(i);
+            artists = itemsdata.getJSONArray("artists");
+            artistsdata = artists.getJSONObject(i);
+            artistname = artistsdata.getString("name");
+            uri = artistsdata.getString("uri");
+
+            artist.setArtist_name(objectsofArtists[i].getString("name"));
+            artist.setArtist_uri(SEARCH_ENDPOINT + objectsofArtists[i].getString("uri"));
             System.out.println(artist.toString());
-            allArray.getArrayOfArtistItems()[i] = artist;
+            arrayOfSearch.getArrayOfSearch()[i] = artist;
 
         }
 
         FormatHandler formatHandler = new FormatHandler();
-        return formatHandler.getFormatAll(allArray);
+        return formatHandler.getFormatAll(arrayOfSearch);
 
 
     }
 
 
 }
+
+
+
+
+
+
+
+    /*
+        System.out.println(envelope);
+        System.out.println(albums);
+        System.out.println(items);
+        System.out.println(itemsfirstdata);
+        System.out.println(artists);
+        System.out.println(artistsfirstdata);
+        System.out.println(artistname);
+        System.out.println(uri);
+    */
