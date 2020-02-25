@@ -55,12 +55,10 @@ public class Artist {
     public void setH(String h) {
         this.h = h;
     }
-
-    //temporär lösning för track2
+    
     public String getH2(){
         return h2;
     }
-
 
     public void setH2(String h2) {
         this.h2 = h2;
@@ -75,10 +73,8 @@ public class Artist {
     }
 
     public String toString() {
-        return artist_name + "\n" + artist_id + "\n" + artist_uri + "\n" + artist_url + "\n" + h + "\n" + h2 + "\n";
+        return artist_name + "\n" + artist_uri ;
     }
 }
-
-
 
 
