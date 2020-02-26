@@ -2,10 +2,7 @@ package Handlers;
 
 import Lyrics.Functions.Lyrics;
 import SR.Beans.Radio;
-import Spotify.Beans.PlaylistArray;
-import Spotify.Beans.Profile;
-import Spotify.Beans.SessionID;
-import Spotify.Beans.VisitorStatus;
+import Spotify.Beans.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,9 +20,9 @@ public class FormatHandler {
      */
     public String getFormat(Profile profile) {
         try {
-                ObjectMapper mapper = new ObjectMapper();
-                jsonFormat = mapper.writeValueAsString(profile);
-                return jsonFormat;
+            ObjectMapper mapper = new ObjectMapper();
+            jsonFormat = mapper.writeValueAsString(profile);
+            return jsonFormat;
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -41,10 +38,10 @@ public class FormatHandler {
      */
     public String getFormat(VisitorStatus visitorStatus) {
         try {
-                ObjectMapper mapper = new ObjectMapper();
-                jsonFormat = mapper.writeValueAsString(visitorStatus);
+            ObjectMapper mapper = new ObjectMapper();
+            jsonFormat = mapper.writeValueAsString(visitorStatus);
 
-                return jsonFormat;
+            return jsonFormat;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -92,10 +89,10 @@ public class FormatHandler {
      */
     public String getFormat(PlaylistArray playlistArray) {
         try {
-                ObjectMapper mapper = new ObjectMapper();
-                jsonFormat = mapper.writeValueAsString(playlistArray);
+            ObjectMapper mapper = new ObjectMapper();
+            jsonFormat = mapper.writeValueAsString(playlistArray);
 
-                return jsonFormat;
+            return jsonFormat;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -117,5 +114,17 @@ public class FormatHandler {
             e.printStackTrace();
         }
         return "Something went wrong while converting Lyrics to JSON.";
+    }
+
+    public String getFormatAll(AllArray allArray) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            jsonFormat = mapper.writeValueAsString(allArray);
+
+            return jsonFormat;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "Something went wrong while converting Search to JSON.";
     }
 }

@@ -271,8 +271,9 @@ public class SpotifyAPI {
         get(path + "/getsearch/:search", ((request, response) -> {
 
 
+
             searchSpotify.requestSearch(request.params(":search"), request.session().id());
-            response.type("text/plain");
+            response.type("application/json");
             return request.params(":search");
         }));
 
