@@ -1,5 +1,9 @@
 package Lyrics.Functions;
 
+/**
+ * Class that handles object Lyrics
+ * @author Racquel
+ */
 public class Lyrics {
     private String text = "";
 
@@ -11,4 +15,5 @@ public class Lyrics {
     public void setText(String text) {
         this.text = text;
     }
+
 }

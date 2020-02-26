@@ -19,6 +19,12 @@ public class ChannelSongs {
 
     HttpResponse<JsonNode> response;
 
+    private static Radio currentRadioObject;
+    public static Radio getCurrentRadio(){
+        return currentRadioObject;
+    }
+
+
     /**
      * Modifies and returns the acquired information from a given radio station.
      * @param URI endpoint of a resource in Sveriges Radio API.
@@ -110,7 +116,7 @@ public class ChannelSongs {
                         radio.setNextalbum(nextsong.getString("album"));
                     }
                 }
-
+                currentRadioObject = radio;
                 FormatHandler formatHandler = new FormatHandler();
                 return formatHandler.getFormat(radio);
             }
