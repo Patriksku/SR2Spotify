@@ -102,8 +102,8 @@ public class Apiseeds {
                     response.status(200);
 
                 } catch (Exception e) {
-                    System.out.println("204"); //no artist or an error happens
-                    response.status(204);
+                    System.out.println("404"); //no artist or an error happens
+                    response.status(404);
                     response.type("text/plain");
                     e.printStackTrace();
                     return "No lyrics available";
@@ -126,7 +126,7 @@ public class Apiseeds {
      */
     public void init(){
 
-        getLyricsJson();
+        //getLyricsJson();
         getLyricsFromSR();
     }
 }
