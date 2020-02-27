@@ -25,7 +25,8 @@ import org.json.JSONString;
 public class SearchSpotify {
 
     private final String SEARCH_ENDPOINT = "https://api.spotify.com/v1/search";
-    private final String SEARCH_DOMAIN = "https://open.spotify.com/search/";
+    private final String SEARCH_ARTIST_DOMAIN = "https://open.spotify.com/artist/";
+    private final String SEARCH_TRACK_DOMAIN = "https://open.spotify.com/track/";
     private UserSessions userSessions;
     private HttpResponse<JsonNode> response;
 
@@ -59,29 +60,41 @@ public class SearchSpotify {
         JSONObject itemsdata = items.getJSONObject(1);
         JSONArray artists = itemsdata.getJSONArray("artists");
         JSONObject artistsdata;
+        JSONObject tracks = envelope.getJSONObject("tracks");
+        JSONArray items2 = tracks.getJSONArray("items");
+        JSONObject trackdata = items2.getJSONObject(0);
+        String trackid;
         artistsdata = artists.getJSONObject(0);
         String artistname;
-        String uri;
+        String artistid;
         int amount = artists.length();
         AllArray arrayOfSearch = new AllArray(amount);
         JSONObject[] objectsofItems = new JSONObject[amount];
         JSONObject[] objectsofArtists = new JSONObject[amount];
+        JSONObject[] objectsofItems2 = new JSONObject[amount];
 
         for(int i = 0; i < amount; i++){
             Artist artist = new Artist();
+            Track track = new Track();
             objectsofItems[i] = items.getJSONObject(i);
             objectsofArtists[i] = artists.getJSONObject(i);
+            objectsofItems2[i] = items2.getJSONObject(i);
 
             itemsdata = items.getJSONObject(i);
             artists = itemsdata.getJSONArray("artists");
             artistsdata = artists.getJSONObject(i);
             artistname = artistsdata.getString("name");
-            uri = artistsdata.getString("uri");
+            artistid = artistsdata.getString("id");
+            trackdata = items2.getJSONObject(i);
+            trackid = trackdata.getString("id");
 
             artist.setArtist_name(objectsofArtists[i].getString("name"));
-            artist.setArtist_uri(SEARCH_ENDPOINT + objectsofArtists[i].getString("uri"));
+            artist.setArtist_uri(SEARCH_ARTIST_DOMAIN + objectsofArtists[i].getString("id"));
+            track.setTrack_uri(SEARCH_TRACK_DOMAIN + objectsofItems2[i].getString("id"));
             System.out.println(artist.toString());
+            System.out.println(track.toString());
             arrayOfSearch.getArrayOfSearch()[i] = artist;
+    //        arrayOfSearch.getArrayOfSearch()[i] = track;
 
         }
 
