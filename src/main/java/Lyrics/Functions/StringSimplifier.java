@@ -15,6 +15,7 @@ public class StringSimplifier {
        { put("ä", "a"); }
        { put("å", "a"); }
        { put("ö", "o"); }
+       { put("ë", "e"); }
        { put("\\[", ""); }
        { put("\\]", ""); }
        { put("\\(", ""); }
@@ -26,7 +27,7 @@ public class StringSimplifier {
        { put("\\=", ""); }
        { put("\\_", ""); }
        { put("\\-", ""); }
-       { put("\\,", ""); }
+       { put("\\,", "+"); }
        { put("\\'", ""); }
        { put("\\&", ""); }
        { put("\\.", ""); }

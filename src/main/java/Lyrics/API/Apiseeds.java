@@ -5,13 +5,13 @@ import Lyrics.Functions.StringSimplifier;
 import SR.API.SrAPI;
 import SR.Beans.Radio;
 import SR.Functions.ChannelSongs;
-import com.google.gson.JsonObject;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.XML;
+import spark.Response;
+import spark.Spark;
 
 import javax.swing.text.Document;
 
@@ -31,7 +31,10 @@ public class Apiseeds {
     private FormatHandler formatHandler = new FormatHandler();
     private HttpResponse<JsonNode> responseNode;
     private StringSimplifier simply = new StringSimplifier();
-    ;
+    private String artist = "";
+    private String track = "";
+
+
 
    // http://localhost:4567/api/v2/lyrics/getLyrics/artist/song
 
@@ -71,24 +74,24 @@ public class Apiseeds {
         return null;
     }
 
-    //http://localhost:4567/api/v2/lyrics/getLyricsRadio
+    //http://localhost:4567/api/v2/lyrics/getLyricsRadio/channelid
     public Document getLyricsFromSR(){
 
-        get(path + "/getLyricsRadio", (request, response) -> {
+        get(path + "/getLyricsRadio/:channelid", (request, response) -> {
 
-            Radio radio = ChannelSongs.getCurrentRadio();
+            //Radio radio = ChannelSongs.getCurrentRadio();
             //System.out.println("comes here fist: " + radio == null);
             /*System.out.println("comes here");*/
-            if (radio != null) {
-                String artist = radio.getArtist();
+                String channelid = request.params(":channelid");
+                setSRSONG(channelid, response);
                 artist = simply.simplyString(artist);
                 System.out.println(artist);
-                String song = radio.getTitle();
-                song = simply.simplyString(song);
-                System.out.println(song);
-                String URI = domain + artist + "/" + song + "?" + key;
+                track = simply.simplyString(track);
+                System.out.println(track);
+                String URI = domain + artist + "/" + track + "?" + key;
                 Lyrics lyrics = new Lyrics();
                 System.out.println(URI); //test
+
 
                 try {
 
@@ -111,14 +114,23 @@ public class Apiseeds {
                 }
                 response.type("application/json");
                 return formatHandler.getFormat(lyrics);
-            }
-            else{
-                response.status(400);
-                response.type("text/plain");
-                return "no channel selected";
-            }
         });
         return null;
+    }
+    public void setSRSONG(String channelid, Response response){
+        SrAPI srAPI = new SrAPI();
+        String domain = srAPI.getdomain();
+        System.out.println("here1");
+        String URI = domain + channelid;
+        ChannelSongs channelSongs = new ChannelSongs();
+
+        response.status(200);
+        response.type("application/json");
+        System.out.println("here2");
+        String owo = channelSongs.getFormat(URI, response);
+        JSONObject json = new JSONObject(owo);
+        artist = json.getString("artist");
+        track = json.getString("title");
     }
 
     /**
