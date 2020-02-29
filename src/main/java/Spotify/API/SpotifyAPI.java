@@ -1,11 +1,16 @@
 package Spotify.API;
 
+import Lyrics.Functions.StringSimplifier;
+import SR.Beans.Radio;
+import SR.Functions.ChannelSongs;
 import Spotify.Authentication.Authentication;
 import Spotify.Authentication.AutoSessionManager;
+import Spotify.Beans.AllArray;
 import Spotify.Functions.*;
 import Spotify.Users.UserSessions;
 import org.w3c.dom.Document;
 import java.net.URLDecoder;
+
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -268,16 +273,18 @@ public class SpotifyAPI {
      */
 
     public String getSearch(){
-        get(path + "/getsearch/:search", ((request, response) -> {
+        get(path + "/getsearch", ((request, response) -> {
+            Radio radio = ChannelSongs.getCurrentRadio();
+            AllArray allArray = new AllArray();
+            StringSimplifier simply = new StringSimplifier();
 
-
-
-            searchSpotify.requestSearch(request.params(":search"), request.session().id());
+            searchSpotify.requestSearch(simply.simplyString(radio.getTitle()), request.session().id());
             response.type("application/json");
-            return request.params(":search");
-        }));
+            return allArray.getArtist_name() + " " + allArray.getArtist_uri() + " " + allArray.getTrack_name() + " " + allArray.getTrack_url() + " "  + allArray.getTrack_uri();
 
-        return null;
+            //This should return something else
+        }));
+        return "Something went wrong";
     }
 
 
