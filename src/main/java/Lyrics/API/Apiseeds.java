@@ -11,6 +11,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONString;
 import spark.Response;
 import spark.Spark;
 
@@ -34,6 +35,9 @@ public class Apiseeds {
     private StringSimplifier simply = new StringSimplifier();
     private String artist = "";
     private String track = "";
+    //private String errorMessage = "";
+    private JSONObject error = new JSONObject();
+
 
 
     // http://localhost:4567/api/v2/lyrics/getLyrics/artist/song
@@ -92,9 +96,10 @@ public class Apiseeds {
             System.out.println(URI); //test
             if (artist.equals("")) {
                 System.out.println("404"); //no artist
+                error = error.put("text", "No artist playing");
                 response.status(404);
-                response.type("text/plain");
-                return "No artist playing";
+                response.type("application/json");
+                return error;
             }
 
 
@@ -111,10 +116,11 @@ public class Apiseeds {
 
             } catch (Exception e) {
                 System.out.println("404"); //no lyrics
+                error = error.put("text", "No lyrics found");
                 response.status(404);
-                response.type("text/plain");
+                response.type("application/json");
                 e.printStackTrace();
-                return "No lyrics available";
+                return error;
 
             }
             response.type("application/json");
