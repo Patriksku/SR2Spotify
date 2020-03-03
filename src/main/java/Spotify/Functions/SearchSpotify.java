@@ -57,9 +57,10 @@ public class SearchSpotify {
         }
         return getSearchTrack(response.getBody().getObject());
 
+
+
     }
 
-    //Function that just goes for tracks
     public String getSearchTrack(JSONObject envelope) {
         System.out.println(envelope);
         Radio radio = ChannelSongs.getCurrentRadio();
@@ -92,15 +93,16 @@ public class SearchSpotify {
                     external_urls = itemsdata.getJSONObject("external_urls");
                     trackURL = external_urls.getString("spotify");
                     trackuri = itemsdata.getString("uri");
-                    //this is were you want to put all the data
-                    //ends forloops when correct artist is found
+
                     y = artists.length();
                     i = items.length();
+
                     allArray.setArtist_name(artistname);
                     allArray.setArtist_uri(artisturi);
                     allArray.setTrack_name(trackname);
                     allArray.setTrack_url(trackURL);
                     allArray.setTrack_uri(trackuri);
+
 
 
                 }
@@ -115,9 +117,11 @@ public class SearchSpotify {
         System.out.println(trackuri);
 
 
+
         FormatHandler formatHandler = new FormatHandler();
-        return formatHandler.getFormat(allArray);
+        return formatHandler.getFormatAll(allArray);
 
     }
 
 }
+

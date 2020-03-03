@@ -280,9 +280,11 @@ public class SpotifyAPI {
 
             searchSpotify.requestSearch(simply.simplyString(radio.getTitle()), request.session().id());
             response.type("application/json");
-            return allArray.getArtist_name() + " " + allArray.getArtist_uri() + " " + allArray.getTrack_name() + " " + allArray.getTrack_url() + " "  + allArray.getTrack_uri();
+            return searchSpotify.requestSearch(simply.simplyString(radio.getTitle()), request.session().id());
 
-            //This should return something else
+
+
+
         }));
         return "Something went wrong";
     }
