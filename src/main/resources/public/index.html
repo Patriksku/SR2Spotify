@@ -38,6 +38,9 @@
                 <p class="next_artist">Nästa artist:  </p>
                 <p class="next_album">Nästa album:  </p>
             </article>
+            <div id="get_lyrics">
+                <button id="lyric">Låttexten</button>
+            </div>
             <h2 id="spotify_title">Spotify</h2>
             <hr id="spotify_line">
             <div id="spotify_access">
@@ -75,16 +78,9 @@
                     <input id="song_uri_my_input" type="text" placeholder="Skriv in låt URI..." title="Skriv in låt URI">
                 </form>
             </div>
-            <h2 id="cl_title">ChartLyrics</h2>
-            <hr id="cl_line">
-            <div id="chartlyrics">
-                <form>
-                    <input id="artist_my_input" type="text" placeholder="Sök efter artist..." title="Skriv in artisten">
-                    <input id="song_my_input" type="text" placeholder="Sök efter låt..." title="Skriv in låttiteln">
-                    <input id="search" type="button" type="submit" value="Sök">
-                </form>
-            </div>
-            <div id="cl_box">
+            <h2 id="seeds_title">APISeeds Lyrics</h2>
+            <hr id="seeds_line">
+            <div id="seeds_box">
                 <p class="lyrics"></p>
             </div>
         </main>

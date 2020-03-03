@@ -116,7 +116,7 @@ hr{
     background-color: #31a1bdd2;
 }
 
-#get_p1:active {
+#get_p1:active{
     box-shadow: 0 3px white;
     transform: translateY(4px);
 }
@@ -138,7 +138,7 @@ hr{
     background-color: #ff5900d2;
 }
 
-#get_p2:active {
+#get_p2:active{
     box-shadow: 0 3px white;
     transform: translateY(4px);
 }
@@ -160,7 +160,7 @@ hr{
     background-color: #19a972d2;
 }
 
-#get_p3:active {
+#get_p3:active{
     box-shadow: 0 3px white;
     transform: translateY(4px);
 }
@@ -182,7 +182,7 @@ hr{
     background-color: #c31eaad2;
 }
 
-#get_p4:active {
+#get_p4:active{
     box-shadow: 0 3px white;
     transform: translateY(4px);
 }
@@ -191,6 +191,32 @@ hr{
     margin: 15px;
     font-family: 'Montserrat', sans-serif;
     color: white;
+}
+
+#get_lyrics{
+    text-align: center;
+}
+
+#lyric{
+    border-radius: 15px;
+    border: 0px;
+    font-family: 'Merriweather', serif;
+    font-size: 15px;
+    color: white;
+    background-color: #2E8ECE;
+    padding: 10px 50px;
+    margin: 10px;
+    box-shadow: 0 5px white;
+    outline: 0px;
+}
+
+#lyric:hover{
+    background-color: #2E8ECEd2;
+}
+
+#lyric:active{
+    box-shadow: 0 3px white;
+    transform: translateY(4px);
 }
 
 #spotify_title{
@@ -477,87 +503,25 @@ hr{
     margin: 5px;
 }
 
-#cl_title{
+#seeds_title{
     font-family: 'Merriweather', serif;
     font-size: 30px;
     background-color: #1B1B1D;
-    color: crimson;
+    color: #2E8ECE;
     margin: 0px;
     text-align: center;
     padding: 0px;
 }
 
-#cl_line{
+#seeds_line{
     width: 80%;
     border: 0;
     height: 2px;
-    background-image: linear-gradient(to right, rgba(220, 20, 60, 0.11), #dc143c, rgba(220, 20, 60, 0.11));
+    margin-bottom: 20px;
+    background-image: linear-gradient(to right, rgba(46, 142, 206, 0.11), #2E8ECE, rgba(46, 142, 206, 0.11));
 }
 
-#chartlyrics{
-    margin: 30px 80px;
-    text-align: center;
-}
-
-#artist_my_input{
-    width: 200px;
-    font-size: 16px;
-    padding-left: 16px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-radius: 20px;
-    outline: none;
-    font-family: 'Merriweather', serif;
-    border-color: #dc143c;
-    box-shadow: 0px 0px 25px black;
-    transition: 0.5s all;
-    color: white;
-    background-color: black;
-}
-
-#artist_my_input:focus{
-    width: 300px;
-}
-#song_my_input{
-    width: 200px;
-    font-size: 16px;
-    padding-left: 16px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-radius: 20px;
-    margin-left: 5px;
-    margin-right: 5px;
-    outline: none;
-    font-family: 'Merriweather', serif;
-    border-color: #dc143c;
-    box-shadow: 0px 0px 25px black;
-    transition: 0.5s all;
-    color: white;
-    background-color: black;
-}
-
-#song_my_input:focus{
-    width: 300px;
-}
-
-#search{
-    font-size: 16px;
-    padding: 10px;
-    border-radius: 20px;
-    outline: none;
-    font-family: 'Merriweather', serif;
-    border-color: #dc143c;
-    box-shadow: 0px 0px 15px black;
-    transition: all 0.5s;
-}
-
-#search:hover{
-    font-family: 'Merriweather', serif;
-    color: white;
-    background-color: black;
-}
-
-#cl_box{
+#seeds_box{
     background-color: black;
     padding: 30px;
     margin: 0px 40px;
@@ -664,12 +628,6 @@ footer{
     #spotify_box{
         margin: 30px 0px;
     }
-    #chartlyrics{
-        margin: 50px 30px
-    }
-    #my_input:focus{
-        width: 300px;
-    }
 }
 
 @media screen and (max-width:375px){
@@ -678,17 +636,5 @@ footer{
     }
     #spotify_box{
         margin: 30px 0px;
-    }
-    #chartlyrics{
-        margin: 20px 30px;
-    }
-    #my_input:focus{
-        width: 200px;
-    }
-}
-
-@media screen and (max-width:335px){
-    #search{
-        margin-top: 10px;
     }
 }

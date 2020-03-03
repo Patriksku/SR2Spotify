@@ -203,9 +203,7 @@ getMySessionID.addEventListener('click', () => {
     getSessionID('http://localhost:4567/api/v1/spotify/session')
 })
 
-const getMyLyrics = document.querySelector('#search');
-const getArtist = document.querySelector('#artist_my_input');
-const getSong = document.querySelector('#song_my_input');
+const getMyLyrics = document.querySelector('#lyric');
 
 const getLyrics =(url)=> {
     $(document).ready(function(){
@@ -213,15 +211,11 @@ const getLyrics =(url)=> {
             type: 'GET',
             url: url,
         }).then(function(data) {
-            const parsedData = JSON.parse(data)
-            console.log(parsedData)
-            $('.lyrics').html(parsedData.text);
+            $('.lyrics').html(data.text);
         });
     });
 };
 
 getMyLyrics.addEventListener('click', () => {
-    const artist = getArtist.value
-    const song = getSong.value
-    getLyrics('http://localhost:4567/api/v1/chartlyrics/getLyrics/' + artist + '/' + song)
+    getLyrics('http://localhost:4567/api/v2/lyrics/getLyricsRadio/164')
 })
