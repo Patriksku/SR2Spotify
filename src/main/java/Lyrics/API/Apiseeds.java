@@ -95,9 +95,9 @@ public class Apiseeds {
             Lyrics lyrics = new Lyrics();
             System.out.println(URI); //test
             if (artist.equals("")) {
-                System.out.println("404"); //no artist
+                System.out.println("202"); //no artist
                 error = error.put("text", "No artist playing");
-                response.status(404);
+                response.status(202);
                 response.type("application/json");
                 return error;
             }
@@ -115,9 +115,9 @@ public class Apiseeds {
                 response.status(200);
 
             } catch (Exception e) {
-                System.out.println("404"); //no lyrics
+                System.out.println("202"); //no lyrics
                 error = error.put("text", "No lyrics found");
-                response.status(404);
+                response.status(202);
                 response.type("application/json");
                 e.printStackTrace();
                 return error;
