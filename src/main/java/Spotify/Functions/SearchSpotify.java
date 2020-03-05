@@ -58,11 +58,10 @@ public class SearchSpotify {
         return getSearchTrack(response.getBody().getObject());
 
 
-
     }
 
     public String getSearchTrack(JSONObject envelope) {
-        System.out.println(envelope);
+       // System.out.println(envelope);
         Radio radio = ChannelSongs.getCurrentRadio();
         JSONObject tracks = envelope.getJSONObject("tracks");
         JSONArray items = tracks.getJSONArray("items");
@@ -77,11 +76,17 @@ public class SearchSpotify {
         String artisturi = null;
         JSONObject artistdata;
         AllArray allArray = new AllArray();
+        JSONObject itemsdata = null;
+        JSONArray artists = null;
+
+
 
         for (int i = 0; i < items.length(); i++) {
-            System.out.println(envelope);
-            JSONObject itemsdata = items.getJSONObject(i);
-            JSONArray artists = itemsdata.getJSONArray("artists");
+          //  System.out.println(envelope);
+            itemsdata = items.getJSONObject(i);
+            artists = itemsdata.getJSONArray("artists");
+            System.out.println(artists.getJSONObject(0));
+            artist = artists.getJSONObject(0);
             System.out.println(artists.getJSONObject(0));
             artist = artists.getJSONObject(0);
             for (int y = 0; y < artists.length(); y++) {
@@ -104,24 +109,45 @@ public class SearchSpotify {
                     allArray.setTrack_uri(trackuri);
 
 
-
                 }
+
             }
+
+
         }
 
-      //  System.out.println(artist);
-        System.out.println(artistname);
-        System.out.println(artisturi);
-        System.out.println(trackname);
-        System.out.println(trackURL);
-        System.out.println(trackuri);
+        if (artistname == null) {
+            itemsdata = items.getJSONObject(0);
+            artists = itemsdata.getJSONArray("artists");
+            System.out.println(artists.getJSONObject(0));
+            artist = artists.getJSONObject(0);
+            artistname = artist.getString("name");
+            artisturi = artist.getString("uri");
+            trackname = itemsdata.getString("name");
+            external_urls = itemsdata.getJSONObject("external_urls");
+            trackURL = external_urls.getString("spotify");
+            trackuri = itemsdata.getString("uri");
+
+            allArray.setArtist_name(artistname);
+            allArray.setArtist_uri(artisturi);
+            allArray.setTrack_name(trackname);
+            allArray.setTrack_url(trackURL);
+            allArray.setTrack_uri(trackuri);
+            }
+
+            //  System.out.println(artist);
+            System.out.println(artistname);
+            System.out.println(artisturi);
+            System.out.println(trackname);
+            System.out.println(trackURL);
+            System.out.println(trackuri);
 
 
 
         FormatHandler formatHandler = new FormatHandler();
         return formatHandler.getFormatAll(allArray);
 
+
     }
 
 }
-
