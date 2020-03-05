@@ -193,32 +193,6 @@ hr{
     color: white;
 }
 
-#get_lyrics{
-    text-align: center;
-}
-
-#lyric{
-    border-radius: 15px;
-    border: 0px;
-    font-family: 'Merriweather', serif;
-    font-size: 15px;
-    color: white;
-    background-color: #2E8ECE;
-    padding: 10px 50px;
-    margin: 10px;
-    box-shadow: 0 5px white;
-    outline: 0px;
-}
-
-#lyric:hover{
-    background-color: #2E8ECEd2;
-}
-
-#lyric:active{
-    box-shadow: 0 3px white;
-    transform: translateY(4px);
-}
-
 #spotify_title{
     margin-top: 10px;
     padding: 0px;
@@ -323,6 +297,34 @@ hr{
 #get_playlist:active {
     box-shadow: 0 3px white;
     transform: translateY(4px);
+}
+
+#get_track_uri{
+    border-radius: 15px;
+    border: 0px;
+    font-family: 'Merriweather', serif;
+    font-size: 15px;
+    color: white;
+    background-color: #1DB954;
+    padding: 10px 50px;
+    margin: 10px;
+    box-shadow: 0 5px white;
+    outline: 0px;
+}
+
+#get_track_uri:hover{
+        background-color: #1DB954d2;
+}
+
+#get_track_uri:active{
+    box-shadow: 0 3px white;
+    transform: translateY(4px);
+}
+
+.my_track_uri{
+    font-family: 'Merriweather', serif;
+    color: white;
+    text-align: left;
 }
 
 .my_playlist_1{
@@ -455,9 +457,7 @@ hr{
 #session_id_my_input{
     width: 200px;
     font-size: 16px;
-    padding-left: 16px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px 16px;
     border-radius: 20px;
     outline: none;
     font-family: 'Merriweather', serif;
@@ -472,9 +472,7 @@ hr{
 #playlist_id_my_input{
     width: 200px;
     font-size: 16px;
-    padding-left: 16px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px 16px;
     border-radius: 20px;
     outline: none;
     font-family: 'Merriweather', serif;
@@ -489,9 +487,7 @@ hr{
 #song_uri_my_input{
     width: 200px;
     font-size: 16px;
-    padding-left: 16px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px 16px;
     border-radius: 20px;
     outline: none;
     font-family: 'Merriweather', serif;
@@ -501,6 +497,29 @@ hr{
     color: white;
     background-color: rgb(27, 27, 29);
     margin: 5px;
+}
+
+#send{
+    border-radius: 15px;
+    border: 0px;
+    font-family: 'Merriweather', serif;
+    font-size: 15px;
+    color: white;
+    background-color: #1DB954;
+    padding: 10px 50px;
+    margin: 10px;
+    box-shadow: 0 5px white;
+    outline: 0px;
+    text-align: center;
+}
+
+#send:hover{
+    background-color: rgba(29, 185, 84, 0.822);
+}
+
+#send:active {
+    box-shadow: 0 3px white;
+    transform: translateY(4px);
 }
 
 #seeds_title{

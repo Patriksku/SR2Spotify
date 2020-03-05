@@ -1,6 +1,19 @@
 //Här skapas variabler för alla SR-radiostationer
 
-const getP1 = document.querySelector('#get_p1'); 
+const getLyrics =(url)=> {
+    $(document).ready(function(){
+        $.ajax({
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            type: 'GET',
+            url: url,
+        }).then(function(data) {
+            $('.lyrics').html(data.text);
+        });
+    });
+};
+
+const getP1 = document.querySelector('#get_p1');
 const getP2 = document.querySelector('#get_p2');
 const getP3 = document.querySelector('#get_p3');
 const getP4 = document.querySelector('#get_p4');
@@ -31,18 +44,23 @@ const getData = (url) => {
 
 getP1.addEventListener('click', () => {
     getData('http://localhost:4567/api/v1/sveriges-radio/songs/132')
+    getLyrics('http://localhost:4567/api/v2/lyrics/getLyricsRadio/132')
 })
 
 getP2.addEventListener('click', () => {
     getData('http://localhost:4567/api/v1/sveriges-radio/songs/163')
+    getLyrics('http://localhost:4567/api/v2/lyrics/getLyricsRadio/163')
+
 })
 
 getP3.addEventListener('click', () => {
     getData('http://localhost:4567/api/v1/sveriges-radio/songs/164')
+    getLyrics('http://localhost:4567/api/v2/lyrics/getLyricsRadio/164')
 })
 
 getP4.addEventListener('click', () => {
     getData('http://localhost:4567/api/v1/sveriges-radio/songs/207')
+    getLyrics('http://localhost:4567/api/v2/lyrics/getLyricsRadio/207')
 })
 
 //Här skapas variabler för Spotify-spellistor
@@ -203,19 +221,36 @@ getMySessionID.addEventListener('click', () => {
     getSessionID('http://localhost:4567/api/v1/spotify/session')
 })
 
-const getMyLyrics = document.querySelector('#lyric');
+const getMyTrackURI = document.querySelector('#get_track_uri');
 
-const getLyrics =(url)=> {
+const getTrackURI =(url)=> {
     $(document).ready(function(){
         $.ajax({
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
             type: 'GET',
             url: url,
         }).then(function(data) {
-            $('.lyrics').html(data.text);
+            $('.my_track_uri').html('Låt URI: ' + data.track_uri);
         });
     });
 };
 
-getMyLyrics.addEventListener('click', () => {
-    getLyrics('http://localhost:4567/api/v2/lyrics/getLyricsRadio/164')
+getMyTrackURI.addEventListener('click', () => {
+    getTrackURI('http://localhost:4567/api/v1/spotify/getsearch')
+})
+
+const postMyData = document.querySelector('#send');
+
+const postData =(url)=> {
+    var session = $('#session_id_my_input').val();
+    var playlist = $('#playlist_id_my_input').val();
+    var track = $('#song_uri_my_input').val();
+      $.post(url, {session_id: session, playlist_id: playlist, song_uri: track}, function(result) {
+      console.log(result)
+    });
+};
+
+postMyData.addEventListener('click', () => {
+    postData('http://localhost:4567/api/v1/spotify/addsongplaylist')
 })
