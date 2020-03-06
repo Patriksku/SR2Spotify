@@ -244,7 +244,7 @@ const postMyData = document.querySelector('#send');
 
 const postData =(url)=> {
     var session = $('#session_id_my_input').val();
-    var playlist = $('#playlist_id_my_input').val();
+    var playlist =$('#playlist_id_my_input').val();
     var track = $('#song_uri_my_input').val();
       $.post(url, {session_id: session, playlist_id: playlist, song_uri: track}, function(result) {
       console.log(result)
