@@ -106,7 +106,7 @@ const getTrackURI =(url)=> {
         .fail(function(xhr, status, error) {
           //Uppmanar användaren att logga in först
           var errorMessage = xhr.statusText
-          alert('1. Logga in på spotify först! \n 2. Välj en kanal');
+          alert('1. Logga in på spotify först! \n2. Välj en kanal');
         });
     });
     console.log(url);
@@ -137,7 +137,7 @@ const getPlaylist = (url) => {
         .fail(function(xhr, status, error) {
           //Uppmanar användaren att logga in först
           var errorMessage = xhr.statusText
-          alert('Logga in på Spotify först!');
+          alert('1. Logga in på spotify först!');
         });
     });
     console.log(url);
