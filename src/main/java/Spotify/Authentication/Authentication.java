@@ -49,7 +49,6 @@ public class Authentication {
                 if(encoded_auth_key == null) {
                     this.encoded_auth_key = getBase64EncodedString(CLIENT_ID, CLIENT_SECRET);
                 }
-                System.out.println("Sending POST request to Spotify...");
                 response = Unirest.post(TOKEN_ENDPOINT)
                         .header("Authorization", encoded_auth_key)
                         .field("grant_type", "authorization_code")
@@ -74,7 +73,7 @@ public class Authentication {
         User user = new User(); //Creates a User-object which will hold the created token.
         Token tokenObject = new Token();
         JSONObject envelope = json.getObject();
-        System.out.println(envelope.toString());
+        /*System.out.println(envelope.toString());*/
 
         tokenObject.setAccess_token(envelope.getString("access_token"));
         tokenObject.setToken_type(envelope.getString("token_type"));
@@ -84,7 +83,7 @@ public class Authentication {
 
         user.setToken(tokenObject); //Sets the token for current user.
         userSessions.put(session_id, user); //Put together user with the token information.
-        System.out.println(userSessions.get(session_id).getToken().toString());
+        /*System.out.println(userSessions.get(session_id).getToken().toString());*/
     }
 
     /**
@@ -100,9 +99,6 @@ public class Authentication {
                     .field("scope", SCOPES)
                     .asJson();
 
-            System.out.println("--OLD values of TOKEN--");
-            System.out.println(token.toString());
-
             JSONObject envelope = response.getBody().getObject();
 
             token.setAccess_token(envelope.getString("access_token"));
@@ -111,9 +107,6 @@ public class Authentication {
             token.setScope(envelope.getString("scope"));
 
             token.logActivityEvent(); // Logs that an activity event has occurred.
-
-            System.out.println("--NEW values of TOKEN--");
-            System.out.println(token.toString());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,7 +139,6 @@ public class Authentication {
         String toEncode = CLIENT_ID + ":" + CLIENT_SECRET;
         String base64encoded = Base64.getEncoder().encodeToString(toEncode.getBytes());
         String auth_header = beginning + base64encoded;
-        System.out.println("auth_header to be sent: " + auth_header);
         return auth_header;
     }
 }
