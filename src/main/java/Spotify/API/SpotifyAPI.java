@@ -296,6 +296,7 @@ public class SpotifyAPI extends SearchSpotify {
             StringSimplifier simply = new StringSimplifier();
             // SearchSpotify SRartist = new SearchSpotify(SR);
 
+            try {
 
 
                 if (userSessions.contains(request.session().id())) {
@@ -307,36 +308,48 @@ public class SpotifyAPI extends SearchSpotify {
                 } else if (!userSessions.contains(request.session().id())) {
                     response.status(401);
                     response.type("text/plain");
-                    return "This user is not authorized to Spotify";
-
-
+                    return "Please authorize to Spotify";
 
                 }
-                return "Something went wrong";
 
+            } catch (NullPointerException e) {
+                response.status(401);
+                response.type("text/plain");
+                e.printStackTrace();
+                return "Please select channel";
 
-            });
+            } catch (JSONException j) {
+                response.status(204);
+                response.type("");
+                j.printStackTrace();
+                return "";
 
-        return "Please select chh";
-        }
+            }
 
+            return null;
 
-        /**
-         * Method initializes all methods in this class so that the endpoints are active.
-         */
-        public void init () {
-            authUser();
-            visitorStatus();
-            spotify();
-            getSessionID();
-            getProfile();
-            getMyProfile();
-            getPlaylists();
-            getMyPlaylists();
-            addSongToPlaylist();
-            getSearch();
-        }
+        });
+
+        return null;
     }
+
+
+    /**
+     * Method initializes all methods in this class so that the endpoints are active.
+     */
+    public void init() {
+        authUser();
+        visitorStatus();
+        spotify();
+        getSessionID();
+        getProfile();
+        getMyProfile();
+        getPlaylists();
+        getMyPlaylists();
+        addSongToPlaylist();
+        getSearch();
+    }
+}
 
 
 
