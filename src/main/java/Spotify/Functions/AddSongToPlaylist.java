@@ -46,7 +46,6 @@ public class AddSongToPlaylist {
             response.getBody().getObject().getString("snapshot_id");
             return "Successfully added song to playlist.";
         } catch (JSONException e) {
-            e.printStackTrace();
             return "Something went wrong while adding song to playlist. Please check your parameters.";
         }
     }

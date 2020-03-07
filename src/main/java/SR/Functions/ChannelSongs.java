@@ -121,9 +121,9 @@ public class ChannelSongs {
                 return formatHandler.getFormat(radio);
             }
         } catch (UnirestException | JSONException e) {
-            serverResponse.status(404);
+            serverResponse.status(400);
             serverResponse.type("text/plain");
-            return "404 Not Found. Make sure that your parameter is right - only numerical values are valid.";
+            return "Make sure that your parameter is right and that the radio station exists - only numerical values are valid.";
         }
     }
 }

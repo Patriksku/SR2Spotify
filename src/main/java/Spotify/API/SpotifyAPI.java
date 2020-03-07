@@ -79,18 +79,12 @@ public class SpotifyAPI extends SearchSpotify {
      *
      * @return JSON
      */
-    public String getSessionID() {
+    public Document getSessionID() {
         get(path + "/session", (request, response) -> {
 
-            String sessionID = userSessionID.getSessionID(request.session().id());
-            if (sessionID.equalsIgnoreCase("Something went wrong while converting SessionID-object to JSON.")) {
-                response.status(500);
-                response.type("text/plain");
-            } else {
-                response.status(200);
-                response.type("application/json");
-            }
-            return sessionID;
+            response.status(200);
+            response.type("application/json");
+            return userSessionID.getSessionID(request.session().id());
         });
         return null;
     }
@@ -125,7 +119,7 @@ public class SpotifyAPI extends SearchSpotify {
             response.status(200);
             response.type("text/plain");
             response.redirect("/");
-            return "User was successfully authorized to Spotify.";
+            return "User was successfully authorized to Spotify and will be redirected to the homepage [/].";
         });
     }
 
@@ -209,20 +203,26 @@ public class SpotifyAPI extends SearchSpotify {
         get(path + "/myplaylists/:limit", (request, response) -> {
 
             String limit = request.params(":limit");
-            if (Integer.parseInt(limit) > 50 || Integer.parseInt(limit) < 0) {
+            try {
+                if (Integer.parseInt(limit) < 0 || Integer.parseInt(limit) > 50) {
+                    response.status(400);
+                    response.type("text/plain");
+                    return "The 'limit' parameter has to be a numerical digit between 0 and 50.";
+                }
+                if (userSessions.contains(request.session().id())) {
+                    response.status(200);
+                    response.type("application/json");
+                    auth.refreshToken(userSessions.get(request.session().id()).getToken());
+                    return userPlaylists.requestMyPlaylist(request.session().id(), limit);
+                } else {
+                    response.status(401);
+                    response.type("text/plain");
+                    return "This user has not granted access to Spotify.";
+                }
+            } catch (NumberFormatException e) {
                 response.status(400);
                 response.type("text/plain");
                 return "The 'limit' parameter has to be a numerical digit between 0 and 50.";
-            }
-            if (userSessions.contains(request.session().id())) {
-                response.status(200);
-                response.type("application/json");
-                auth.refreshToken(userSessions.get(request.session().id()).getToken());
-                return userPlaylists.requestMyPlaylist(request.session().id(), limit);
-            } else {
-                response.status(401);
-                response.type("text/plain");
-                return "This user has not granted access to Spotify.";
             }
         });
         return null;
@@ -242,7 +242,7 @@ public class SpotifyAPI extends SearchSpotify {
     public String addSongToPlaylist() {
         post(path + "/addsongplaylist", (request, response) -> {
 
-            System.out.println("Request BODY:\n" + request.body());
+            /*System.out.println("Request BODY:\n" + request.body());*/
             String body = request.body();
 
             //Splits the parameters accordingly to Spotify requirements.
@@ -257,7 +257,6 @@ public class SpotifyAPI extends SearchSpotify {
             } catch (ArrayIndexOutOfBoundsException aiobe) {
                 response.status(400);
                 response.type("text/plain");
-                aiobe.getStackTrace();
                 return "Something went wrong while adding song to playlist. Please check your parameters.";
             }
 
@@ -316,13 +315,11 @@ public class SpotifyAPI extends SearchSpotify {
             } catch (NullPointerException e) {
                 response.status(400);
                 response.type("text/plain");
-                e.printStackTrace();
                 return "Please select channel";
 
             } catch (JSONException j) {
                 response.status(204);
                 response.type("");
-                j.printStackTrace();
                 return "";
 
             }
@@ -351,8 +348,3 @@ public class SpotifyAPI extends SearchSpotify {
         getSearch();
     }
 }
-
-
-
-
-

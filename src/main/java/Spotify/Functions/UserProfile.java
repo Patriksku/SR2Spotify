@@ -34,7 +34,6 @@ public class UserProfile {
      */
     public String requestMyProfile(String session_id) {
             try {
-                System.out.println("Sending GET request to Spotify [USER_PROFILE_ENDPOINT]...");
                 response = Unirest.get(USER_PROFILE_ENDPOINT)
                         .header("Authorization", (userSessions.get(session_id).getToken().getToken_type() + " " + userSessions.get(session_id).getToken().getAccess_token()))
                         .asJson();
@@ -60,7 +59,6 @@ public class UserProfile {
             System.out.println("This user's session_id does not exist. Please connect your account to Spotify first, then try again.");
         } else {
             try {
-                System.out.println("Sending GET request to Spotify [USER_PROFILE_ENDPOINT]...");
                 response = Unirest.get(USER_PROFILE_ENDPOINT)
                         .header("Authorization", (userSessions.get(session_id).getToken().getToken_type() + " " + userSessions.get(session_id).getToken().getAccess_token()))
                         .asJson();
