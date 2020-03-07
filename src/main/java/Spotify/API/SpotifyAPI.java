@@ -21,7 +21,7 @@ import static spark.Spark.post;
  * on available functionalities and returning JSON files when necessary.
  * @author Patriksku, Sara Karic
  */
-public class SpotifyAPI extends SearchSpotify {
+public class SpotifyAPI {
 
     private final String path = "/api/v1/spotify";
     private UserSessions userSessions = new UserSessions();
@@ -33,13 +33,6 @@ public class SpotifyAPI extends SearchSpotify {
     private SearchSpotify searchSpotify = new SearchSpotify(userSessions);
     private AddSongToPlaylist addSong = new AddSongToPlaylist(userSessions);
 
-    public SpotifyAPI(UserSessions userSessions) {
-        super(userSessions);
-    }
-
-    public SpotifyAPI() {
-        super();
-    }
 
     /**
      * Authenticates the user by granting the user a login screen to Spotify.
@@ -284,9 +277,9 @@ public class SpotifyAPI extends SearchSpotify {
     }
 
     /**
-     * Returns information about album, artist, playlist and track.
+     * Returns information about artist and track.
      *
-     * @return search
+     * @return 200 OK if everything went fine.
      */
 
     public String getSearch() {
@@ -294,10 +287,8 @@ public class SpotifyAPI extends SearchSpotify {
             Radio radio = ChannelSongs.getCurrentRadio();
             AllArray allArray = new AllArray();
             StringSimplifier simply = new StringSimplifier();
-            // SearchSpotify SRartist = new SearchSpotify(SR);
 
             try {
-
 
                 if (userSessions.contains(request.session().id())) {
                     response.status(200);
@@ -311,7 +302,6 @@ public class SpotifyAPI extends SearchSpotify {
                     return "Please authorize to Spotify";
 
                 }
-
 
             } catch (NullPointerException e) {
                 response.status(400);
