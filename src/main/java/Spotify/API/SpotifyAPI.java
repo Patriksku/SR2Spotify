@@ -313,7 +313,7 @@ public class SpotifyAPI extends SearchSpotify {
                 }
 
             } catch (NullPointerException e) {
-                response.status(401);
+                response.status(400);
                 response.type("text/plain");
                 e.printStackTrace();
                 return "Please select channel";
