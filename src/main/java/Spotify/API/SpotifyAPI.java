@@ -9,6 +9,7 @@ import Spotify.Beans.AllArray;
 import Spotify.Functions.*;
 import Spotify.Users.UserSessions;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import java.net.URLDecoder;
 
@@ -286,6 +287,15 @@ public class SpotifyAPI {
             Radio radio = ChannelSongs.getCurrentRadio();
             AllArray allArray = new AllArray();
             StringSimplifier simply = new StringSimplifier();
+            JSONObject error = new JSONObject();
+
+            if(radio.getTitle().isEmpty()){
+                System.out.println("200");
+                error = error.put("track_uri", "No artist playing");
+                response.status(200);
+                response.type("application/json");
+                return error;
+            }
 
             try {
 
