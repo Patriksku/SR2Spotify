@@ -4,16 +4,13 @@ import Handlers.FormatHandler;
 import Lyrics.Functions.Lyrics;
 import Lyrics.Functions.StringSimplifier;
 import SR.API.SrAPI;
-import SR.Beans.Radio;
 import SR.Functions.ChannelSongs;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
 import spark.Response;
-import spark.Spark;
+
 
 import javax.swing.text.Document;
 
@@ -27,7 +24,7 @@ import static spark.Spark.get;
  */
 
 public class Apiseeds {
-    private final String path = "/api/v2/lyrics";
+    private final String path = "/api/v1/lyrics";
     private final String domain = "https://orion.apiseeds.com/api/music/lyric/";
     private final String key = "apikey=ZyX167NCY5HPP0emPMV7pmZhVAl4XJtytkY7OLawdxJ7vJ2Sx20vUCvCGMsjIwY2";
     private FormatHandler formatHandler = new FormatHandler();
@@ -35,22 +32,18 @@ public class Apiseeds {
     private StringSimplifier simply = new StringSimplifier();
     private String artist = "";
     private String track = "";
-    //private String errorMessage = "";
     private JSONObject error = new JSONObject();
 
 
 
-    // http://localhost:4567/api/v2/lyrics/getLyrics/artist/song
+    // http://localhost:4567/api/v1/lyrics/getLyrics/artist/song
 
     public Document getLyricsJson() {
-        /*System.out.println("comes here fist");*/
         get(path + "/getLyrics/:artist/:song", (request, response) -> {
-            /*System.out.println("comes here");*/
             String artist = request.params(":artist");
             String song = request.params(":song");
             String URI = domain + artist + "/" + song + "?" + key;
             Lyrics lyrics = new Lyrics();
-            System.out.println(URI); //test
 
             try {
 
@@ -77,27 +70,22 @@ public class Apiseeds {
         return null;
     }
 
-    //http://localhost:4567/api/v2/lyrics/getLyricsRadio/channelid
+    //http://localhost:4567/api/v1/lyrics/getLyricsRadio/channelid
     public Document getLyricsFromSR() {
 
         get(path + "/getLyricsRadio/:channelid", (request, response) -> {
 
-            //Radio radio = ChannelSongs.getCurrentRadio();
-            //System.out.println("comes here fist: " + radio == null);
-            /*System.out.println("comes here");*/
             String channelid = request.params(":channelid");
             setSRSONG(channelid, response);
             artist = simply.simplyString(artist);
-            System.out.println(artist);
             track = simply.simplyString(track);
-            System.out.println(track);
             String URI = domain + artist + "/" + track + "?" + key;
             Lyrics lyrics = new Lyrics();
             System.out.println(URI); //test
             if (artist.equals("")) {
-                System.out.println("202"); //no artist
+                System.out.println("200"); //no artist
                 error = error.put("text", "No artist playing");
-                response.status(202);
+                response.status(200);
                 response.type("application/json");
                 return error;
             }
@@ -115,9 +103,9 @@ public class Apiseeds {
                 response.status(200);
 
             } catch (Exception e) {
-                System.out.println("202"); //no lyrics
+                System.out.println("200"); //no lyrics
                 error = error.put("text", "No lyrics found");
-                response.status(202);
+                response.status(200);
                 response.type("application/json");
                 e.printStackTrace();
                 return error;
@@ -132,13 +120,11 @@ public class Apiseeds {
     public void setSRSONG(String channelid, Response response) {
         SrAPI srAPI = new SrAPI();
         String domain = srAPI.getdomain();
-        System.out.println("here1");
         String URI = domain + channelid;
         ChannelSongs channelSongs = new ChannelSongs();
 
         response.status(200);
         response.type("application/json");
-        System.out.println("here2");
         String owo = channelSongs.getFormat(URI, response);
 
 
@@ -154,9 +140,6 @@ public class Apiseeds {
             e.printStackTrace();
         }
 
-
-        System.out.println(artist);
-        System.out.println(track);
     }
 
     /**
@@ -164,7 +147,7 @@ public class Apiseeds {
      */
     public void init() {
 
-        //getLyricsJson();
+        getLyricsJson();
         getLyricsFromSR();
     }
 }

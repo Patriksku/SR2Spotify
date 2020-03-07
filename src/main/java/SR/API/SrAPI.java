@@ -24,7 +24,6 @@ public class SrAPI {
 
             String URI = domain + request.params(":channelid");
             ChannelSongs channelSongs = new ChannelSongs();
-            System.out.println(URI);
             response.status(200);
             response.type("application/json");
             return channelSongs.getFormat(URI, response);
