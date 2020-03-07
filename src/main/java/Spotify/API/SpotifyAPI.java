@@ -312,6 +312,7 @@ public class SpotifyAPI extends SearchSpotify {
 
                 }
 
+
             } catch (NullPointerException e) {
                 response.status(400);
                 response.type("text/plain");
