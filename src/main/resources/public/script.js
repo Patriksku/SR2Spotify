@@ -11,6 +11,7 @@ const getLyrics =(url)=> {
             $('.lyrics').html(data.text);
         });
     });
+    console.log(url)
 };
 
 const getP1 = document.querySelector('#get_p1');
@@ -44,23 +45,60 @@ const getData = (url) => {
 
 getP1.addEventListener('click', () => {
     getData('http://localhost:4567/api/v1/sveriges-radio/songs/132')
-    getLyrics('http://localhost:4567/api/v2/lyrics/getLyricsRadio/132')
+    getLyrics('http://localhost:4567/api/v1/lyrics/getLyricsRadio/132')
+    getTrackURI('http://localhost:4567/api/v1/spotify/getsearch')
 })
 
 getP2.addEventListener('click', () => {
     getData('http://localhost:4567/api/v1/sveriges-radio/songs/163')
-    getLyrics('http://localhost:4567/api/v2/lyrics/getLyricsRadio/163')
-
+    getLyrics('http://localhost:4567/api/v1/lyrics/getLyricsRadio/163')
+    getTrackURI('http://localhost:4567/api/v1/spotify/getsearch')
 })
 
 getP3.addEventListener('click', () => {
     getData('http://localhost:4567/api/v1/sveriges-radio/songs/164')
-    getLyrics('http://localhost:4567/api/v2/lyrics/getLyricsRadio/164')
+    getLyrics('http://localhost:4567/api/v1/lyrics/getLyricsRadio/164')
+    getTrackURI('http://localhost:4567/api/v1/spotify/getsearch')
 })
 
 getP4.addEventListener('click', () => {
     getData('http://localhost:4567/api/v1/sveriges-radio/songs/207')
-    getLyrics('http://localhost:4567/api/v2/lyrics/getLyricsRadio/207')
+    getLyrics('http://localhost:4567/api/v1/lyrics/getLyricsRadio/207')
+    getTrackURI('http://localhost:4567/api/v1/spotify/getsearch')
+})
+
+const getTrackURI =(url)=> {
+    $(document).ready(function(){
+        $.ajax({
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            type: 'GET',
+            url: url,
+        }).then(function(data) {
+            $('.my_track_uri').html('Låt URI: ' + data.track_uri);
+        });
+    });
+    console.log(url);
+};
+
+const getMySessionID = document.querySelector('#get_session_id');
+
+const getSessionID = (url) => {
+    $(document).ready(function(){
+        $.ajax({
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            type: 'GET',
+            url: url,
+        }).then(function(data) {
+            $('.my_session_id').html("Session ID:  " + data.session_id);
+        });
+    });
+    console.log(url);
+};
+
+getMySessionID.addEventListener('click', () => {
+    getSessionID('http://localhost:4567/api/v1/spotify/session')
 })
 
 //Här skapas variabler för Spotify-spellistor
@@ -201,54 +239,16 @@ getMyPlayList_ID_10.addEventListener('click', () => {
     getPlaylist('http://localhost:4567/api/v1/spotify/myplaylists/10')
 })
 
-const getMySessionID = document.querySelector('#get_session_id');
-
-const getSessionID = (url) => {
-    $(document).ready(function(){
-        $.ajax({
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            type: 'GET',
-            url: url,
-        }).then(function(data) {
-            $('.my_session_id').html("Session ID:  " + data.session_id);
-        });
-    });
-    console.log(url);
-};
-
-getMySessionID.addEventListener('click', () => {
-    getSessionID('http://localhost:4567/api/v1/spotify/session')
-})
-
-const getMyTrackURI = document.querySelector('#get_track_uri');
-
-const getTrackURI =(url)=> {
-    $(document).ready(function(){
-        $.ajax({
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
-            type: 'GET',
-            url: url,
-        }).then(function(data) {
-            $('.my_track_uri').html('Låt URI: ' + data.track_uri);
-        });
-    });
-};
-
-getMyTrackURI.addEventListener('click', () => {
-    getTrackURI('http://localhost:4567/api/v1/spotify/getsearch')
-})
-
 const postMyData = document.querySelector('#send');
 
 const postData =(url)=> {
     var session = $('#session_id_my_input').val();
-    var playlist =$('#playlist_id_my_input').val();
+    var playlist = $('#playlist_id_my_input').val();
     var track = $('#song_uri_my_input').val();
       $.post(url, {session_id: session, playlist_id: playlist, song_uri: track}, function(result) {
       console.log(result)
     });
+    alert('Låten är nu tillagd på din lista!');
 };
 
 postMyData.addEventListener('click', () => {
