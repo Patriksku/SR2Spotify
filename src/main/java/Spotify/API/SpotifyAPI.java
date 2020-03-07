@@ -8,6 +8,7 @@ import Spotify.Authentication.AutoSessionManager;
 import Spotify.Beans.AllArray;
 import Spotify.Functions.*;
 import Spotify.Users.UserSessions;
+import org.json.JSONException;
 import org.w3c.dom.Document;
 import java.net.URLDecoder;
 
@@ -20,7 +21,7 @@ import static spark.Spark.post;
  * on available functionalities and returning JSON files when necessary.
  * @author Patriksku, Sara Karic
  */
-public class SpotifyAPI {
+public class SpotifyAPI extends SearchSpotify {
 
     private final String path = "/api/v1/spotify";
     private UserSessions userSessions = new UserSessions();
@@ -31,6 +32,14 @@ public class SpotifyAPI {
     private UserSessionID userSessionID = new UserSessionID(userSessions);
     private SearchSpotify searchSpotify = new SearchSpotify(userSessions);
     private AddSongToPlaylist addSong = new AddSongToPlaylist(userSessions);
+
+    public SpotifyAPI(UserSessions userSessions) {
+        super(userSessions);
+    }
+
+    public SpotifyAPI() {
+        super();
+    }
 
     /**
      * Authenticates the user by granting the user a login screen to Spotify.
@@ -49,6 +58,7 @@ public class SpotifyAPI {
     /**
      * Returns true if the current user has granted the application access to Spotify,
      * otherwise false.
+     *
      * @return JSON with "status" set to true or false.
      */
     public String visitorStatus() {
@@ -66,6 +76,7 @@ public class SpotifyAPI {
      * This method returns a JSON object containing the unique session_id of
      * the current user together with a boolean which is True if the current user
      * has granted the application access to the user's Spotify account - otherwise False.
+     *
      * @return JSON
      */
     public String getSessionID() {
@@ -99,13 +110,13 @@ public class SpotifyAPI {
                 response.type("text/plain");
                 response.status(401);
                 return "The user chose not to authorize the application to the user's Spotify account.";
-            } else if(authCode == null) {
+            } else if (authCode == null) {
                 response.type("text/plain");
                 response.status(403);
                 return "This endpoint was used for other purposes than for the verification process by the API itself. " +
                         "Do not use this endpoint on your own - the API handles this redirect automatically.";
             } else {
-                if(autoSessionManager == null) {
+                if (autoSessionManager == null) {
                     autoSessionManager = new AutoSessionManager(userSessions);
                 }
                 auth.requestToken(authCode, request.session().id());
@@ -120,6 +131,7 @@ public class SpotifyAPI {
 
     /**
      * Returns information from the specified user's Spotify profile if authentication has been granted.
+     *
      * @return JSON-file which contains various fields from the user's Spotify profile.
      */
     public Document getProfile() {
@@ -143,6 +155,7 @@ public class SpotifyAPI {
     /**
      * Returns the current user's information from Spotify if the user's unique
      * session-id exists in the server.
+     *
      * @return JSON-file with the current user's information from Spotify.
      */
     public Document getMyProfile() {
@@ -165,6 +178,7 @@ public class SpotifyAPI {
     /**
      * Returns JSON containing playlists from the specified user.
      * The user needs to have granted access to the user's Spotify information first.
+     *
      * @return JSON with all playlists.
      */
     public Document getPlaylists() {
@@ -188,6 +202,7 @@ public class SpotifyAPI {
     /**
      * Returns playlists of the current user, based on the "limit" parameter.
      * Limit has to be a numerical digit between 0 and 50.
+     *
      * @return JSON containing playlists of the current user.
      */
     public Document getMyPlaylists() {
@@ -220,6 +235,7 @@ public class SpotifyAPI {
      * - session_id
      * - playlist_id
      * - song_uri
+     *
      * @return 200 OK if everything went fine, or 400 Bad Request
      * with an error message stating what went wrong.
      */
@@ -269,40 +285,60 @@ public class SpotifyAPI {
 
     /**
      * Returns information about album, artist, playlist and track.
+     *
      * @return search
      */
 
-    public String getSearch(){
-        get(path + "/getsearch", ((request, response) -> {
+    public String getSearch() {
+        get(path + "/getsearch", (request, response) -> {
             Radio radio = ChannelSongs.getCurrentRadio();
             AllArray allArray = new AllArray();
             StringSimplifier simply = new StringSimplifier();
-
-            searchSpotify.requestSearch(simply.simplyString(radio.getTitle()), request.session().id());
-            response.type("application/json");
-            return searchSpotify.requestSearch(simply.simplyString(radio.getTitle()), request.session().id());
+            // SearchSpotify SRartist = new SearchSpotify(SR);
 
 
 
+                if (userSessions.contains(request.session().id())) {
+                    response.status(200);
+                    response.type("application/json");
+                    auth.refreshToken(userSessions.get(request.session().id()).getToken());
+                    return searchSpotify.requestSearch(simply.simplyString(radio.getTitle()), request.session().id());
 
-        }));
-        return "Something went wrong";
+                } else if (!userSessions.contains(request.session().id())) {
+                    response.status(401);
+                    response.type("text/plain");
+                    return "This user is not authorized to Spotify";
+
+
+
+                }
+                return "Something went wrong";
+
+
+            });
+
+        return "Please select chh";
+        }
+
+
+        /**
+         * Method initializes all methods in this class so that the endpoints are active.
+         */
+        public void init () {
+            authUser();
+            visitorStatus();
+            spotify();
+            getSessionID();
+            getProfile();
+            getMyProfile();
+            getPlaylists();
+            getMyPlaylists();
+            addSongToPlaylist();
+            getSearch();
+        }
     }
 
 
-    /**
-     * Method initializes all methods in this class so that the endpoints are active.
-     */
-    public void init(){
-        authUser();
-        visitorStatus();
-        spotify();
-        getSessionID();
-        getProfile();
-        getMyProfile();
-        getPlaylists();
-        getMyPlaylists();
-        addSongToPlaylist();
-        getSearch();
-    }
-}
+
+
+

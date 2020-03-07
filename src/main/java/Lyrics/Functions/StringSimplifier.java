@@ -30,8 +30,10 @@ public class StringSimplifier {
        { put("\\,", "+"); }
        { put("\\'", ""); }
        { put("\\&", ""); }
+       { put("\\&", ","); }
        { put("\\.", ""); }
        { put(" ", "+"); }
+
 
    };
 

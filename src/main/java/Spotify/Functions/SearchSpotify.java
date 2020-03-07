@@ -34,10 +34,16 @@ public class SearchSpotify {
     private UserSessions userSessions;
     private HttpResponse<JsonNode> response;
     private StringSimplifier simply = new StringSimplifier();
+    public String SRartist;
+    public JSONObject tracks;
 
 
     public SearchSpotify(UserSessions userSessions) {
         this.userSessions = userSessions;
+    }
+
+    public SearchSpotify() {
+
     }
 
     public String requestSearch(String search, String session_id) {
@@ -63,9 +69,9 @@ public class SearchSpotify {
     public String getSearchTrack(JSONObject envelope) {
        // System.out.println(envelope);
         Radio radio = ChannelSongs.getCurrentRadio();
-        JSONObject tracks = envelope.getJSONObject("tracks");
+        tracks = envelope.getJSONObject("tracks");
         JSONArray items = tracks.getJSONArray("items");
-        String SRartist = simply.simplyString(radio.getArtist());
+        SRartist = simply.simplyString(radio.getArtist());
         System.out.println(SRartist);
         JSONObject artist = null;
         String trackname = null;
