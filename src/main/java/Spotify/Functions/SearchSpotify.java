@@ -22,19 +22,17 @@ import org.json.JSONString;
 
 
 /**
+ * This class is responsible for returning JSON, that contains track name, track URL,
+ * track uri, artist name and artist uri.
  * @author Sara Karic
  */
 
 public class SearchSpotify {
 
     private final String SEARCH_ENDPOINT = "https://api.spotify.com/v1/search";
-    private final String SEARCH_ARTIST_DOMAIN = "https://open.spotify.com/artist/";
-    private final String SEARCH_TRACK_DOMAIN = "https://open.spotify.com/track/";
-    private FormatHandler formatHandler = new FormatHandler();
     private UserSessions userSessions;
     private HttpResponse<JsonNode> response;
     private StringSimplifier simply = new StringSimplifier();
-    public String SRartist;
     public JSONObject tracks;
 
 
@@ -42,9 +40,12 @@ public class SearchSpotify {
         this.userSessions = userSessions;
     }
 
-    public SearchSpotify() {
-
-    }
+    /**
+     * Requests search for track.
+     * @param search for track.
+     * @param session_id for the user.
+     * @return JSON.
+     */
 
     public String requestSearch(String search, String session_id) {
 
@@ -63,15 +64,18 @@ public class SearchSpotify {
         }
         return getSearchTrack(response.getBody().getObject());
 
-
     }
 
+    /**
+     * @param envelope contains the whole JSON
+     * @return JSON search for track and artist.
+     */
+
     public String getSearchTrack(JSONObject envelope) {
-       // System.out.println(envelope);
         Radio radio = ChannelSongs.getCurrentRadio();
         tracks = envelope.getJSONObject("tracks");
         JSONArray items = tracks.getJSONArray("items");
-        SRartist = simply.simplyString(radio.getArtist());
+        String SRartist = simply.simplyString(radio.getArtist());
         System.out.println(SRartist);
         JSONObject artist = null;
         String trackname = null;
@@ -114,7 +118,6 @@ public class SearchSpotify {
                     allArray.setTrack_url(trackURL);
                     allArray.setTrack_uri(trackuri);
 
-
                 }
 
             }
@@ -140,15 +143,6 @@ public class SearchSpotify {
             allArray.setTrack_url(trackURL);
             allArray.setTrack_uri(trackuri);
             }
-
-            //  System.out.println(artist);
-            System.out.println(artistname);
-            System.out.println(artisturi);
-            System.out.println(trackname);
-            System.out.println(trackURL);
-            System.out.println(trackuri);
-
-
 
         FormatHandler formatHandler = new FormatHandler();
         return formatHandler.getFormatAll(allArray);
