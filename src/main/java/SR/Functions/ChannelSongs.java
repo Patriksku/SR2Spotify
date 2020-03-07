@@ -34,6 +34,7 @@ public class ChannelSongs {
     public String getFormat(String URI, Response serverResponse) {
 
         Radio radio = new Radio(); //Object representation of the resource.
+        currentRadioObject = radio;
 
         try {
             response = Unirest.get(URI) //Loads the resource into a response object.
