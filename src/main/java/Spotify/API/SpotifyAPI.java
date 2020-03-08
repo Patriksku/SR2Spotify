@@ -8,11 +8,10 @@ import Spotify.Authentication.AutoSessionManager;
 import Spotify.Beans.AllArray;
 import Spotify.Functions.*;
 import Spotify.Users.UserSessions;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
-import java.net.URLDecoder;
 
+import java.net.URLDecoder;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -289,22 +288,21 @@ public class SpotifyAPI {
             StringSimplifier simply = new StringSimplifier();
             JSONObject error = new JSONObject();
 
-            if(radio.getTitle().isEmpty()){
-                System.out.println("200");
-                error = error.put("track_uri", "No artist playing");
-                response.status(200);
-                response.type("application/json");
-                return error;
-            }
-
             try {
 
                 if (userSessions.contains(request.session().id())) {
-                    response.status(200);
-                    response.type("application/json");
-                    auth.refreshToken(userSessions.get(request.session().id()).getToken());
-                    return searchSpotify.requestSearch(simply.simplyString(radio.getTitle()), request.session().id());
-
+                    if(radio.getTitle().isEmpty()){
+                        System.out.println("200");
+                        error = error.put("track_uri", "No artist playing");
+                        response.status(200);
+                        response.type("application/json");
+                        return error;
+                    } else {
+                        response.status(200);
+                        response.type("application/json");
+                        auth.refreshToken(userSessions.get(request.session().id()).getToken());
+                        return searchSpotify.requestSearch(simply.simplyString(radio.getTitle()), request.session().id());
+                    }
                 } else if (!userSessions.contains(request.session().id())) {
                     response.status(401);
                     response.type("text/plain");
@@ -316,18 +314,9 @@ public class SpotifyAPI {
                 response.status(400);
                 response.type("text/plain");
                 return "Please select channel";
-
-            } catch (JSONException j) {
-                response.status(204);
-                response.type("");
-                return "";
-
             }
-
             return null;
-
         });
-
         return null;
     }
 
