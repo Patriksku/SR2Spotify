@@ -167,3 +167,26 @@ const postData =(url)=> {
 postMyData.addEventListener('click', () => {
     postData('http://localhost:4567/api/v1/spotify/addsongplaylist')
 })
+
+//Kollar om statusen är sant eller falskt, är den falsk kommer inte vår spotify box att synas förrän man har loggat in på sidan, då blir statusen sann. När den blir sann kan man använda sig av spotifys funktioner
+
+const getStatus = (url) => {
+    $(document).ready(function(){
+        $.ajax({
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            type: 'GET',
+            url: url,
+        }).then(function(data) {
+            var myStatus = data.status;
+                console.log(myStatus);
+            if (!myStatus){
+                const spotifyBoxGone = document.querySelector('#spotify_box')
+                spotifyBoxGone.style.display='none'}
+        });
+    });
+};
+
+//Hämtar data från vår endpoint när man kommer in på sidan och när man loggar in via spotify via vår sida
+
+getStatus('http://localhost:4567/api/v1/spotify/visitorstatus')
